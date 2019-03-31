@@ -50,13 +50,6 @@ std::string EventManager::returnMessageFromMatchActions() {
             ///@todo return json message about closing
             break;
         }
-//        case sf::Event::KeyReleased: {
-//            switch (event->key.code) {
-//                case sf::Keyboard::Left:
-//                case sf::Keyboard::A:
-//                case sf::Keyboard::Right
-//            }
-//        }
         case sf::Event::KeyPressed:
         {
             switch (event->key.code) {
@@ -123,7 +116,27 @@ std::string EventManager::returnMessageFromMatchActions() {
             break;
         }
         case sf::Event::KeyReleased: {
-            ///@todo keyRelease events...
+            switch (event->key.code) {
+                case sf::Keyboard::Left:
+                case sf::Keyboard::Right:
+                case sf::Keyboard::Up:
+                case sf::Keyboard::Down:
+                case sf::Keyboard::A:
+                case sf::Keyboard::S:
+                case sf::Keyboard::W:
+                case sf::Keyboard::D:
+                {
+                    json json_message;
+                    json_message["status"] = "OK";
+                    json_message["from"] = playerId;
+                    json_message["method"] = "stop";
+                    json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                    return json_message.dump();
+                }
+                default:
+                    break;
+            }
             break;
         }
         default:
