@@ -25,9 +25,9 @@ public:
 
     void draw(sf::RenderWindow* window) override;
 
-    int collideCheck(GameObject* obj) override;
+    bool collideCheck(GameObject *obj) override;
 
-    void collideResponse(int P, GameObject* obj) override;
+    void collideResponse(GameObject* obj) override;
 };
 
 

@@ -16,10 +16,10 @@ void Bullet::draw(sf::RenderWindow *window) {
     window->draw(Bullet::sprite);
 }
 
-int Bullet::collideCheck(GameObject *obj) {
+bool Bullet::collideCheck(GameObject *obj) {
 }
 
-void Bullet::collideResponse(int P, GameObject *obj) {
+void Bullet::collideResponse(GameObject *obj) {
 
 }
 

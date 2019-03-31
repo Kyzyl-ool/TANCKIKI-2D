@@ -30,8 +30,6 @@ void GameObject::update() {
 
 void GameObject::setRotation(int angle){
     GameObject::sprite.setRotation(-angle);
-    cos = cosf((float)angle / 2 / M_PI));
-    sin = sinf((float)angle / 2 / M_PI));
 }
 
 float GameObject::getRotation() const{
@@ -49,7 +47,6 @@ float GameObject::getSizeY() const {
 void GameObject::setSizeObj(float sizeX_, float sizeY_) {
     GameObject::sizeX=sizeX_;
     GameObject::sizeY=sizeY_;
-    d=sqrtf(powf(sizeX_/2,2)+powf(sizeY_/2,2));
 }
 
 void GameObject::setSizeSprite(float sizeX_, float sizeY_) {
@@ -60,11 +57,11 @@ GameObject::~GameObject() {
 
 }
 
-int GameObject::collideCheck(GameObject *obj) {
+bool GameObject::collideCheck(GameObject *obj) {
     return false;
 }
 
-void GameObject::collideResponse(int P, GameObject *obj) {
+void GameObject::collideResponse(GameObject *obj) {
 
 }
 
@@ -144,21 +141,8 @@ void GameObject::multSize(float k){
     GameObject::sizeX=k*sizeX;
     GameObject::sizeY=k*sizeY;
     GameObject::sprite.setScale(k*sprite.getScale().x, k*sprite.getScale().y);
-    d=k*d;
 }
 
 gameObject_t GameObject::getType() const {
     return type;
-}
-
-float GameObject::getDiam() const {
-    return d;
-}
-
-float GameObject::getSin() const{
-    return sin;
-}
-
-float GameObject::getCos() const{
-    return cos;
 }

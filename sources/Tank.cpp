@@ -33,42 +33,42 @@ void Tank::update() {
 }
 
 void Tank::draw(sf::RenderWindow* window) {
+    if(alive)
     window->draw(Tank::sprite);
-}
-
-int checkLocPointStraight(Point A, Point B, Point C){ ///A и B задают прямую, C - точка, 1 - если точка слева над прямой, 0 - если под
-    if(A.x==B.x){
-        return C.x < A.x;
+    else {
+        sf::Sprite spr;
+        spr.setTexture(texture);
+        spr.setPosition(x,y);
+        spr.setTextureRect(sf::IntRect(288,96,16,16));
+        spr.setOrigin(16/2,16/2);
+        window->draw(spr);
     }
-        float k=atanf((B.y-A.y)/(B.x-A.x));
-        float b=A.y-k*A.x;
-        return C.y > k * C.x + b;
-}
-
-bool checkLocPointSquare(Point A, Point B, Point C, Point D, Point X){ ///сначала НИЖНЯЯ левая, против часовой стрелки
-    return checkLocPointStraight(A, B, X) && !checkLocPointStraight(B, C, X) && !checkLocPointStraight(C, D, X) && checkLocPointStraight(D, A, X);
 }
 
 
-bool Tank::collideCheck(GameObject* obj) {
+bool Tank::collideCheck(GameObject *obj) {
     if (obj->getType() == TANK) {
-        if (Collision::CircleTest(sprite, obj->getSprite())) {
-            return Collision::BoundingBoxTest(sprite, obj->getSprite());
+
+        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
+        sf::Sprite spr2 = obj->getSprite();
+        spr1.setTextureRect(sf::IntRect(0,0,(int)sizeX,(int)sizeY));
+        spr1.setOrigin(sizeX/2,sizeY/2);
+        spr2.setTextureRect(sf::IntRect(0,0,(int)obj->getSizeX(),(int)obj->getSizeY()));
+        spr2.setOrigin(sizeX/2,sizeY/2);
+
+        if (Collision::CircleTest(spr1, spr2)) {
+            return Collision::BoundingBoxTest(spr1, spr2);
         }
     }
-
   return false;
 }
 
 void Tank::collideResponse(GameObject *obj) {
     if(obj->getType()==TANK) {
-
+        alive=false;
     }
 }
 
-float Tank::getDiam() {
-    return d;
-}
 
 
 

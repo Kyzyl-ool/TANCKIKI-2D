@@ -33,10 +33,6 @@ protected:
     int gameObjectId;       ///айди объекта
     int ownerId;            ///айди владельца
     gameObject_t type;
-    float rotation;
-    float d;               /// половина диагонали;
-    float sin;
-    float cos;
 public:
     gameObject_t getType() const;
     /// тип
@@ -67,7 +63,7 @@ public:
      * @param obj - указатель на игровой объект, взаимодействие с которым проверяется
      * @return true, если есть взаимодействие. В противном случае – false
      */
-    virtual int collideCheck(GameObject* obj);
+    virtual bool collideCheck(GameObject *obj);
 
     /*!
      * \brief
@@ -75,15 +71,11 @@ public:
      *
      * @param obj - указатель на игровой объект, с которым будет выполнен акт взаимодействия
      */
-    virtual void collideResponse(int P, GameObject* obj);
+    virtual void collideResponse(GameObject* obj);
 
     float getX() const;
 
     float getY() const;
-
-    float getSin() const;
-
-    float getCos() const;
 
     float getSpeedX() const;
 
@@ -96,8 +88,6 @@ public:
     float getRotation() const;
 
     bool isAlive() const;
-
-    float getDiam() const;
 
     virtual const sf::Sprite &getSprite() const;
 

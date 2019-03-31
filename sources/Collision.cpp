@@ -17,7 +17,6 @@ Collision::~Collision() {
 }
 
 sf::IntRect Collision::GetAABB(const sf::Sprite& Object) {
-
     //Get the top left corner of the sprite regardless of the sprite's center
     //This is in Global Coordinates so we can put the rectangle back into the right place
     sf::Vector2f pos = Object.getPosition();

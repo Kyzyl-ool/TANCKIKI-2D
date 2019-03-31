@@ -12,7 +12,8 @@ PhysicsManager::PhysicsManager(ObjectManager *theObjectManager) {
 void PhysicsManager::updateGameObjects() {
     for (const auto &object1 : objectManager->getObjects()) {
         for (const auto &object2 : objectManager->getObjects()) {
-            if (object1 != object2 && object1->collideCheck(object2)) {
+            if (object1 != nullptr && object2 != nullptr && object1 != object2 && object1->collideCheck(object2)) {
+                object1->collideResponse(object2);
                 std::cout << "MUHAHA\n";
             }
         }
