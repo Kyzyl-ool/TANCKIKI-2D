@@ -10,7 +10,6 @@
  */
 
 
-//dasds
 Collision::Collision() {
 }
 
