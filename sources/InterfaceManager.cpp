@@ -68,7 +68,7 @@ void InterfaceManager::drawMainMenu() {
 
 
 void InterfaceManager::drawEnterNameScreen() {
-    ///@todo ... dodoagdjhasgd
+    ///@todo ... dodoagdjhasgd75765765765
 }
 
 
