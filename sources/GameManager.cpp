@@ -14,6 +14,7 @@ GameManager::GameManager(sf::RenderWindow* the_mainWindow)
 }
 
 void GameManager::runGame() {
+    mainWindow->setKeyRepeatEnabled(false);
     while (mainWindow->isOpen()) {
         interfaceManager->makeInterface();
         if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();

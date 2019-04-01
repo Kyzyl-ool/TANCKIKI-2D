@@ -23,6 +23,9 @@ public:
 
     std::string returnMessageFromMatchActions();
     void handleMatchPauseActions();
+    char getPressedArrows(sf::Keyboard::Key left, sf::Keyboard::Key down, sf::Keyboard::Key up,
+                              sf::Keyboard::Key right);
+    std::string goMessage(char direction);
 
 };
 
