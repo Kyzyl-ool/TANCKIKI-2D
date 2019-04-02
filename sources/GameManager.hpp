@@ -42,6 +42,7 @@ public:
      */
     void runGame();
     void handleEvent();
+    
 };
 
 #endif //TANCHIKI_GAMEMANAGER_HPP
