@@ -53,6 +53,7 @@ Match::Match(sf::RenderWindow *mainWindow, std::string players_info_json, std::s
     tank1->setTexture("images/tanks_16.png");
     tank1->setSprite(96,48,16,16);  //задает вид спрайта на основе уже имеющейся тестуры
     tank1->setPosition(200, 200);
+    
     tank1->setSizeSprite(50,50);
     tank1->setSizeObj(50,50);
     tank1->setAlive(true);
