@@ -5,7 +5,7 @@
 #include "Bullet.hpp"
 
 Bullet::Bullet() : GameObject::GameObject() {
-    Bullet::type=BULLET;
+    type=BULLET;
 }
 
 void Bullet::draw(sf::RenderWindow *window) {

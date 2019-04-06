@@ -8,13 +8,13 @@
 #include "GameObject.hpp"
 
 
-class Bullet : public GameObject {
-protected:
-
+class Bullet: public GameObject {
 public:
+    Bullet();
+
     void update() override;
 
-    Bullet();
+
 
     void draw(sf::RenderWindow* window) override;
 
