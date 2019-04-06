@@ -7,9 +7,10 @@
 
 
 
-InterfaceManager::InterfaceManager(sf::RenderWindow *the_mainWindow, ObjectManager *objectManager, gameState_t *state) :
-objectManager(objectManager),
-state(state)
+InterfaceManager::InterfaceManager(sf::RenderWindow *the_mainWindow, ObjectManager *the_objectManager,
+                                   gameState_t *the_state) :
+objectManager(the_objectManager),
+state(the_state)
 {
     mainWindow = the_mainWindow;
 }

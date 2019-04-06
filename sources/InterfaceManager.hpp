@@ -27,7 +27,7 @@ private:
 public:
     void setMapName(const std::string &mapName);
 
-    InterfaceManager(sf::RenderWindow *mainWindow, ObjectManager *objectManager, gameState_t *state);
+    InterfaceManager(sf::RenderWindow *the_mainWindow, ObjectManager *the_objectManager, gameState_t *the_state);
 
     void makeInterface();
 

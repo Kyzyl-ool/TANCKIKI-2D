@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-GameManager::GameManager(sf::RenderWindow* the_mainWindow)
+GameManager::GameManager(sf::RenderWindow *the_mainWindow)
 {
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_CREATE_MATCH;

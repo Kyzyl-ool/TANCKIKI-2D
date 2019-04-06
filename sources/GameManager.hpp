@@ -31,7 +31,7 @@ private:
     std::string playerName;
 
 public:
-    GameManager(sf::RenderWindow* mainWindow);
+    GameManager(sf::RenderWindow *the_mainWindow);
 
     /*!
      * \brief запуск игры
