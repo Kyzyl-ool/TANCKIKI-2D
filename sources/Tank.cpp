@@ -4,15 +4,7 @@
 
 #include "Tank.hpp"
 #include <cmath>
-#include "Collision.hpp"
 
-
-class Point
-{
-public:
-    float x;
-    float y;
-};
 
 
 Tank::Tank() : GameObject::GameObject() {
@@ -46,27 +38,30 @@ void Tank::draw(sf::RenderWindow* window) {
 }
 
 
-bool Tank::collideCheck(GameObject *obj) {
-    if (obj->getType() == TANK) {
-
-        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
-        sf::Sprite spr2 = obj->getSprite();
-        spr1.setTextureRect(sf::IntRect(0,0,(int)sizeX,(int)sizeY));
-        spr1.setOrigin(sizeX/2,sizeY/2);
-        spr2.setTextureRect(sf::IntRect(0,0,(int)obj->getSizeX(),(int)obj->getSizeY()));
-        spr2.setOrigin(sizeX/2,sizeY/2);
-
-        if (Collision::CircleTest(spr1, spr2)) {
-            return Collision::BoundingBoxTest(spr1, spr2);
-        }
-    }
-  return false;
-}
-
 void Tank::collideResponse(GameObject *obj) {
     if(obj->getType()==TANK) {
         alive=false;
     }
+}
+
+GameObject * Tank::shot(Bullet_t BULLET) {
+    Bullet *bul;
+    bul = new Bullet;
+    float angle= getRotation()/ 2 / (float) M_PI;
+    bul->setOwnerId(gameObjectId);
+    if(BULLET==LOWSHOT) {
+        bul->setPosition(x + (sizeX + X_OF_LOW_BULLET)/2 * cosf(angle),
+                         y - (sizeY + Y_OF_LOW_BULLET)/2 * sinf(angle));
+        bul->setSpeed(SPEED_OF_LOW_BULLET * cosf(angle),
+                      SPEED_OF_LOW_BULLET * sinf(angle));
+        bul->setTexture("images/bullet_1.png");
+        bul->setSprite(20,13,10,8);
+        bul->setSizeSprite(X_OF_LOW_BULLET, Y_OF_LOW_BULLET);
+        bul->setSizeObj(X_OF_LOW_BULLET,Y_OF_LOW_BULLET);
+    }
+    bul->setAlive(true);
+    bul->setRotation(angle);
+    return bul;
 }
 
 

@@ -8,17 +8,11 @@
 #include "GameObject.hpp"
 #include "Bullet.hpp"
 
-enum Tank_t {
-    TANK1,
-    TANK2,
-};
-
-
-
-
 class Tank : public GameObject {
 protected:
     int health;
+
+    Bullet_t bulType;
 
 public:
     void update() override;
@@ -27,15 +21,14 @@ public:
 
     void draw(sf::RenderWindow* window) override;
 
-    bool collideCheck(GameObject *obj) override;
 
     void collideResponse(GameObject *obj) override;
+
+    GameObject * shot(Bullet_t BULLET) override;
 
     int getHealth();
 
     void setHealth(int healthScore);
-
-    void shot(Bullet_t BULLET);
 };
 
 

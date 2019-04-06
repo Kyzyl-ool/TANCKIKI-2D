@@ -5,20 +5,12 @@
 //
 
 #include "GameObject.hpp"
+#include "Match.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-class Point
-{
-public:
-    float x;
-    float y;
-};
-
 GameObject::GameObject() {
-    GameObject::sizeX=1;
-    GameObject::sizeY=1;
     GameObject::speedX=0;
     GameObject::speedY=0;
     std::cout << "GameObject created.\n";
@@ -28,7 +20,8 @@ void GameObject::update() {
 
 }
 
-void GameObject::setRotation(int angle){
+
+void GameObject::setRotation(float angle){
     GameObject::sprite.setRotation(-angle);
 }
 
@@ -58,8 +51,50 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
+    if (obj->getType() == TANK) {
+
+        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
+        sf::Sprite spr2 = obj->getSprite();
+        spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
+        spr1.setOrigin(sizeX / 2, sizeY / 2);
+        spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
+        spr2.setOrigin(sizeX / 2, sizeY / 2);
+
+        if (Collision::CircleTest(spr1, spr2)) {
+            return Collision::BoundingBoxTest(spr1, spr2);
+        }
+    }
     return false;
 }
+
+//bool GameObject::collideCheck(Match *match) {
+//    block_t *blocks=match->getBlocks();
+//    float a[5], b[5];
+//    a[0] = (int)getX();  b[0] = (int)getY();
+//    a[1]=a[0]+1; b[1]=b[0];
+//    a[2]=a[0];   b[2]=b[0]+1;
+//    a[3]=a[0]-1; b[3]=b[0];
+//    a[4]=a[0]; b[4]=b[0]+1;
+//
+//    for(int i =0; i <5; ++i) {
+//        if(blocks[b[i]*match->getAmountBlocksX()+a[i]]==BL_0) {
+//        sf::Texture textur;
+//        textur.create(16,16);
+//        sf::Sprite spr;
+//        spr.setTexture(textur);
+//        spr.setTextureRect(sf::IntRect(0,0,16,16);
+//        spr.setPosition(a[i]*WINDOW_WIDTH/match->getAmountBlocksX(),b[i]*WINDOW_HEIGHT/match->getAmountBlocksY());
+//
+//        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
+//        spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
+//        spr1.setOrigin(sizeX / 2, sizeY / 2);
+//
+//        return Collision::BoundingBoxTest(spr, spr1);
+//        }
+//
+//    }
+//    return false;
+//}
 
 void GameObject::collideResponse(GameObject *obj) {
 
@@ -145,4 +180,24 @@ void GameObject::multSize(float k){
 
 gameObject_t GameObject::getType() const {
     return type;
+}
+
+int GameObject::getOwnerId() const {
+    return ownerId;
+}
+
+int GameObject::getObjectId() const {
+    return gameObjectId;
+}
+
+void GameObject::setObjectId(int id) {
+    gameObjectId=id;
+}
+
+void GameObject::setOwnerId(int pid) {
+    ownerId=pid;
+}
+
+GameObject * GameObject::shot(Bullet_t BULLET) {
+
 }

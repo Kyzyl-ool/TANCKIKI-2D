@@ -8,6 +8,7 @@
 
 #include "ObjectManager.hpp"
 #include "blocks.hpp"
+#include <SFML/Graphics.hpp>
 
 /*!
  * Этот класс отвечает за игровую графику.
@@ -34,6 +35,9 @@ public:
      * \details Достаточно вызвать у каждого игрового объекта метод draw.
      */
     void drawGameObjects();
+
+    sf::RenderWindow* getWindow();
 };
+
 
 #endif //TANCHIKI_GRAPHICSMANAGER_HPP

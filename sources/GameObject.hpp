@@ -7,6 +7,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "windowConfig.hpp"
+#include "Collision.hpp"
+#include "Match.hpp"
 
 
 enum gameObject_t {
@@ -14,6 +16,18 @@ enum gameObject_t {
     TANK,
     BULLET,
     GROUND
+};
+
+enum Bullet_t {
+    ABYSSSHOT = 0,
+    LOWSHOT,
+    MIDDLESHOT,
+    POWERFULLSHOT
+};
+
+enum Tank_t {
+    TANK1,
+    TANK2,
 };
 
 
@@ -39,8 +53,8 @@ public:
 
 
 public:
-
     GameObject();
+
 
     virtual ~GameObject();
 
@@ -63,7 +77,9 @@ public:
      * @param obj - указатель на игровой объект, взаимодействие с которым проверяется
      * @return true, если есть взаимодействие. В противном случае – false
      */
-    virtual bool collideCheck(GameObject *obj);
+    bool collideCheck(GameObject *obj);
+
+    //bool collideCheck(Match *match);
 
     /*!
      * \brief
@@ -72,6 +88,8 @@ public:
      * @param obj - указатель на игровой объект, с которым будет выполнен акт взаимодействия
      */
     virtual void collideResponse(GameObject* obj);
+
+    virtual GameObject * shot(Bullet_t BULLET);
 
     float getX() const;
 
@@ -89,11 +107,15 @@ public:
 
     bool isAlive() const;
 
+    int getOwnerId() const;
+
+    int getObjectId() const;
+
     virtual const sf::Sprite &getSprite() const;
 
     virtual const sf::Texture &getTexture() const;
 
-    void setRotation(int angle);
+    void setRotation(float angle);
 
     void setPosition(float x, float y);
 
@@ -112,6 +134,10 @@ public:
     void setTexture(const char* address);
 
     void multSize(float k);
+
+    void setOwnerId(int pid);
+
+    void setObjectId(int id);
 };
 
 #endif //TANCHIKI_GAMEOBJECT_HPP

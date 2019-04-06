@@ -8,15 +8,8 @@ Bullet::Bullet() : GameObject::GameObject() {
     Bullet::type=BULLET;
 }
 
-Bullet::Bullet(GameObject *obj) {
-
-}
-
 void Bullet::draw(sf::RenderWindow *window) {
     window->draw(Bullet::sprite);
-}
-
-bool Bullet::collideCheck(GameObject *obj) {
 }
 
 void Bullet::collideResponse(GameObject *obj) {
