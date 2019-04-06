@@ -9,7 +9,6 @@
 #include "GraphicsManager.hpp"
 #include "PhysicsManager.hpp"
 #include "ObjectManager.hpp"
-#include "Bullet.hpp"
 
 class Match {
 private:

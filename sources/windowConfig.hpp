@@ -12,7 +12,7 @@ const char WINDOW_NAME[] = "TANCHIKI GAME";
 const float TIME = 0.1;
 const float X_OF_LOW_BULLET = 20;
 const float Y_OF_LOW_BULLET = 10;
-const float SPEED_OF_LOW_BULLET = 0.5;
+const float SPEED_OF_LOW_BULLET = 0.8;
 const char IMAGE_FOR_MAP[] = "images/textu.png";
 
 #endif //TANCHIKI_CONFIG_HPP

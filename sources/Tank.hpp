@@ -17,12 +17,13 @@ protected:
 public:
     void update() override;
 
-    Tank();
+    Tank(int health);
 
     void draw(sf::RenderWindow* window) override;
 
 
     void collideResponse(GameObject *obj) override;
+    //void collideResponse(Match *match, std::vector<int> vec) override;
 
     GameObject * shot(Bullet_t BULLET) override;
 

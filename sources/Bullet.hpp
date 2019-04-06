@@ -9,16 +9,21 @@
 
 
 class Bullet: public GameObject {
+    int power;
 public:
     Bullet();
 
     void update() override;
 
+    int getPower();
 
+    void setPower(int power);
 
     void draw(sf::RenderWindow* window) override;
 
     void collideResponse(GameObject* obj) override;
+
+    //void collideResponse(Match *match, std::vector<int> vec) override ;
 };
 
 

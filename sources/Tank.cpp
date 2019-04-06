@@ -5,9 +5,10 @@
 #include "Tank.hpp"
 #include <cmath>
 
+#include <iostream>
 
 
-Tank::Tank() : GameObject::GameObject() {
+Tank::Tank(int health) : GameObject::GameObject(), health(health) {
     Tank::type=TANK;
 }
 
@@ -16,8 +17,8 @@ int Tank::getHealth() {
     return Tank::health;
 }
 
-void Tank::setHealth(int health) {
-    Tank::health=health;
+void Tank::setHealth(int health_) {
+    Tank::health=health_;
 }
 
 void Tank::update() {
@@ -27,14 +28,6 @@ void Tank::update() {
 void Tank::draw(sf::RenderWindow* window) {
     if(alive)
     window->draw(Tank::sprite);
-    else {
-        sf::Sprite spr;
-        spr.setTexture(texture);
-        spr.setPosition(x,y);
-        spr.setTextureRect(sf::IntRect(288,96,16,16));
-        spr.setOrigin(16/2,16/2);
-        window->draw(spr);
-    }
 }
 
 
@@ -42,7 +35,17 @@ void Tank::collideResponse(GameObject *obj) {
     if(obj->getType()==TANK) {
         alive=false;
     }
+    if(obj->getType()==BULLET && obj->getOwnerId() != gameObjectId) {
+        health = health - ((Bullet*)obj)->getPower();
+        if(health < 1) setAlive(false);
+        std::cout << "few";
+    }
 }
+
+//void Tank::collideResponse(Match *match, std::vector<int> vec) {
+//    setAlive(false);
+//
+//}
 
 GameObject * Tank::shot(Bullet_t BULLET) {
     Bullet *bul;
@@ -58,6 +61,7 @@ GameObject * Tank::shot(Bullet_t BULLET) {
         bul->setSprite(20,13,10,8);
         bul->setSizeSprite(X_OF_LOW_BULLET, Y_OF_LOW_BULLET);
         bul->setSizeObj(X_OF_LOW_BULLET,Y_OF_LOW_BULLET);
+        bul->setPower(10);
     }
     bul->setAlive(true);
     bul->setRotation(angle);

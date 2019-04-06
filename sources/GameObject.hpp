@@ -8,7 +8,8 @@
 #include <SFML/Graphics.hpp>
 #include "windowConfig.hpp"
 #include "Collision.hpp"
-#include "Match.hpp"
+
+class Match;
 
 
 enum gameObject_t {
@@ -79,7 +80,9 @@ public:
      */
     bool collideCheck(GameObject *obj);
 
-    //bool collideCheck(Match *match);
+//    std::vector<int> collideCheck(Match *match);
+//
+//    void collideResponse(Match *match, std::vector<int> vec);
 
     /*!
      * \brief

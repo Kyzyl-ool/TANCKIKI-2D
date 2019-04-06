@@ -51,8 +51,6 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
-    if (obj->getType() == TANK) {
-
         sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
         sf::Sprite spr2 = obj->getSprite();
         spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
@@ -63,42 +61,50 @@ bool GameObject::collideCheck(GameObject *obj) {
         if (Collision::CircleTest(spr1, spr2)) {
             return Collision::BoundingBoxTest(spr1, spr2);
         }
-    }
     return false;
 }
 
-//bool GameObject::collideCheck(Match *match) {
-//    block_t *blocks=match->getBlocks();
-//    float a[5], b[5];
-//    a[0] = (int)getX();  b[0] = (int)getY();
-//    a[1]=a[0]+1; b[1]=b[0];
-//    a[2]=a[0];   b[2]=b[0]+1;
-//    a[3]=a[0]-1; b[3]=b[0];
-//    a[4]=a[0]; b[4]=b[0]+1;
+//std::vector<int> GameObject::collideCheck(Match *match) {
+//    block_t *blocks = match->getBlocks();
+//    int jj = (int) (x - sizeX)/16;
+//    int ii = (int) (y - sizeY)/16;
+//    int n = (int) (x + sizeX )/16;
+//    int m = (int) (y + sizeY )/16;
+//    std::vector<int> vec;
 //
-//    for(int i =0; i <5; ++i) {
-//        if(blocks[b[i]*match->getAmountBlocksX()+a[i]]==BL_0) {
-//        sf::Texture textur;
-//        textur.create(16,16);
-//        sf::Sprite spr;
-//        spr.setTexture(textur);
-//        spr.setTextureRect(sf::IntRect(0,0,16,16);
-//        spr.setPosition(a[i]*WINDOW_WIDTH/match->getAmountBlocksX(),b[i]*WINDOW_HEIGHT/match->getAmountBlocksY());
+//    for (int i = ii; i < m+1; ++i) {
+//        for (int j = jj; j < n+1; ++j) {
+//            if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
+//                sf::Texture textur;
+//                textur.create(16, 16);
+//                sf::Sprite spr;
+//                spr.setTexture(textur);
+//                spr.setTextureRect(sf::IntRect(0, 0, 16, 16));
+//                spr.setPosition((float)j * WINDOW_WIDTH / match->getAmountBlocksX(),
+//                                (float)i * WINDOW_HEIGHT / match->getAmountBlocksY());
 //
-//        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
-//        spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
-//        spr1.setOrigin(sizeX / 2, sizeY / 2);
+//                sf::Sprite spr1 = sprite;
+//                spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
+//                spr1.setOrigin(sizeX / 2, sizeY / 2);
 //
-//        return Collision::BoundingBoxTest(spr, spr1);
+//                if (Collision::BoundingBoxTest(spr, spr1)) vec.push_back(i * match->getAmountBlocksX() + j);
+//            }
 //        }
-//
 //    }
-//    return false;
+//    return vec;
 //}
+
 
 void GameObject::collideResponse(GameObject *obj) {
 
 }
+
+//void GameObject::collideResponse(Match *match, std::vector<int> vec) {
+//    for(const auto place : vec) {
+//        if(match->getBlocks()[place]==BL_0)
+//        setAlive(false);
+//    }
+//}
 
 float GameObject::getX() const {
     return x;
