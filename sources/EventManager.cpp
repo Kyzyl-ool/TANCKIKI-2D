@@ -11,15 +11,17 @@
 using json = nlohmann::json;
 
 bool EventManager::pollEvent() {
-    return mainWindow.pollEvent(*event);
+    return mainWindow.pollEvent(event);
 }
 
-EventManager::EventManager(sf::RenderWindow &theMainWindow, sf::Event *the_event, int playerId, gameState_t *the_state)
+EventManager::EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId,
+                           gameState_t *the_state, tgui::Gui &the_gui)
         :
         mainWindow(theMainWindow),
-playerId(playerId)
+playerId(playerId),
+gui(the_gui),
+event(the_event)
 {
-    event = the_event;
     state = the_state;
 }
 
@@ -47,12 +49,12 @@ std::string EventManager::getMessageFromGameObjects() {
 std::string EventManager::returnMessageFromMatchActions() {
     char arrows = getPressedArrows(sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Up, sf::Keyboard::Right);
     if (arrows)
-        switch (event->type) {
+        switch (event.type) {
             case sf::Event::KeyReleased: {
                 return goMessage(arrows);
             }
             case sf::Event::KeyPressed: {
-                switch (event->key.code) {
+                switch (event.key.code) {
                     case sf::Keyboard::Left:
                     case sf::Keyboard::A: {
                         return goMessage(0b1000);
@@ -85,7 +87,7 @@ std::string EventManager::returnMessageFromMatchActions() {
                         return json_message.dump();
                     }
                     default: {
-//                    std::cout << "You pressed " << event->key.code << std::endl;
+//                    std::cout << "You pressed " << event.key.code << std::endl;
                         break;
                     }
                 }
@@ -95,9 +97,9 @@ std::string EventManager::returnMessageFromMatchActions() {
                 break;
     }
     else {
-        switch (event->type) {
+        switch (event.type) {
             case sf::Event::KeyReleased: {
-                switch (event->key.code) {
+                switch (event.key.code) {
                     case sf::Keyboard::Left:
                     case sf::Keyboard::Right:
                     case sf::Keyboard::Up:
@@ -123,7 +125,7 @@ std::string EventManager::returnMessageFromMatchActions() {
                 break;
         }
     }
-    switch (event->type) {
+    switch (event.type) {
         case sf::Event::Closed: {
             mainWindow.close();
             ///@todo return json message about closing
@@ -136,7 +138,7 @@ std::string EventManager::returnMessageFromMatchActions() {
 }
 
 void EventManager::handleMatchPauseActions() {
-    switch (event->type)
+    switch (event.type)
     {
         case sf::Event::Closed: {
             mainWindow.close();
@@ -144,7 +146,7 @@ void EventManager::handleMatchPauseActions() {
             break;
         }
         case sf::Event::KeyPressed: {
-            switch (event->key.code) {
+            switch (event.key.code) {
                 case sf::Keyboard::Escape: {
                     *state = GAME_STATE_MATCH;
 //                    std::cout << "Game state is MATCH\n";

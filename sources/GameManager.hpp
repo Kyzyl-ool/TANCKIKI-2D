@@ -29,11 +29,11 @@ private:
     EventManager* eventManager;
 
     gameState_t state;
-    sf::Event* event;
+    sf::Event& event;
     std::string playerName;
 
 public:
-    GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui);
+    GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event);
 
     /*!
      * \brief запуск игры
