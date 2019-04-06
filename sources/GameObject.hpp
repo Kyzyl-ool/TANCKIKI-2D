@@ -49,7 +49,7 @@ public:
      *
      * Спрайт тупо рисуется на экране с координатами x, y.
      */
-    virtual void draw(sf::RenderWindow* window);
+    virtual void draw(sf::RenderWindow &window);
 
     /*!
      * \brief Обновляет игровой объект. У каждого игрового объекта своя реализация этого метода.

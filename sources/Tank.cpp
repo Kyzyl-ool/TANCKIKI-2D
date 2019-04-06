@@ -42,8 +42,8 @@ void Tank::update() {
     setPosition(x+dx*TIME,y+dy*TIME);
 }
 
-void Tank::draw(sf::RenderWindow* window) {
-    window->draw(Tank::sprite);
+void Tank::draw(sf::RenderWindow &window) {
+    window.draw(Tank::sprite);
 }
 
 int checkLocPointStraight(Point A, Point B, Point C){ ///A и B задают прямую, C - точка, 0 - если точка слева от прямой, 1 - если справа

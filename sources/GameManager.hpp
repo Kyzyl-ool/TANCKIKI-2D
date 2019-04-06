@@ -6,6 +6,7 @@
 #define TANCHIKI_GAMEMANAGER_HPP
 
 #include <SFML/Graphics.hpp>
+#include <TGUI/TGUI.hpp>
 #include "ObjectManager.hpp"
 #include "PhysicsManager.hpp"
 #include "GraphicsManager.hpp"
@@ -21,7 +22,8 @@
 class GameManager
 {
 private:
-    sf::RenderWindow* mainWindow;
+    sf::RenderWindow& mainWindow;
+    tgui::Gui& gui;
     Match* match;
     InterfaceManager* interfaceManager;
     EventManager* eventManager;
@@ -31,7 +33,7 @@ private:
     std::string playerName;
 
 public:
-    GameManager(sf::RenderWindow *the_mainWindow);
+    GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui);
 
     /*!
      * \brief запуск игры

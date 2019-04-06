@@ -14,7 +14,7 @@ protected:
 public:
     void update() override;
 
-    void draw(sf::RenderWindow* window) override;
+    void draw(sf::RenderWindow &window) override;
 
     bool collideCheck(GameObject* obj) override;
 

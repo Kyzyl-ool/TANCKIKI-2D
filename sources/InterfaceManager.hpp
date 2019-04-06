@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include "ObjectManager.hpp"
 #include "gameStates.hpp"
+#include <TGUI/TGUI.hpp>
 
 /*!
  * Этот класс отвечает за весь игровой интерфейс.
@@ -17,7 +18,8 @@
 class InterfaceManager
 {
 private:
-    sf::RenderWindow* mainWindow;
+    sf::RenderWindow& mainWindow;
+    tgui::Gui& gui;
     gameState_t* state;
     std::string errString;
     ObjectManager* objectManager;
@@ -27,7 +29,8 @@ private:
 public:
     void setMapName(const std::string &mapName);
 
-    InterfaceManager(sf::RenderWindow *the_mainWindow, ObjectManager *the_objectManager, gameState_t *the_state);
+    InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager, gameState_t *the_state,
+                     tgui::Gui &the_gui);
 
     void makeInterface();
 

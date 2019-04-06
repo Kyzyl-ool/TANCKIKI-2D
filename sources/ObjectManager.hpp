@@ -21,10 +21,10 @@ public:
     const std::vector<GameObject *> &getObjects() const;
 
 private:
-    sf::RenderWindow mainWindow;
+    sf::RenderWindow& mainWindow;
 
 public:
-    ObjectManager(sf::RenderWindow* window);
+    ObjectManager(sf::RenderWindow &window);
 
     void addGameObject(GameObject* obj);
     void removeGameObjectById(int gameObjectId);

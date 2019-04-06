@@ -12,7 +12,7 @@ void GraphicsManager::drawGameObjects() {
 }
 
 GraphicsManager::GraphicsManager(ObjectManager *theObjectManager, block_t *blocks, unsigned int amount_of_blocks_y,
-                                 unsigned int amount_of_blocks_x, sf::RenderWindow *the_window) {
-    window = the_window;
+                                 unsigned int amount_of_blocks_x, sf::RenderWindow &the_window):
+                                 window(the_window){
     objectManager = theObjectManager;
 }

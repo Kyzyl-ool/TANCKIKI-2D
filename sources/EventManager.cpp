@@ -11,14 +11,14 @@
 using json = nlohmann::json;
 
 bool EventManager::pollEvent() {
-    return mainWindow->pollEvent(*event);
+    return mainWindow.pollEvent(*event);
 }
 
-EventManager::EventManager(sf::RenderWindow *theMainWindow, sf::Event *the_event, int playerId, gameState_t *the_state)
+EventManager::EventManager(sf::RenderWindow &theMainWindow, sf::Event *the_event, int playerId, gameState_t *the_state)
         :
+        mainWindow(theMainWindow),
 playerId(playerId)
 {
-    mainWindow = theMainWindow;
     event = the_event;
     state = the_state;
 }
@@ -30,7 +30,6 @@ std::string EventManager::getMessageFromGameObjects() {
         switch (*state) {
             case GAME_STATE_MATCH: {
                 return returnMessageFromMatchActions();
-                break;
             }
             case GAME_STATE_MATCH_PAUSE: {
                 handleMatchPauseActions();
@@ -126,7 +125,7 @@ std::string EventManager::returnMessageFromMatchActions() {
     }
     switch (event->type) {
         case sf::Event::Closed: {
-            mainWindow->close();
+            mainWindow.close();
             ///@todo return json message about closing
             break;
         }
@@ -140,7 +139,7 @@ void EventManager::handleMatchPauseActions() {
     switch (event->type)
     {
         case sf::Event::Closed: {
-            mainWindow->close();
+            mainWindow.close();
             ///@todo return json message about closing
             break;
         }
