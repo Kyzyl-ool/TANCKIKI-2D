@@ -15,8 +15,9 @@ protected:
     Bullet_t bulType;
 
 public:
+    Tank(int health);
     void update() override;
-    
+
     void draw(sf::RenderWindow &window) override;
 
 

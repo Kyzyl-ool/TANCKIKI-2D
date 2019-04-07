@@ -8,9 +8,9 @@ Bullet::Bullet() : GameObject::GameObject() {
     type=BULLET;
 }
 
-void Bullet::draw(sf::RenderWindow *window) {
+void Bullet::draw(sf::RenderWindow &window) {
     if(alive)
-    window->draw(Bullet::sprite);
+    window.draw(Bullet::sprite);
 }
 
 

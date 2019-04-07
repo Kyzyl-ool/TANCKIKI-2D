@@ -159,8 +159,8 @@ void Match::processMessage(std::string message) {
     ///@todo обработать message
 }
 
-void Match::drawMap(sf::RenderWindow *window) {
-    window->draw(spriteMap);
+void Match::drawMap(sf::RenderWindow &window) {
+    window.draw(spriteMap);
 }
 
 void Match::setBlock(int i, int j, block_t BL) {

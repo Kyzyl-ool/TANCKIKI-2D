@@ -19,7 +19,7 @@ public:
 
     void setPower(int power);
 
-    void draw(sf::RenderWindow* window) override;
+    void draw(sf::RenderWindow& window) override;
 
     void collideResponse(GameObject* obj) override;
 

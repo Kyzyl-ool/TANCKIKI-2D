@@ -17,6 +17,8 @@ class ObjectManager
 private:
     /// \todo Нужно придумать свойство, в котором будут храниться все игровые объекты.
     std::vector<GameObject*> objects;
+public:
+    const std::vector<GameObject *> &getObjects() const;
 
 
 private:

@@ -18,6 +18,8 @@ class GraphicsManager
 private:
     ObjectManager* objectManager;           /// указатель на менедера по объектам
     sf::RenderWindow& window;
+public:
+    sf::RenderWindow &getWindow() const;
 
 public:
     /*!
@@ -35,8 +37,6 @@ public:
      * \details Достаточно вызвать у каждого игрового объекта метод draw.
      */
     void drawGameObjects();
-
-    sf::RenderWindow* getWindow();
 };
 
 

@@ -34,7 +34,7 @@ public:
     void updateMatch();
     void processMessage(std::string message);
     const std::string &getMapName() const;
-    void drawMap(sf::RenderWindow *window);
+    void drawMap(sf::RenderWindow &window);
 
     block_t * getBlocks();
 
