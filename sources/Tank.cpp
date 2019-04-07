@@ -25,9 +25,9 @@ void Tank::update() {
     setPosition(x+speedX*TIME,y+speedY*TIME);
 }
 
-void Tank::draw(sf::RenderWindow* window) {
-    if(alive)
-    window->draw(Tank::sprite);
+
+void Tank::draw(sf::RenderWindow &window) {
+    window.draw(Tank::sprite);
 }
 
 

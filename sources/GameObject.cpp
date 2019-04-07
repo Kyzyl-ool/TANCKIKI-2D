@@ -166,7 +166,7 @@ void GameObject::setSpeed(float spX, float spY) {
     GameObject::speedY = spY;
 }
 
-void GameObject::draw(sf::RenderWindow *window) {
+void GameObject::draw(sf::RenderWindow &window) {
 
 }
 

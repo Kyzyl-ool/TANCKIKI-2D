@@ -4,7 +4,9 @@
 
 #include "ObjectManager.hpp"
 
-ObjectManager::ObjectManager(sf::RenderWindow *window) {
+ObjectManager::ObjectManager(sf::RenderWindow &window):
+mainWindow(window)
+{
     objects = std::vector <GameObject* > ();
 }
 

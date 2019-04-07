@@ -7,11 +7,16 @@
 
 
 
-InterfaceManager::InterfaceManager(sf::RenderWindow *the_mainWindow, ObjectManager *objectManager, gameState_t *state) :
-objectManager(objectManager),
-state(state)
+
+InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
+                                   gameState_t *the_state,
+                                   tgui::Gui &the_gui) :
+                                   mainWindow(the_mainWindow),
+objectManager(the_objectManager),
+state(the_state),
+gui(the_gui)
 {
-    mainWindow = the_mainWindow;
+
 }
 
 void InterfaceManager::makeInterface() {
@@ -64,7 +69,6 @@ void InterfaceManager::drawChooseMapScreen() {
 }
 
 void InterfaceManager::drawMainMenu() {
-    ///@todo ...
 
 }
 

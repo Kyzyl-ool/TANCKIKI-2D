@@ -28,7 +28,7 @@ private:
     std::vector <std::string> players_names;
 
 public:
-    Match(sf::RenderWindow *mainWindow, std::string players_info_json, std::string map_json);
+    Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json);
 
     void drawMatch();
     void updateMatch();

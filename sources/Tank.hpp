@@ -16,10 +16,8 @@ protected:
 
 public:
     void update() override;
-
-    Tank(int health);
-
-    void draw(sf::RenderWindow* window) override;
+    
+    void draw(sf::RenderWindow &window) override;
 
 
     void collideResponse(GameObject *obj) override;

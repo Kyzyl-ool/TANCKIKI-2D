@@ -13,8 +13,8 @@
 using json = nlohmann::json;
 
 
-Match::Match(sf::RenderWindow *mainWindow, std::string players_info_json, std::string map_json) {
 
+Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json) {
     ///@todo распарсить map_json
     mapName = "MAP_NAME";
     amount_of_blocks_x = 30;
