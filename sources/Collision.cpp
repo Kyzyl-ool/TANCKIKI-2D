@@ -17,7 +17,6 @@ Collision::~Collision() {
 }
 
 sf::IntRect Collision::GetAABB(const sf::Sprite& Object) {
-
     //Get the top left corner of the sprite regardless of the sprite's center
     //This is in Global Coordinates so we can put the rectangle back into the right place
     sf::Vector2f pos = Object.getPosition();
@@ -143,8 +142,8 @@ bool Collision::CircleTest(const sf::Sprite& Object1, const sf::Sprite& Object2)
     //Simplest circle test possible
     //Distance between points <= sum of radius
 
-    float Radius1 = (Object1.getTextureRect().width + Object1.getTextureRect().height) / 4;
-    float Radius2 = (Object2.getTextureRect().width + Object2.getTextureRect().height) / 4;
+    float Radius1 = (Object1.getTextureRect().width + Object1.getTextureRect().height) / 2;
+    float Radius2 = (Object2.getTextureRect().width + Object2.getTextureRect().height) / 2;
     float xd = Object1.getPosition().x - Object2.getPosition().x;
     float yd = Object1.getPosition().y - Object2.getPosition().y;
 

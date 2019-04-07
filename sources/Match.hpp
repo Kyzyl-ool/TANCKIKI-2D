@@ -20,6 +20,9 @@ private:
 
     unsigned int amount_of_blocks_x, amount_of_blocks_y;
     block_t* blocks;
+    sf::Texture textureMap;
+    sf::Sprite spriteMap;
+    sf::Image imagesForMap;
 
     unsigned int amount_of_players;
     std::vector <std::string> players_names;
@@ -31,6 +34,15 @@ public:
     void updateMatch();
     void processMessage(std::string message);
     const std::string &getMapName() const;
+    void drawMap(sf::RenderWindow &window);
+
+    block_t * getBlocks();
+
+    unsigned int getAmountBlocksX();
+    unsigned int getAmountBlocksY();
+
+    void setBlock(int i, int j, block_t BL);
+
 };
 
 

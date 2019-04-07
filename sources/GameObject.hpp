@@ -7,6 +7,9 @@
 
 #include <SFML/Graphics.hpp>
 #include "windowConfig.hpp"
+#include "Collision.hpp"
+
+class Match;
 
 
 enum gameObject_t {
@@ -14,6 +17,18 @@ enum gameObject_t {
     TANK,
     BULLET,
     GROUND
+};
+
+enum Bullet_t {
+    ABYSSSHOT = 0,
+    LOWSHOT,
+    MIDDLESHOT,
+    POWERFULLSHOT
+};
+
+enum Tank_t {
+    TANK1,
+    TANK2,
 };
 
 
@@ -27,7 +42,7 @@ protected:
     bool alive;             /// жив ли ещё объект
     float x, y;            /// координаты объекта на экране (центр)
     float sizeX, sizeY;    /// размеры
-    float speed;           /// cкорость движения
+    float speedX, speedY;  /// cкорость движения
     sf::Sprite sprite;
     sf::Texture texture;
     int gameObjectId;       ///айди объекта
@@ -39,8 +54,8 @@ public:
 
 
 public:
-
     GameObject();
+
 
     virtual ~GameObject();
 
@@ -63,7 +78,11 @@ public:
      * @param obj - указатель на игровой объект, взаимодействие с которым проверяется
      * @return true, если есть взаимодействие. В противном случае – false
      */
-    virtual bool collideCheck(GameObject* obj);
+    bool collideCheck(GameObject *obj);
+
+//    std::vector<int> collideCheck(Match *match);
+//
+//    void collideResponse(Match *match, std::vector<int> vec);
 
     /*!
      * \brief
@@ -73,11 +92,15 @@ public:
      */
     virtual void collideResponse(GameObject* obj);
 
+    virtual GameObject * shot(Bullet_t BULLET);
+
     float getX() const;
 
     float getY() const;
 
-    float getSpeed() const;
+    float getSpeedX() const;
+
+    float getSpeedY() const;
 
     float getSizeX() const;
 
@@ -87,19 +110,23 @@ public:
 
     bool isAlive() const;
 
+    int getOwnerId() const;
+
+    int getObjectId() const;
+
     virtual const sf::Sprite &getSprite() const;
 
     virtual const sf::Texture &getTexture() const;
 
-    void setRotation(int angle);
+    void setRotation(float angle);
 
     void setPosition(float x, float y);
 
-    void setSpeed(float v);
+    void setSpeed(float spX, float spY);
 
     void setSizeObj(float sizeX, float sizeY);
 
-    void setSizeSprite(float sizeX, float sizeY);
+    void setSizeSprite(float sizeX, float sizeY); ///задает размеры спрайта, если размеры спрайта и объекта совпадают!!!
 
     void setAlive(bool alive);
 
@@ -110,6 +137,10 @@ public:
     void setTexture(const char* address);
 
     void multSize(float k);
+
+    void setOwnerId(int pid);
+
+    void setObjectId(int id);
 };
 
 #endif //TANCHIKI_GAMEOBJECT_HPP

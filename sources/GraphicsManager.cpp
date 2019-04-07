@@ -16,3 +16,7 @@ GraphicsManager::GraphicsManager(ObjectManager *theObjectManager, block_t *block
                                  window(the_window){
     objectManager = theObjectManager;
 }
+
+sf::RenderWindow &GraphicsManager::getWindow() const {
+    return window;
+}
