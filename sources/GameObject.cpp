@@ -13,7 +13,7 @@
 GameObject::GameObject() {
     GameObject::speedX=0;
     GameObject::speedY=0;
-    std::cout << "GameObject created.\n";
+//    std::cout << "GameObject created.\n";
 }
 
 void GameObject::update() {
