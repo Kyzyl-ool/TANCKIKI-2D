@@ -38,7 +38,6 @@ void Tank::collideResponse(GameObject *obj) {
     if(obj->getType()==BULLET && obj->getOwnerId() != gameObjectId) {
         health = health - ((Bullet*)obj)->getPower();
         if(health < 1) setAlive(false);
-        std::cout << "few";
     }
 }
 
