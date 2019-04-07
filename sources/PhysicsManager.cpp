@@ -17,7 +17,6 @@ void PhysicsManager::updateGameObjects(Match *match) {
             if (object1 != nullptr && object1->isAlive() && object2 != nullptr && object2->isAlive() && object1->collideCheck(object2)) {
                 object1->collideResponse(object2);
                 object2->collideResponse(object1);
-                std::cout << "MUHAHA\n";
             }
         }
         //std::vector<int> vec;
