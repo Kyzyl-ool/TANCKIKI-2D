@@ -10,25 +10,25 @@
 
 class Tank : public GameObject {
 protected:
-    int health;
+    float health;
 
     Bullet_t bulType;
 
 public:
-    Tank(int health);
+    Tank(float health);
     void update(float time) override;
 
     void draw(sf::RenderWindow &window) override;
 
 
-    void collideResponse(GameObject *obj) override;
-    //void collideResponse(Match *match, std::vector<int> vec) override;
+    void collideResponse(GameObject *obj, float time) override;
+    void collideResponse(Match *match, float time) override;
 
     GameObject * shot(Bullet_t BULLET) override;
 
-    int getHealth();
+    float getHealth();
 
-    void setHealth(int healthScore);
+    void setHealth(float healthScore);
 };
 
 

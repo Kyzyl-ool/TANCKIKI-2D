@@ -54,9 +54,7 @@ bool GameObject::collideCheck(GameObject *obj) {
         sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
         sf::Sprite spr2 = obj->getSprite();
         spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
-        spr1.setOrigin(sizeX / 2, sizeY / 2);
         spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
-        spr2.setOrigin(sizeX / 2, sizeY / 2);
 
         if (Collision::CircleTest(spr1, spr2)) {
             return Collision::BoundingBoxTest(spr1, spr2);
@@ -64,47 +62,32 @@ bool GameObject::collideCheck(GameObject *obj) {
     return false;
 }
 
-//std::vector<int> GameObject::collideCheck(Match *match) {
-//    block_t *blocks = match->getBlocks();
-//    int jj = (int) (x - sizeX)/16;
-//    int ii = (int) (y - sizeY)/16;
-//    int n = (int) (x + sizeX )/16;
-//    int m = (int) (y + sizeY )/16;
-//    std::vector<int> vec;
-//
-//    for (int i = ii; i < m+1; ++i) {
-//        for (int j = jj; j < n+1; ++j) {
-//            if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
-//                sf::Texture textur;
-//                textur.create(16, 16);
-//                sf::Sprite spr;
-//                spr.setTexture(textur);
-//                spr.setTextureRect(sf::IntRect(0, 0, 16, 16));
-//                spr.setPosition((float)j * WINDOW_WIDTH / match->getAmountBlocksX(),
-//                                (float)i * WINDOW_HEIGHT / match->getAmountBlocksY());
-//
-//                sf::Sprite spr1 = sprite;
-//                spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
-//                spr1.setOrigin(sizeX / 2, sizeY / 2);
-//
-//                if (Collision::BoundingBoxTest(spr, spr1)) vec.push_back(i * match->getAmountBlocksX() + j);
-//            }
-//        }
-//    }
-//    return vec;
-//}
+bool GameObject::collideCheck(Match *match) {
+    block_t *blocks = match->getBlocks();
+    int jj = (int) (x - sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
+    int ii = (int) (y - sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
+    int n = (int) (x + sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
+    int m = (int) (y + sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
+    std::vector<int> vec;
+
+    for (int i = ii; i < m+1; ++i) {
+        for (int j = jj; j < n+1; ++j) {
+            if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
+                return true;
+                }
+            }
+        }
+    return false;
+}
 
 
-void GameObject::collideResponse(GameObject *obj) {
+void GameObject::collideResponse(GameObject *obj, float time) {
 
 }
 
-//void GameObject::collideResponse(Match *match, std::vector<int> vec) {
-//    for(const auto place : vec) {
-//        if(match->getBlocks()[place]==BL_0)
-//        setAlive(false);
-//    }
-//}
+void GameObject::collideResponse(Match *match, float time) {
+
+}
 
 float GameObject::getX() const {
     return x;
