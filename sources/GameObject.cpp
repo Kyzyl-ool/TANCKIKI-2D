@@ -16,7 +16,7 @@ GameObject::GameObject() {
 //    std::cout << "GameObject created.\n";
 }
 
-void GameObject::update() {
+void GameObject::update(float time) {
 
 }
 

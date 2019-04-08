@@ -21,12 +21,13 @@ void Tank::setHealth(int health_) {
     Tank::health=health_;
 }
 
-void Tank::update() {
-    setPosition(x+speedX*TIME,y+speedY*TIME);
+void Tank::update(float time) {
+    setPosition(x+speedX*time,y+speedY*time);
 }
 
 
 void Tank::draw(sf::RenderWindow &window) {
+    if(isAlive())
     window.draw(Tank::sprite);
 }
 

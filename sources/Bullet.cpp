@@ -20,8 +20,8 @@ void Bullet::collideResponse(GameObject *obj) {
     }
 }
 
-void Bullet::update() {
-    setPosition(x+speedX*TIME,y+speedY*TIME);
+void Bullet::update(float time) {
+    setPosition(x+speedX*time,y+speedY*time);
 }
 
 int Bullet::getPower() {

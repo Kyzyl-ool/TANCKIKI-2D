@@ -16,7 +16,7 @@ protected:
 
 public:
     Tank(int health);
-    void update() override;
+    void update(float time) override;
 
     void draw(sf::RenderWindow &window) override;
 

@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "PhysicsManager.hpp"
+#include <time.h>
 
 
 PhysicsManager::PhysicsManager(ObjectManager *theObjectManager) {
@@ -11,6 +12,11 @@ PhysicsManager::PhysicsManager(ObjectManager *theObjectManager) {
 }
 
 void PhysicsManager::updateGameObjects(Match *match) {
+    sf::Clock clock;
+    float time = clock.getElapsedTime().asMicroseconds();
+    clock.restart();
+    time = time / KTIME;
+
     for (const auto &object1 : objectManager->getObjects()) {
         for (const auto &object2 : objectManager->getObjects()) {
             if(object1 == object2) break;
@@ -27,6 +33,6 @@ void PhysicsManager::updateGameObjects(Match *match) {
             //object1->collideResponse(match, vec);
         //}
 
-        object1->update();
+        object1->update(time);
     }
 }

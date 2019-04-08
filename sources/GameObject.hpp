@@ -69,7 +69,7 @@ public:
     /*!
      * \brief Обновляет игровой объект. У каждого игрового объекта своя реализация этого метода.
      */
-    virtual void update();
+    virtual void update(float time);
 
     /*!
      * \brief

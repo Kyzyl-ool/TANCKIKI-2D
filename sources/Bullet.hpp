@@ -13,7 +13,7 @@ class Bullet: public GameObject {
 public:
     Bullet();
 
-    void update() override;
+    void update(float time) override;
 
     int getPower();
 

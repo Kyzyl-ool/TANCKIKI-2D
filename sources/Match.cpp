@@ -100,9 +100,6 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     tank1->setAlive(true);
     tank1->setObjectId(3);
     objectManager->addGameObject(tank1);
-
-    //for(int p = 4; p< 7; ++p)
-    //tank1->collideResponse(objectManager->getGameObjectById(p));
 }
 
 void Match::drawMatch() {
