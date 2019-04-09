@@ -121,7 +121,7 @@ void Match::processMessage(std::string message) {
     ///@todo распарсить message
     assert(message.size());
     json j = json::parse(message.c_str());
-//    std::cout << j["status"] << std::endl;
+//    std::cout << j["status"] << std::endl;s
 //    std::cout << j["from"] << std::endl;
 //    std::cout << j["method"] << std::endl;
 //    std::cout << j["params"] << std::endl;
@@ -150,6 +150,10 @@ void Match::processMessage(std::string message) {
         }
         case GAMEOBJECT_MESSAGE_STOP: {
             objectManager->getGameObjectById(0)->setSpeed(0,0);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_SHOOT: {
+            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
             break;
         }
     }
