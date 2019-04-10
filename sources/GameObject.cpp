@@ -10,17 +10,8 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-
-bool checkPointRect(float ax, float ay, float bx, float by, float dx, float dy, float x, float y) {
-    if ((x - ax) * (bx - ax) + (y - ay) * (by - ay) < 0.0) return false;
-    if ((x - bx) * (bx - ax) + (y - by) * (by - ay) > 0.0) return false;
-    if ((x - ax) * (dx - ax) + (y - ay) * (dy - ay) < 0.0) return false;
-    if ((x - dx) * (dx - ax) + (y - dy) * (dy - ay) > 0.0) return false;
-    return true;
-}
-
-
 GameObject::GameObject() {
+<<<<<<< HEAD
 <<<<<<< HEAD
     GameObject::speedX = 0;
     GameObject::speedY = 0;
@@ -30,6 +21,11 @@ GameObject::GameObject() {
     GameObject::speedY=0;
 //    std::cout << "GameObject created.\n";
 >>>>>>> parent of 304bca6... угловая скорость в методах
+=======
+    GameObject::speedX=0;
+    GameObject::speedY=0;
+    speedAngle =0;
+>>>>>>> parent of 155dcd0... Нужно разобраться с чеком карты
 }
 
 void GameObject::update(float time) {
@@ -67,7 +63,7 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
-        sf::Sprite spr1 = sprite;
+        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
         sf::Sprite spr2 = obj->getSprite();
         spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
         spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
@@ -80,24 +76,17 @@ bool GameObject::collideCheck(GameObject *obj) {
 
 bool GameObject::collideCheck(Match *match) {
     block_t *blocks = match->getBlocks();
-    bool res(false);
-    int jj = (int) (x - (sizeX+sizeY)/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int ii = (int) (y - (sizeX+sizeY)/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-    int n = (int) (x + (sizeX+sizeY)/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int m = (int) (y + (sizeX+sizeY)/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-
-    float cos = cosf(getRotation()/180*M_PI);
-    float sin = sinf(getRotation()/180*M_PI);
-
-    float ax = x+sizeX/2*cos-sizeY/2*sin; float ay = y + sizeX/2*sin + sizeY/2*cos;
-    float bx = x+sizeX/2*cos+sizeY/2*sin; float by = y + sizeX/2*sin - sizeY/2*cos;
-    float cx = x-sizeX/2*cos-sizeY/2*sin; float cy = y - sizeX/2*sin + sizeY/2*cos;
-    float X = WINDOW_WIDTH/match->getAmountBlocksX(); float Y = WINDOW_HEIGHT/match->getAmountBlocksY();
+    int jj = (int) (x - sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
+    int ii = (int) (y - sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
+    int n = (int) (x + sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
+    int m = (int) (y + sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
+    std::vector<int> vec;
 
     for (int i = ii; i < m+1; ++i) {
         for (int j = jj; j < n+1; ++j) {
 <<<<<<< HEAD
             if (i * match->getAmountBlocksX() + j < match->getAmountBlocksX()*match->getAmountBlocksY() &&
+<<<<<<< HEAD
                     (blocks[i * match->getAmountBlocksX() + j] == BL_0 || blocks[i * match->getAmountBlocksX() + j] == BL_2)) {
                 sf::Texture text;
                 text.create(WINDOW_WIDTH/match->getAmountBlocksX(),WINDOW_HEIGHT/match->getAmountBlocksY());
@@ -123,10 +112,14 @@ bool GameObject::collideCheck(Match *match) {
             if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
                 return true;
 >>>>>>> parent of 304bca6... угловая скорость в методах
+=======
+                blocks[i * match->getAmountBlocksX() + j] == BL_0) {
+                return true;
+>>>>>>> parent of 155dcd0... Нужно разобраться с чеком карты
                 }
             }
         }
-    return res;
+    return false;
 }
 
 
@@ -248,7 +241,10 @@ float GameObject::getSpeedAngle() const {
 void GameObject::setSpeedAngle(float spAngle) {
     speedAngle = spAngle;
 }
+<<<<<<< HEAD
 
 
 =======
 >>>>>>> parent of 304bca6... угловая скорость в методах
+=======
+>>>>>>> parent of 155dcd0... Нужно разобраться с чеком карты

@@ -50,6 +50,7 @@ protected:
     gameObject_t type;
 public:
     gameObject_t getType() const;
+    /// тип
 
 
 public:
