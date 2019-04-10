@@ -6,7 +6,7 @@
 
 
 int main() {
-    sf::RenderWindow mainWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_NAME);
+    sf::RenderWindow mainWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_NAME, sf::Style::Fullscreen);
     tgui::Gui gui(mainWindow);
     sf::Event event{};
     GameManager* Game = new GameManager(mainWindow, gui, event);

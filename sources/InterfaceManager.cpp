@@ -27,12 +27,6 @@ InterfaceManager::InterfaceManager(
         singleButton->setTextSize(0);
         gui.add(singleButton);
 
-        static auto fictButton = tgui::Button::create();
-        fictButton->setSize(240,160);
-        fictButton->setPosition({"21%", "23%"});
-        fictButton->setVisible(false);
-        gui.add(fictButton);
-
         static auto multiButton = tgui::Button::create("Multiplayer");
         multiButton->setSize({"50%", "16.67%"});
         multiButton->setPosition({"25%", "40%"});
@@ -100,6 +94,19 @@ InterfaceManager::InterfaceManager(
 }
 
 void InterfaceManager::makeInterface() {
+    switch (*state) {
+        case GAME_STATE_MATCH: {
+            ///@todo проверить, что шкалы здоровья добавлены
+            ///@todo если да, то
+                ///@todo задать положение
+//                auto x = objectManager->getTanks()[0]->getX();
+//                auto y =objectManager->getTanks()[0]->getY();
+            ///@todo если нет, то
+                ///@todo добавить шкалы здоровья
+                heathbarloaded = true;
+            break;
+        }
+    }
     gui.draw();
 }
 
@@ -128,4 +135,6 @@ void InterfaceManager::setState(gameState_t gameState) {
 void InterfaceManager::login(const tgui::EditBox::Ptr &username, const tgui::EditBox::Ptr& password) {
     std::cout << "Username: " << username->getText().toAnsiString() << std::endl;
     std::cout << "Password: " << password->getText().toAnsiString() << std::endl;
+    ///@todo сформировать http-запрос
+    std::string message("Authorization...");
 }
