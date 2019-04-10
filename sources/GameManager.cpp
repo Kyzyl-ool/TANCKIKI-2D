@@ -18,10 +18,7 @@ void GameManager::runGame() {
     while (mainWindow.isOpen()) {
 
         interfaceManager->makeInterface();
-        if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) {
-            handleEvent();
-            gui.draw();
-        }
+        if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
 
         mainWindow.display();
         mainWindow.clear();

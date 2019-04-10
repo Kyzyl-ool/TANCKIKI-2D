@@ -28,8 +28,7 @@ private:
     std::string errString;
     ObjectManager* objectManager;
     std::string mapName;
-    sf::Event event;
-    std::map <std::string, bool> widgets;
+    sf::Event event{};
 
 public:
     void setMapName(const std::string &the_mapName);
@@ -39,27 +38,13 @@ public:
 
     void makeInterface();
 
-    void drawMainMenu();
-
-    void drawEnterNickScreen();
-
-    void drawChooseMapScreen();
-
-    void drawMatchInterface();
-
-    void drawMatchPauseWindow();
-
-    void drawErrorScreen();
-
-    void drawCreatingMatch();
-
     static void signalHandler1(InterfaceManager *manager);
 
     static void signalHandler2(InterfaceManager *manager);
 
     static void signalHandler3(InterfaceManager *manager);
 
-    static void login(const tgui::EditBox::Ptr& username, tgui::EditBox::Ptr password);
+    static void login(const tgui::EditBox::Ptr& username, const tgui::EditBox::Ptr& password);
 
 };
 
