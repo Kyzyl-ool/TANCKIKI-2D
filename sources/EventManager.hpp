@@ -8,7 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <TGUI/Gui.hpp>
-#include "gameStates.hpp"
+#include "constants/gameStates.hpp"
 
 class EventManager {
 private:

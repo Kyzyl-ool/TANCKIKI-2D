@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include "sources/windowConfig.hpp"
 #include <TGUI/TGUI.hpp>
-void login(tgui::EditBox::Ptr username, tgui::EditBox::Ptr password)
+void login(const tgui::EditBox::Ptr &username, tgui::EditBox::Ptr password)
 {
     std::cout << "Username: " << username->getText().toAnsiString() << std::endl;
     std::cout << "Password: " << password->getText().toAnsiString() << std::endl;
@@ -48,17 +48,7 @@ void loadWidgets( tgui::Gui& gui )
 int main() {
     sf::RenderWindow mainWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_NAME);
     tgui::Gui gui(mainWindow);
-    sf::Event event;
-
-    try
-    {
-        loadWidgets(gui);
-    }
-    catch (const tgui::Exception& e)
-    {
-        std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
-    }
-
+    sf::Event event{};
     GameManager* Game = new GameManager(mainWindow, gui, event);
     Game->runGame();
     return 0;

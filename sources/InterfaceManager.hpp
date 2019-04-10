@@ -8,7 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "ObjectManager.hpp"
-#include "gameStates.hpp"
+#include "constants/gameStates.hpp"
 #include <TGUI/TGUI.hpp>
 
 /*!
@@ -21,13 +21,18 @@ private:
     sf::RenderWindow& mainWindow;
     tgui::Gui& gui;
     gameState_t* state;
+public:
+    void setState(gameState_t gameState);
+
+private:
     std::string errString;
     ObjectManager* objectManager;
     std::string mapName;
     sf::Event event;
+    std::map <std::string, bool> widgets;
 
 public:
-    void setMapName(const std::string &mapName);
+    void setMapName(const std::string &the_mapName);
 
     InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager, gameState_t *the_state,
                      tgui::Gui &the_gui);
@@ -36,7 +41,7 @@ public:
 
     void drawMainMenu();
 
-    void drawEnterNameScreen();
+    void drawEnterNickScreen();
 
     void drawChooseMapScreen();
 
@@ -45,6 +50,17 @@ public:
     void drawMatchPauseWindow();
 
     void drawErrorScreen();
+
+    void drawCreatingMatch();
+
+    static void signalHandler1(InterfaceManager *manager);
+
+    static void signalHandler2(InterfaceManager *manager);
+
+    static void signalHandler3(InterfaceManager *manager);
+
+    static void login(const tgui::EditBox::Ptr& username, tgui::EditBox::Ptr password);
+
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP
