@@ -8,7 +8,7 @@
 #include "blocks.hpp"
 #include "Tank.hpp"
 #include "json/json.hpp"
-#include "messages.hpp"
+#include "constants/messages.hpp"
 
 using json = nlohmann::json;
 
