@@ -42,7 +42,7 @@ protected:
     bool alive;            /// жив ли ещё объект
     float x, y;            /// координаты объекта на экране (центр)
     float sizeX, sizeY;    /// размеры
-    float speedX, speedY;  /// cкорость движения
+    float speed;           /// cкорость движения
     float speedAngle;      /// угловая скорость в градусах
     sf::Sprite sprite;
     sf::Texture texture;
@@ -101,9 +101,7 @@ public:
 
     float getY() const;
 
-    float getSpeedX() const;
-
-    float getSpeedY() const;
+    float getSpeed() const;
 
     float getSizeX() const;
 
@@ -127,7 +125,7 @@ public:
 
     void setPosition(float x, float y);
 
-    void setSpeed(float spX, float spY);
+    void setSpeed(float sp);
 
     void setSizeObj(float sizeX, float sizeY);
 
@@ -148,6 +146,8 @@ public:
     void setObjectId(int id);
 
     void setSpeedAngle(float apAngle);
+
+    float checkOrient(float X, float Y); ///определяет угол направления минус угол объекта, если положительный, то крутить против часовой стрелки
 };
 
 #endif //TANCHIKI_GAMEOBJECT_HPP

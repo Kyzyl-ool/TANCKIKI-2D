@@ -11,8 +11,7 @@
 #include <cmath>
 
 GameObject::GameObject() {
-    GameObject::speedX = 0;
-    GameObject::speedY = 0;
+    GameObject::speed = 0;
     speedAngle = 0;
 }
 
@@ -145,22 +144,18 @@ void GameObject::setTexture(const char* address) {
 }
 
 
-void GameObject::setSpeed(float spX, float spY) {
-    GameObject::speedX = spX;
-    GameObject::speedY = spY;
+void GameObject::setSpeed(float sp) {
+    GameObject::speed = sp;
 }
 
 void GameObject::draw(sf::RenderWindow &window) {
 
 }
 
-float GameObject::getSpeedX() const {
-    return speedX;
+float GameObject::getSpeed() const {
+    return speed;
 }
 
-float GameObject::getSpeedY() const {
-    return speedY;
-}
 
 void GameObject::multSize(float k){
     GameObject::sizeX=k*sizeX;
@@ -198,4 +193,12 @@ float GameObject::getSpeedAngle() const {
 
 void GameObject::setSpeedAngle(float spAngle) {
     speedAngle = spAngle;
+}
+
+float GameObject::checkOrient(float X, float Y) { ///определяет угол направления минус угол объекта, если положительный, то крутить против часовой стрелки
+    float phi;
+    if(X>x) phi = atanf((Y-y)/(X-x))/M_PI*180;
+    else phi = -atanf((Y-y)/(X-x))/M_PI*180;
+    if(phi<0) phi = phi + 360;
+    return phi-getRotation();
 }

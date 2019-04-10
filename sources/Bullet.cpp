@@ -3,6 +3,7 @@
 //
 
 #include "Bullet.hpp"
+#include <cmath>
 
 Bullet::Bullet() : GameObject::GameObject() {
     type=BULLET;
@@ -21,7 +22,7 @@ void Bullet::collideResponse(GameObject *obj, float time) {
 }
 
 void Bullet::update(float time) {
-    setPosition(x+speedX*time,y+speedY*time);
+    setPosition(x+speed*cosf(getRotation()/180*M_PI)*time,y+speed*sinf(getRotation()/180*M_PI)*time);
 }
 
 int Bullet::getPower() {
