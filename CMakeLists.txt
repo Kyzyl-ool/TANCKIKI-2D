@@ -13,15 +13,9 @@ add_executable(TANCHIKI ${SOURCE_FILES})
 
 if (SFML_FOUND)
     include_directories(${SFML_INCLUDE_DIR})
-    if (${APPLE})
+    if (APPLE)
         target_link_libraries(TANCHIKI ${SFML_LIBRARIES} tgui)
+    else()
+        target_link_libraries(TANCHIKI sfml-window sfml-graphics sfml-network sfml-system sfml-audio tgui)
     endif ()
-    if (${WIN32})
-        target_link_libraries(TANCHIKI sfml-window sfml-graphics sfml-network sfml-system sfml-audio tgui)
-    endif()
-    if (${UNIX})
-        target_link_libraries(TANCHIKI sfml-window sfml-graphics sfml-network sfml-system sfml-audio tgui)
-    endif()
-
-
 endif()
