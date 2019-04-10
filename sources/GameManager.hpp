@@ -34,6 +34,7 @@ private:
 
 public:
     GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event);
+    ~GameManager();
 
     /*!
      * \brief запуск игры

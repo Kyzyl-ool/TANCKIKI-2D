@@ -189,5 +189,12 @@ unsigned int Match::getAmountBlocksY() {
     return amount_of_blocks_y;
 }
 
+Match::~Match() {
+    delete(blocks);
+    delete(graphicsManager);
+    delete(physicsManager);
+    delete(objectManager);
+}
+
 
 

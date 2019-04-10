@@ -29,6 +29,7 @@ private:
 
 public:
     Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json);
+    ~Match();
 
     void drawMatch();
     void updateMatch();
