@@ -12,7 +12,7 @@
 #include "GraphicsManager.hpp"
 #include "InterfaceManager.hpp"
 #include "Match.hpp"
-#include "gameStates.hpp"
+#include "constants/gameStates.hpp"
 #include "EventManager.hpp"
 
 

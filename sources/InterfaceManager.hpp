@@ -8,7 +8,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "ObjectManager.hpp"
-#include "gameStates.hpp"
+#include "constants/gameStates.hpp"
 #include <TGUI/TGUI.hpp>
 
 /*!

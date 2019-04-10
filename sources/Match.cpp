@@ -8,7 +8,7 @@
 #include "blocks.hpp"
 #include "Tank.hpp"
 #include "json/json.hpp"
-#include "messages.hpp"
+#include "constants/messages.hpp"
 
 using json = nlohmann::json;
 
@@ -144,6 +144,7 @@ void Match::processMessage(std::string message) {
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_UP: {
+            auto t = objectManager->getTanks();
             objectManager->getGameObjectById(0)->setSpeed(0,-TANK_VELOCITY_Y);
             objectManager->getGameObjectById(0)->setRotation(90);
             break;
