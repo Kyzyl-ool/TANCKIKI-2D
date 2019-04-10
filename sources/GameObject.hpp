@@ -69,7 +69,7 @@ public:
     /*!
      * \brief Обновляет игровой объект. У каждого игрового объекта своя реализация этого метода.
      */
-    virtual void update();
+    virtual void update(float time);
 
     /*!
      * \brief
@@ -80,7 +80,7 @@ public:
      */
     bool collideCheck(GameObject *obj);
 
-//    std::vector<int> collideCheck(Match *match);
+    bool collideCheck(Match *match);
 //
 //    void collideResponse(Match *match, std::vector<int> vec);
 
@@ -90,7 +90,9 @@ public:
      *
      * @param obj - указатель на игровой объект, с которым будет выполнен акт взаимодействия
      */
-    virtual void collideResponse(GameObject* obj);
+    virtual void collideResponse(GameObject *obj, float time);
+
+    virtual void collideResponse(Match *match, float time);
 
     virtual GameObject * shot(Bullet_t BULLET);
 

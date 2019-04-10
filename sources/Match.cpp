@@ -100,9 +100,6 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     tank1->setAlive(true);
     tank1->setObjectId(3);
     objectManager->addGameObject(tank1);
-
-    //for(int p = 4; p< 7; ++p)
-    //tank1->collideResponse(objectManager->getGameObjectById(p));
 }
 
 void Match::drawMatch() {
@@ -124,7 +121,7 @@ void Match::processMessage(std::string message) {
     ///@todo распарсить message
     assert(message.size());
     json j = json::parse(message.c_str());
-//    std::cout << j["status"] << std::endl;
+//    std::cout << j["status"] << std::endl;s
 //    std::cout << j["from"] << std::endl;
 //    std::cout << j["method"] << std::endl;
 //    std::cout << j["params"] << std::endl;
@@ -153,6 +150,10 @@ void Match::processMessage(std::string message) {
         }
         case GAMEOBJECT_MESSAGE_STOP: {
             objectManager->getGameObjectById(0)->setSpeed(0,0);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_SHOOT: {
+            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
             break;
         }
     }

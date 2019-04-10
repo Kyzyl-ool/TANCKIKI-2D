@@ -13,7 +13,7 @@ class Bullet: public GameObject {
 public:
     Bullet();
 
-    void update() override;
+    void update(float time) override;
 
     int getPower();
 
@@ -21,9 +21,9 @@ public:
 
     void draw(sf::RenderWindow& window) override;
 
-    void collideResponse(GameObject* obj) override;
+    void collideResponse(GameObject *obj, float time) override;
 
-    //void collideResponse(Match *match, std::vector<int> vec) override ;
+    void collideResponse(Match *match, float time) override ;
 };
 
 
