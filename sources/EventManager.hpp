@@ -7,22 +7,28 @@
 
 
 #include <SFML/Graphics.hpp>
+#include <TGUI/Gui.hpp>
 #include "gameStates.hpp"
 
 class EventManager {
 private:
-    sf::RenderWindow* mainWindow;
+    sf::RenderWindow& mainWindow;
+    tgui::Gui& gui;
     gameState_t* state;
-    sf::Event* event;
+    sf::Event& event;
     int playerId;
 
 public:
-    EventManager(sf::RenderWindow *theMainWindow, sf::Event *the_event, int playerId, gameState_t *the_state);
+    EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId,
+                 gameState_t *the_state, tgui::Gui &the_gui);
     bool pollEvent();
     std::string getMessageFromGameObjects();
 
     std::string returnMessageFromMatchActions();
     void handleMatchPauseActions();
+    char getPressedArrows(sf::Keyboard::Key left, sf::Keyboard::Key down, sf::Keyboard::Key up,
+                              sf::Keyboard::Key right);
+    std::string goMessage(char direction);
 
 };
 
