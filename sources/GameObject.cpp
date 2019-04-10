@@ -13,6 +13,7 @@
 GameObject::GameObject() {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     GameObject::speedX = 0;
     GameObject::speedY = 0;
     speedAngle = 0;
@@ -26,6 +27,11 @@ GameObject::GameObject() {
     GameObject::speedY=0;
     speedAngle =0;
 >>>>>>> parent of 155dcd0... Нужно разобраться с чеком карты
+=======
+    GameObject::speedX = 0;
+    GameObject::speedY = 0;
+    speedAngle = 0;
+>>>>>>> parent of 5ea7ad4... что то рабочее
 }
 
 void GameObject::update(float time) {
@@ -34,11 +40,11 @@ void GameObject::update(float time) {
 
 
 void GameObject::setRotation(float angle){
-    GameObject::sprite.setRotation(-angle);
+    GameObject::sprite.setRotation(angle);
 }
 
 float GameObject::getRotation() const{
-    return -sprite.getRotation();
+    return sprite.getRotation();
 }
 
 float GameObject::getSizeX() const {
@@ -84,7 +90,6 @@ bool GameObject::collideCheck(Match *match) {
 
     for (int i = ii; i < m+1; ++i) {
         for (int j = jj; j < n+1; ++j) {
-<<<<<<< HEAD
             if (i * match->getAmountBlocksX() + j < match->getAmountBlocksX()*match->getAmountBlocksY() &&
 <<<<<<< HEAD
                     (blocks[i * match->getAmountBlocksX() + j] == BL_0 || blocks[i * match->getAmountBlocksX() + j] == BL_2)) {
@@ -108,6 +113,7 @@ bool GameObject::collideCheck(Match *match) {
 
                     res = true;
                    //}
+<<<<<<< HEAD
 =======
             if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
                 return true;
@@ -116,6 +122,8 @@ bool GameObject::collideCheck(Match *match) {
                 blocks[i * match->getAmountBlocksX() + j] == BL_0) {
                 return true;
 >>>>>>> parent of 155dcd0... Нужно разобраться с чеком карты
+=======
+>>>>>>> parent of 5ea7ad4... что то рабочее
                 }
             }
         }
@@ -152,8 +160,8 @@ const sf::Texture &GameObject::getTexture() const {
 }
 
 
-void GameObject::setAlive(bool alive) {
-    GameObject::alive = alive;
+void GameObject::setAlive(bool alive_) {
+    GameObject::alive = alive_;
 }
 
 void GameObject::setPosition(float X, float Y){
@@ -232,7 +240,6 @@ void GameObject::setOwnerId(int pid) {
 GameObject * GameObject::shot(Bullet_t BULLET) {
 
 }
-<<<<<<< HEAD
 
 float GameObject::getSpeedAngle() const {
     return speedAngle;
@@ -244,7 +251,10 @@ void GameObject::setSpeedAngle(float spAngle) {
 <<<<<<< HEAD
 
 
+<<<<<<< HEAD
 =======
 >>>>>>> parent of 304bca6... угловая скорость в методах
 =======
 >>>>>>> parent of 155dcd0... Нужно разобраться с чеком карты
+=======
+>>>>>>> parent of 5ea7ad4... что то рабочее
