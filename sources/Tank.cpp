@@ -52,11 +52,11 @@ void Tank::collideResponse(Match *match, float time) {
 GameObject * Tank::shot(Bullet_t BULLET) {
     Bullet *bul;
     bul = new Bullet;
-    float angle= getRotation()/ 2 / (float) M_PI;
+    float angle= getRotation()/ 180* M_PI;
     bul->setOwnerId(gameObjectId);
     if(BULLET==LOWSHOT) {
         bul->setPosition(x + (sizeX + X_OF_LOW_BULLET)/2 * cosf(angle),
-                         y - (sizeY + Y_OF_LOW_BULLET)/2 * sinf(angle));
+                         y + (sizeY + Y_OF_LOW_BULLET)/2 * sinf(angle));
         bul->setSpeed(SPEED_OF_LOW_BULLET * cosf(angle),
                       SPEED_OF_LOW_BULLET * sinf(angle));
         bul->setTexture("images/bullet_1.png");
@@ -66,7 +66,7 @@ GameObject * Tank::shot(Bullet_t BULLET) {
         bul->setPower(10);
     }
     bul->setAlive(true);
-    bul->setRotation(angle);
+    bul->setRotation(getRotation());
     return bul;
 }
 

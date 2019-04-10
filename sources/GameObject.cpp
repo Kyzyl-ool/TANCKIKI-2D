@@ -11,27 +11,9 @@
 #include <cmath>
 
 GameObject::GameObject() {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     GameObject::speedX = 0;
     GameObject::speedY = 0;
     speedAngle = 0;
-=======
-    GameObject::speedX=0;
-    GameObject::speedY=0;
-//    std::cout << "GameObject created.\n";
->>>>>>> parent of 304bca6... угловая скорость в методах
-=======
-    GameObject::speedX=0;
-    GameObject::speedY=0;
-    speedAngle =0;
->>>>>>> parent of 155dcd0... Нужно разобраться с чеком карты
-=======
-    GameObject::speedX = 0;
-    GameObject::speedY = 0;
-    speedAngle = 0;
->>>>>>> parent of 5ea7ad4... что то рабочее
 }
 
 void GameObject::update(float time) {
@@ -91,39 +73,8 @@ bool GameObject::collideCheck(Match *match) {
     for (int i = ii; i < m+1; ++i) {
         for (int j = jj; j < n+1; ++j) {
             if (i * match->getAmountBlocksX() + j < match->getAmountBlocksX()*match->getAmountBlocksY() &&
-<<<<<<< HEAD
-                    (blocks[i * match->getAmountBlocksX() + j] == BL_0 || blocks[i * match->getAmountBlocksX() + j] == BL_2)) {
-                sf::Texture text;
-                text.create(WINDOW_WIDTH/match->getAmountBlocksX(),WINDOW_HEIGHT/match->getAmountBlocksY());
-                sf::Sprite spr;
-                spr.setTexture(text);
-                spr.setPosition(j * WINDOW_WIDTH/match->getAmountBlocksX(), i* WINDOW_HEIGHT/match->getAmountBlocksY());
-                spr.setColor(sf::Color::Red);
-                match->getGraphicsManager()->getWindow().draw(spr);
-                //spr.setScale(WINDOW_WIDTH/match->getAmountBlocksX(),WINDOW_HEIGHT/match->getAmountBlocksY());
-                if(Collision::BoundingBoxTest(sprite, spr))
-
-//               if(checkPointRect(ax,ay, bx, by, cx, cy, j*X, i*Y) ||
-//                checkPointRect(ax,ay, bx, by, cx, cy, (j+1)*X, i*Y) ||
-//               checkPointRect(ax,ay, bx, by, cx, cy, j*X, (i+1)*Y) ||
-//               checkPointRect(ax,ay, bx, by, cx, cy, (j+1)*X, (i+1)*Y)) {
-
-//                    if (type == BULLET && (blocks[i * match->getAmountBlocksX() + j] == BL_2))  //в странном месте, по другому делать не удобно
-//                        match->setBlock(i,j,BL_1);
-
-                    res = true;
-                   //}
-<<<<<<< HEAD
-=======
-            if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
+            blocks[i * match->getAmountBlocksX() + j] == BL_0) {
                 return true;
->>>>>>> parent of 304bca6... угловая скорость в методах
-=======
-                blocks[i * match->getAmountBlocksX() + j] == BL_0) {
-                return true;
->>>>>>> parent of 155dcd0... Нужно разобраться с чеком карты
-=======
->>>>>>> parent of 5ea7ad4... что то рабочее
                 }
             }
         }
@@ -248,13 +199,3 @@ float GameObject::getSpeedAngle() const {
 void GameObject::setSpeedAngle(float spAngle) {
     speedAngle = spAngle;
 }
-<<<<<<< HEAD
-
-
-<<<<<<< HEAD
-=======
->>>>>>> parent of 304bca6... угловая скорость в методах
-=======
->>>>>>> parent of 155dcd0... Нужно разобраться с чеком карты
-=======
->>>>>>> parent of 5ea7ad4... что то рабочее
