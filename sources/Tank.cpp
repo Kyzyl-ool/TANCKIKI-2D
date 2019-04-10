@@ -23,7 +23,6 @@ void Tank::setHealth(float health_) {
 
 void Tank::update(float time) {
     setPosition(x+speedX*time,y+speedY*time);
-    setRotation(getRotation()+speedAngle*time);
     if(health < 1) setAlive(false);
 }
 

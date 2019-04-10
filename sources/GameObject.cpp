@@ -21,9 +21,15 @@ bool checkPointRect(float ax, float ay, float bx, float by, float dx, float dy, 
 
 
 GameObject::GameObject() {
+<<<<<<< HEAD
     GameObject::speedX = 0;
     GameObject::speedY = 0;
     speedAngle = 0;
+=======
+    GameObject::speedX=0;
+    GameObject::speedY=0;
+//    std::cout << "GameObject created.\n";
+>>>>>>> parent of 304bca6... угловая скорость в методах
 }
 
 void GameObject::update(float time) {
@@ -32,11 +38,11 @@ void GameObject::update(float time) {
 
 
 void GameObject::setRotation(float angle){
-    GameObject::sprite.setRotation(angle);
+    GameObject::sprite.setRotation(-angle);
 }
 
 float GameObject::getRotation() const{
-    return sprite.getRotation();
+    return -sprite.getRotation();
 }
 
 float GameObject::getSizeX() const {
@@ -90,6 +96,7 @@ bool GameObject::collideCheck(Match *match) {
 
     for (int i = ii; i < m+1; ++i) {
         for (int j = jj; j < n+1; ++j) {
+<<<<<<< HEAD
             if (i * match->getAmountBlocksX() + j < match->getAmountBlocksX()*match->getAmountBlocksY() &&
                     (blocks[i * match->getAmountBlocksX() + j] == BL_0 || blocks[i * match->getAmountBlocksX() + j] == BL_2)) {
                 sf::Texture text;
@@ -112,6 +119,10 @@ bool GameObject::collideCheck(Match *match) {
 
                     res = true;
                    //}
+=======
+            if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
+                return true;
+>>>>>>> parent of 304bca6... угловая скорость в методах
                 }
             }
         }
@@ -148,8 +159,8 @@ const sf::Texture &GameObject::getTexture() const {
 }
 
 
-void GameObject::setAlive(bool alive_) {
-    GameObject::alive = alive_;
+void GameObject::setAlive(bool alive) {
+    GameObject::alive = alive;
 }
 
 void GameObject::setPosition(float X, float Y){
@@ -228,6 +239,7 @@ void GameObject::setOwnerId(int pid) {
 GameObject * GameObject::shot(Bullet_t BULLET) {
 
 }
+<<<<<<< HEAD
 
 float GameObject::getSpeedAngle() const {
     return speedAngle;
@@ -238,3 +250,5 @@ void GameObject::setSpeedAngle(float spAngle) {
 }
 
 
+=======
+>>>>>>> parent of 304bca6... угловая скорость в методах

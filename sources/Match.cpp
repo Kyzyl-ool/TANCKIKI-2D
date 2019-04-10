@@ -134,7 +134,7 @@ void Match::processMessage(std::string message) {
     switch (gameObjectMessageId[j["method"]]) {
         case GAMEOBJECT_MESSAGE_MOVE_DOWN: {
             objectManager->getGameObjectById(0)->setSpeed(0,TANK_VELOCITY_Y);
-            objectManager->getGameObjectById(0)->setRotation(90);
+            objectManager->getGameObjectById(0)->setRotation(270);
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_LEFT: {
@@ -150,7 +150,7 @@ void Match::processMessage(std::string message) {
         case GAMEOBJECT_MESSAGE_MOVE_UP: {
             auto t = objectManager->getTanks();
             objectManager->getGameObjectById(0)->setSpeed(0,-TANK_VELOCITY_Y);
-            objectManager->getGameObjectById(0)->setRotation(270);
+            objectManager->getGameObjectById(0)->setRotation(90);
             break;
         }
         case GAMEOBJECT_MESSAGE_STOP: {
@@ -205,9 +205,6 @@ Match::~Match() {
     delete(graphicsManager);
     delete(physicsManager);
     delete(objectManager);
-    for(const auto &object : objectManager->getObjects()) {
-        delete(object);
-    }
 }
 
 GraphicsManager *Match::getGraphicsManager() {
