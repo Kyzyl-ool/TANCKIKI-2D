@@ -27,17 +27,20 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
                 blocks[amount_of_blocks_x*i+j]=BL_0;
             else  blocks[amount_of_blocks_x*i+j]=BL_1;
         }
-        blocks[50]=BL_1; blocks[80]=BL_1; blocks[110]=BL_1; blocks[320]=BL_1; blocks[350]=BL_1;
     }
+    blocks[50]=BL_1; blocks[80]=BL_1; blocks[110]=BL_1; blocks[320]=BL_1; blocks[350]=BL_1;
+    blocks[155]=BL_2; blocks[156]=BL_2; blocks[157]=BL_2; blocks[215]=BL_2;
+
     ///@todo заполнить blocks
 
     imagesForMap.loadFromFile(IMAGE_FOR_MAP);
 
     sf::Texture texture0;
     texture0.loadFromImage(imagesForMap,sf::IntRect(256,16,16,16));
-
     sf::Texture texture1;
     texture1.loadFromImage(imagesForMap,sf::IntRect(272,32,16,16));
+    sf::Texture texture2;
+    texture2.loadFromImage(imagesForMap,sf::IntRect(256,0,16,16));
 
     textureMap.create(16*amount_of_blocks_x,16*amount_of_blocks_y);
 
@@ -48,6 +51,9 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
             }
             if(blocks[amount_of_blocks_x*i+j]==BL_1) {
                 textureMap.update(texture1, 16*j, 16*i);
+            }
+            if(blocks[amount_of_blocks_x*i+j]==BL_2) {
+                textureMap.update(texture2, 16*j, 16*i);
             }
         }
     }
@@ -78,8 +84,8 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     tank2->setTexture("images/tanks_16.png");
     tank2->setSprite(96,48,16,16);  //задает вид спрайта на основе уже имеющейся тестуры
     tank2->setPosition(100, 100);
-    tank2->setSizeSprite(50,50);
-    tank2->setSizeObj(50,50);
+    tank2->setSizeSprite(40,40);
+    tank2->setSizeObj(40,40);
     tank2->setAlive(true);
     tank2->setObjectId(1);
     objectManager->addGameObject(tank2);
@@ -103,7 +109,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
 }
 
 void Match::drawMatch() {
-    drawMap(graphicsManager->getWindow());
+    //drawMap(graphicsManager->getWindow());
     graphicsManager->drawGameObjects();
 }
 
@@ -115,8 +121,6 @@ const std::string &Match::getMapName() const {
     return mapName;
 }
 
-#define TANK_VELOCITY_X 1
-#define TANK_VELOCITY_Y 1
 void Match::processMessage(std::string message) {
     ///@todo распарсить message
     assert(message.size());
@@ -165,17 +169,23 @@ void Match::drawMap(sf::RenderWindow &window) {
     window.draw(spriteMap);
 }
 
-void Match::setBlock(int i, int j, block_t BL) {
-    blocks[30*i+j]=BL;
+void Match::setBlock(int j, int i, block_t BL) {
+    if(amount_of_blocks_x*i+j>=amount_of_blocks_x*amount_of_blocks_y) return;
+    blocks[amount_of_blocks_x*i+j]=BL;
     sf::Texture texture;
     if(BL==BL_0) {
         texture.loadFromImage(imagesForMap, sf::IntRect(256,16,16,16));
-        textureMap.update(imagesForMap, j*WINDOW_WIDTH/amount_of_blocks_x,  i*WINDOW_HEIGHT/amount_of_blocks_y);
+        textureMap.update(texture, j*WINDOW_WIDTH/amount_of_blocks_x,  i*WINDOW_HEIGHT/amount_of_blocks_y);
     }
     if(BL==BL_1) {
         texture.loadFromImage(imagesForMap, sf::IntRect(272,32,16,16));
-        textureMap.update(imagesForMap, j*WINDOW_WIDTH/amount_of_blocks_x,  i*WINDOW_HEIGHT/amount_of_blocks_y);
+        textureMap.update(texture, j*WINDOW_WIDTH/amount_of_blocks_x,  i*WINDOW_HEIGHT/amount_of_blocks_y);
     }
+    if(BL==BL_2) {
+        texture.loadFromImage(imagesForMap, sf::IntRect(256,0,16,16));
+        textureMap.update(texture, j*WINDOW_WIDTH/amount_of_blocks_x,  i*WINDOW_HEIGHT/amount_of_blocks_y);
+    }
+    spriteMap.setTexture(textureMap);
 }
 
 block_t * Match::getBlocks() {
@@ -198,6 +208,10 @@ Match::~Match() {
     for(const auto &object : objectManager->getObjects()) {
         delete(object);
     }
+}
+
+GraphicsManager *Match::getGraphicsManager() {
+    return graphicsManager;
 }
 
 

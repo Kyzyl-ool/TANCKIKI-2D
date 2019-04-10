@@ -38,11 +38,14 @@ public:
     void drawMap(sf::RenderWindow &window);
 
     block_t * getBlocks();
+    GraphicsManager* getGraphicsManager();
 
     unsigned int getAmountBlocksX();
     unsigned int getAmountBlocksY();
 
     void setBlock(int i, int j, block_t BL);
+
+
 
 };
 

@@ -10,10 +10,20 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
+
+bool checkPointRect(float ax, float ay, float bx, float by, float dx, float dy, float x, float y) {
+    if ((x - ax) * (bx - ax) + (y - ay) * (by - ay) < 0.0) return false;
+    if ((x - bx) * (bx - ax) + (y - by) * (by - ay) > 0.0) return false;
+    if ((x - ax) * (dx - ax) + (y - ay) * (dy - ay) < 0.0) return false;
+    if ((x - dx) * (dx - ax) + (y - dy) * (dy - ay) > 0.0) return false;
+    return true;
+}
+
+
 GameObject::GameObject() {
-    GameObject::speedX=0;
-    GameObject::speedY=0;
-    speedAngle =0;
+    GameObject::speedX = 0;
+    GameObject::speedY = 0;
+    speedAngle = 0;
 }
 
 void GameObject::update(float time) {
@@ -51,7 +61,7 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
-        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
+        sf::Sprite spr1 = sprite;
         sf::Sprite spr2 = obj->getSprite();
         spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
         spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
@@ -64,21 +74,48 @@ bool GameObject::collideCheck(GameObject *obj) {
 
 bool GameObject::collideCheck(Match *match) {
     block_t *blocks = match->getBlocks();
-    int jj = (int) (x - sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int ii = (int) (y - sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-    int n = (int) (x + sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int m = (int) (y + sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-    std::vector<int> vec;
+    bool res(false);
+    int jj = (int) (x - (sizeX+sizeY)/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
+    int ii = (int) (y - (sizeX+sizeY)/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
+    int n = (int) (x + (sizeX+sizeY)/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
+    int m = (int) (y + (sizeX+sizeY)/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
+
+    float cos = cosf(getRotation()/180*M_PI);
+    float sin = sinf(getRotation()/180*M_PI);
+
+    float ax = x+sizeX/2*cos-sizeY/2*sin; float ay = y + sizeX/2*sin + sizeY/2*cos;
+    float bx = x+sizeX/2*cos+sizeY/2*sin; float by = y + sizeX/2*sin - sizeY/2*cos;
+    float cx = x-sizeX/2*cos-sizeY/2*sin; float cy = y - sizeX/2*sin + sizeY/2*cos;
+    float X = WINDOW_WIDTH/match->getAmountBlocksX(); float Y = WINDOW_HEIGHT/match->getAmountBlocksY();
 
     for (int i = ii; i < m+1; ++i) {
         for (int j = jj; j < n+1; ++j) {
             if (i * match->getAmountBlocksX() + j < match->getAmountBlocksX()*match->getAmountBlocksY() &&
-                blocks[i * match->getAmountBlocksX() + j] == BL_0) {
-                return true;
+                    (blocks[i * match->getAmountBlocksX() + j] == BL_0 || blocks[i * match->getAmountBlocksX() + j] == BL_2)) {
+                sf::Texture text;
+                text.create(WINDOW_WIDTH/match->getAmountBlocksX(),WINDOW_HEIGHT/match->getAmountBlocksY());
+                sf::Sprite spr;
+                spr.setTexture(text);
+                spr.setPosition(j * WINDOW_WIDTH/match->getAmountBlocksX(), i* WINDOW_HEIGHT/match->getAmountBlocksY());
+                spr.setColor(sf::Color::Red);
+                match->getGraphicsManager()->getWindow().draw(spr);
+                //spr.setScale(WINDOW_WIDTH/match->getAmountBlocksX(),WINDOW_HEIGHT/match->getAmountBlocksY());
+                if(Collision::BoundingBoxTest(sprite, spr))
+
+//               if(checkPointRect(ax,ay, bx, by, cx, cy, j*X, i*Y) ||
+//                checkPointRect(ax,ay, bx, by, cx, cy, (j+1)*X, i*Y) ||
+//               checkPointRect(ax,ay, bx, by, cx, cy, j*X, (i+1)*Y) ||
+//               checkPointRect(ax,ay, bx, by, cx, cy, (j+1)*X, (i+1)*Y)) {
+
+//                    if (type == BULLET && (blocks[i * match->getAmountBlocksX() + j] == BL_2))  //в странном месте, по другому делать не удобно
+//                        match->setBlock(i,j,BL_1);
+
+                    res = true;
+                   //}
                 }
             }
         }
-    return false;
+    return res;
 }
 
 
@@ -199,3 +236,5 @@ float GameObject::getSpeedAngle() const {
 void GameObject::setSpeedAngle(float spAngle) {
     speedAngle = spAngle;
 }
+
+
