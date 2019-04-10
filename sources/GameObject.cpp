@@ -13,7 +13,7 @@
 GameObject::GameObject() {
     GameObject::speedX=0;
     GameObject::speedY=0;
-//    std::cout << "GameObject created.\n";
+    speedAngle =0;
 }
 
 void GameObject::update(float time) {
@@ -22,11 +22,11 @@ void GameObject::update(float time) {
 
 
 void GameObject::setRotation(float angle){
-    GameObject::sprite.setRotation(-angle);
+    GameObject::sprite.setRotation(angle);
 }
 
 float GameObject::getRotation() const{
-    return -sprite.getRotation();
+    return sprite.getRotation();
 }
 
 float GameObject::getSizeX() const {
@@ -72,7 +72,8 @@ bool GameObject::collideCheck(Match *match) {
 
     for (int i = ii; i < m+1; ++i) {
         for (int j = jj; j < n+1; ++j) {
-            if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
+            if (i * match->getAmountBlocksX() + j < match->getAmountBlocksX()*match->getAmountBlocksY() &&
+                blocks[i * match->getAmountBlocksX() + j] == BL_0) {
                 return true;
                 }
             }
@@ -110,8 +111,8 @@ const sf::Texture &GameObject::getTexture() const {
 }
 
 
-void GameObject::setAlive(bool alive) {
-    GameObject::alive = alive;
+void GameObject::setAlive(bool alive_) {
+    GameObject::alive = alive_;
 }
 
 void GameObject::setPosition(float X, float Y){
@@ -189,4 +190,12 @@ void GameObject::setOwnerId(int pid) {
 
 GameObject * GameObject::shot(Bullet_t BULLET) {
 
+}
+
+float GameObject::getSpeedAngle() const {
+    return speedAngle;
+}
+
+void GameObject::setSpeedAngle(float spAngle) {
+    speedAngle = spAngle;
 }

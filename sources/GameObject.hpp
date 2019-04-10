@@ -39,10 +39,11 @@ enum Tank_t {
 class GameObject
 {
 protected:
-    bool alive;             /// жив ли ещё объект
+    bool alive;            /// жив ли ещё объект
     float x, y;            /// координаты объекта на экране (центр)
     float sizeX, sizeY;    /// размеры
     float speedX, speedY;  /// cкорость движения
+    float speedAngle;      /// угловая скорость в градусах
     sf::Sprite sprite;
     sf::Texture texture;
     int gameObjectId;       ///айди объекта
@@ -116,6 +117,8 @@ public:
 
     int getObjectId() const;
 
+    float getSpeedAngle() const;
+
     virtual const sf::Sprite &getSprite() const;
 
     virtual const sf::Texture &getTexture() const;
@@ -143,6 +146,8 @@ public:
     void setOwnerId(int pid);
 
     void setObjectId(int id);
+
+    void setSpeedAngle(float apAngle);
 };
 
 #endif //TANCHIKI_GAMEOBJECT_HPP
