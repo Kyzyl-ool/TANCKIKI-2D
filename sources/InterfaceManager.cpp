@@ -21,25 +21,25 @@ InterfaceManager::InterfaceManager(
         picture->setSize({"100%", "100%"});
         gui.add(picture);
 
-        static auto singleButton = tgui::Button::create("Singleplayer");
+        static auto singleButton = tgui::Button::create("Singleplayer"); //кнопка Singleplayer
         singleButton->setSize({"50%", "16.67%"});
         singleButton->setPosition({"25%", "10%"});
         singleButton->setTextSize(0);
         gui.add(singleButton);
 
-        static auto fictButton = tgui::Button::create();
-        fictButton->setSize(240,160);
-        fictButton->setPosition({"21%", "23%"});
-        fictButton->setVisible(false);
-        gui.add(fictButton);
-
-        static auto multiButton = tgui::Button::create("Multiplayer");
+        static auto multiButton = tgui::Button::create("Multiplayer"); //кнопка Multiplayer
         multiButton->setSize({"50%", "16.67%"});
-        multiButton->setPosition({"25%", "40%"});
+        multiButton->setPosition({"25%", "30%"});
         multiButton->setTextSize(0);
         gui.add(multiButton);
 
-        static auto quitButton = tgui::Button::create("Exit");
+        static auto settingsButton = tgui::Button::create("Settings"); //кнопка Settings
+        settingsButton->setSize({"50%", "16.67%"});
+        settingsButton->setPosition({"25%", "50%"});
+        settingsButton->setTextSize(0);
+        gui.add(settingsButton);
+
+        static auto quitButton = tgui::Button::create("Exit"); //кнопка Exit
         quitButton->setSize({"50%", "16.67%"});
         quitButton->setPosition({"25%", "70%"});
         quitButton->setTextSize(0);
@@ -69,11 +69,17 @@ InterfaceManager::InterfaceManager(
         editBoxPassword->setTextSize(0);
         loginWindow->add(editBoxPassword);
 
-        static auto button = tgui::Button::create("Login");
-        button->setSize({"50%", "16.67%"});
-        button->setPosition({"25%", "70%"});
-        button->setTextSize(0);
-        loginWindow->add(button);
+        static auto buttonLogin = tgui::Button::create("Login");
+        buttonLogin->setSize({"20%", "16.67%"});
+        buttonLogin->setPosition({"60 %", "70%"});
+        buttonLogin->setTextSize(0);
+        loginWindow->add(buttonLogin);
+
+        static auto buttonCancel = tgui::Button::create("Cancel");
+        buttonCancel->setSize({"20%", "16.67%"});
+        buttonCancel->setPosition({"20%", "70%"});
+        buttonCancel->setTextSize(0);
+        loginWindow->add(buttonCancel);
 
         singleButton->connect("pressed", &InterfaceManager::signalHandler1, this);
         singleButton->connect("pressed", [&](){
@@ -81,16 +87,39 @@ InterfaceManager::InterfaceManager(
             gui.remove(singleButton);
             gui.remove(multiButton);
             gui.remove(quitButton);
+            gui.remove(settingsButton);
         });
 
         multiButton->connect("pressed", &InterfaceManager::signalHandler2, this);
-        multiButton->connect("pressed", [&](){ loginWindow->setVisible(true); });
+        multiButton->connect("pressed", [&](){
+            loginWindow->setVisible(true);
+            singleButton->setEnabled(false);
+            multiButton->setEnabled(false);
+            settingsButton->setEnabled(false);
+            quitButton->setEnabled(false);
+        });
 
         quitButton->connect("pressed", &InterfaceManager::signalHandler3, this);
         quitButton->connect("pressed", [&](){ mainWindow.close(); });
 
-        button->connect("pressed", &InterfaceManager::login, editBoxUsername, editBoxPassword);
-        button->connect("pressed", [&](){ loginWindow->setVisible(false); });
+        settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
+
+        buttonLogin->connect("pressed", &InterfaceManager::login, editBoxUsername, editBoxPassword);
+        buttonLogin->connect("pressed", [&](){
+            loginWindow->setVisible(false);
+            singleButton->setEnabled(true);
+            multiButton->setEnabled(true);
+            settingsButton->setEnabled(true);
+            quitButton->setEnabled(true);
+        });
+
+        buttonCancel->connect("pressed", [&](){
+            loginWindow->setVisible(false);
+            singleButton->setEnabled(true);
+            multiButton->setEnabled(true);
+            settingsButton->setEnabled(true);
+            quitButton->setEnabled(true);
+        });
     }
     catch (const tgui::Exception& e)
     {
@@ -119,6 +148,10 @@ void InterfaceManager::signalHandler2(InterfaceManager *manager) {
 
 void InterfaceManager::signalHandler3(InterfaceManager *manager) {
     std::cout << "EXIT pressed" << std::endl;
+}
+
+void InterfaceManager::signalHandler4(InterfaceManager *manager) {
+    std::cout << "SETTINGS pressed" << std::endl;
 }
 
 void InterfaceManager::setState(gameState_t gameState) {
