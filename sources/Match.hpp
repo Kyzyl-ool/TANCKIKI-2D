@@ -12,6 +12,7 @@
 
 class Match {
 private:
+    sf::RenderWindow& mainWindow;
     ObjectManager* objectManager;
     GraphicsManager* graphicsManager;
     PhysicsManager* physicsManager;

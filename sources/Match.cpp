@@ -14,7 +14,9 @@ using json = nlohmann::json;
 
 
 
-Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json) {
+Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json):
+mainWindow(mainWindow)
+{
     ///@todo распарсить map_json
     mapName = "MAP_NAME";
     amount_of_blocks_x = 30;
@@ -108,6 +110,7 @@ void Match::drawMatch() {
 }
 
 void Match::updateMatch() {
+    std::cout << objectManager->getGameObjectById(0)->checkOrient(sf::Mouse::getPosition(mainWindow).x, sf::Mouse::getPosition(mainWindow).y) << std::endl;
     physicsManager->updateGameObjects(this);
 }
 

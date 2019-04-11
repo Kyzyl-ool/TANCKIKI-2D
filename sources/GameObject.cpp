@@ -201,4 +201,6 @@ float GameObject::checkOrient(float X, float Y) { ///определяет уго
     else phi = -atanf((Y-y)/(X-x))/M_PI*180;
     if(phi<0) phi = phi + 360;
     return phi-getRotation();
+
+//    return atanf((Y-y)/(X-x)*180/M_PI);
 }
