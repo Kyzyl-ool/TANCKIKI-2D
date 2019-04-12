@@ -35,5 +35,4 @@
 .idea/
 cmake_modules/
 cmake-build-debug/
-CMakeLists.txt
 .idea/vcs.xml

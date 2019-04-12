@@ -4,20 +4,33 @@
 
 #include <iostream>
 #include "PhysicsManager.hpp"
+#include <time.h>
+
 
 PhysicsManager::PhysicsManager(ObjectManager *theObjectManager) {
     objectManager = theObjectManager;
 }
 
-void PhysicsManager::updateGameObjects() {
-
+void PhysicsManager::updateGameObjects(Match *match) {
+    sf::Clock clock;
+    float time = clock.getElapsedTime().asMicroseconds();
+    clock.restart();
+    time = time / KTIME;
 
     for (const auto &object1 : objectManager->getObjects()) {
+        object1->update(time);
+
         for (const auto &object2 : objectManager->getObjects()) {
-            if (object1 != object2 && object1->collideCheck(object2)) {
-//                std::cout << "MUHAHA\n";
+            if(object1 == object2) break;
+            if (object1 != nullptr && object1->isAlive() && object2 != nullptr && object2->isAlive() && object1->collideCheck(object2)) {
+                object1->collideResponse(object2, time);
+                object2->collideResponse(object1, time);
             }
+
         }
-        object1->update();
+
+        if(object1->collideCheck(match)) {
+            object1->collideResponse(match, time);
+        }
     }
 }

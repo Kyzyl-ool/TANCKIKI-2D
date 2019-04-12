@@ -8,6 +8,7 @@
 
 #include "ObjectManager.hpp"
 #include "blocks.hpp"
+#include <SFML/Graphics.hpp>
 
 /*!
  * Этот класс отвечает за игровую графику.
@@ -16,7 +17,9 @@ class GraphicsManager
 {
 private:
     ObjectManager* objectManager;           /// указатель на менедера по объектам
-    sf::RenderWindow* window;
+    sf::RenderWindow& window;
+public:
+    sf::RenderWindow &getWindow() const;
 
 public:
     /*!
@@ -25,7 +28,7 @@ public:
      * игровые объекты для прорисовки
      */
     GraphicsManager(ObjectManager *theObjectManager, block_t *blocks, unsigned int amount_of_blocks_y,
-                    unsigned int amount_of_blocks_x, sf::RenderWindow *the_window);
+                    unsigned int amount_of_blocks_x, sf::RenderWindow &the_window);
 
 
     /*!
@@ -35,5 +38,6 @@ public:
      */
     void drawGameObjects();
 };
+
 
 #endif //TANCHIKI_GRAPHICSMANAGER_HPP

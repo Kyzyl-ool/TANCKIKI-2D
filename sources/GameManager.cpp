@@ -2,23 +2,27 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-GameManager::GameManager(sf::RenderWindow* the_mainWindow)
+GameManager::GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event) :
+mainWindow(the_mainWindow),
+gui(the_gui),
+event(the_event)
 {
     ///@todo проверить наличие файла player_info.json
-    state = GAME_STATE_CREATE_MATCH;
-    event = new sf::Event;
-    mainWindow = the_mainWindow;
-
-    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state);
-    eventManager = new EventManager(mainWindow, event, -1, &state);
+    state = GAME_STATE_MAIN_MENU;
+    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui);
+    eventManager = new EventManager(mainWindow, event, -1, &state, gui);
 }
 
 void GameManager::runGame() {
-    while (mainWindow->isOpen()) {
+    mainWindow.setKeyRepeatEnabled(false);
+    while (mainWindow.isOpen()) {
+
         interfaceManager->makeInterface();
         if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
-        mainWindow->display();
-        mainWindow->clear();
+
+        mainWindow.display();
+        mainWindow.clear();
+
         switch (state) {
             case GAME_STATE_CREATE_MATCH: {
                 std::string players_info_json, map_json;
@@ -45,17 +49,22 @@ void GameManager::runGame() {
 }
 
 void GameManager::handleEvent() {
-    ///@todo дописать этот метод
     if (eventManager->pollEvent()) {
-        switch (event->type) {
+        gui.handleEvent(event);
+        switch (event.type) {
+            case sf::Event::Resized: {
+                mainWindow.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(event.size.width), static_cast<float>(event.size.height))));
+                gui.setView(mainWindow.getView());
+                break;
+            }
             case sf::Event::Closed: {
-                mainWindow->close();
+                mainWindow.close();
                 break;
             }
             case sf::Event::KeyPressed: {
-                switch (event->key.code) {
+                switch (event.key.code) {
                     case sf::Keyboard::Escape: {
-                        mainWindow->close();
+                        mainWindow.close();
                         std::cout << "Window closed by Escape\n";
                         break;
                     }

@@ -1,31 +1,27 @@
+#include <utility>
+
 //
 // Created by Кежик Кызыл-оол on 2019-02-26.
 //
 
 #include "GameObject.hpp"
+#include "Match.hpp"
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <cmath>
 
-class Point
-{
-public:
-    float x;
-    float y;
-};
-
 GameObject::GameObject() {
-    GameObject::sizeX=1;
-    GameObject::sizeY=1;
-    GameObject::speed=0;
-    std::cout << "GameObject created.\n";
+    GameObject::speedX=0;
+    GameObject::speedY=0;
+//    std::cout << "GameObject created.\n";
 }
 
-void GameObject::update() {
+void GameObject::update(float time) {
 
 }
 
-void GameObject::setRotation(int angle){
+
+void GameObject::setRotation(float angle){
     GameObject::sprite.setRotation(-angle);
 }
 
@@ -55,10 +51,41 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
+        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
+        sf::Sprite spr2 = obj->getSprite();
+        spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
+        spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
+
+        if (Collision::CircleTest(spr1, spr2)) {
+            return Collision::BoundingBoxTest(spr1, spr2);
+        }
     return false;
 }
 
-void GameObject::collideResponse(GameObject *obj) {
+bool GameObject::collideCheck(Match *match) {
+    block_t *blocks = match->getBlocks();
+    int jj = (int) (x - sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
+    int ii = (int) (y - sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
+    int n = (int) (x + sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
+    int m = (int) (y + sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
+    std::vector<int> vec;
+
+    for (int i = ii; i < m+1; ++i) {
+        for (int j = jj; j < n+1; ++j) {
+            if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
+                return true;
+                }
+            }
+        }
+    return false;
+}
+
+
+void GameObject::collideResponse(GameObject *obj, float time) {
+
+}
+
+void GameObject::collideResponse(Match *match, float time) {
 
 }
 
@@ -95,8 +122,7 @@ void GameObject::setPosition(float X, float Y){
 
 
 void GameObject::setSprite(sf::Sprite sprite_){
-    GameObject::sprite=sprite_;
-    GameObject::sprite.setOrigin(sizeX/2,sizeY/2);
+
 }
 
 void GameObject::setSprite(int X, int Y, int sizeX_, int sizeY_){
@@ -118,16 +144,21 @@ void GameObject::setTexture(const char* address) {
 }
 
 
-void GameObject::setSpeed(float v) {
-    GameObject::speed = v;
+void GameObject::setSpeed(float spX, float spY) {
+    GameObject::speedX = spX;
+    GameObject::speedY = spY;
 }
 
-void GameObject::draw(sf::RenderWindow *window) {
+void GameObject::draw(sf::RenderWindow &window) {
 
 }
 
-float GameObject::getSpeed() const {
-    return speed;
+float GameObject::getSpeedX() const {
+    return speedX;
+}
+
+float GameObject::getSpeedY() const {
+    return speedY;
 }
 
 void GameObject::multSize(float k){
@@ -138,4 +169,24 @@ void GameObject::multSize(float k){
 
 gameObject_t GameObject::getType() const {
     return type;
+}
+
+int GameObject::getOwnerId() const {
+    return ownerId;
+}
+
+int GameObject::getObjectId() const {
+    return gameObjectId;
+}
+
+void GameObject::setObjectId(int id) {
+    gameObjectId=id;
+}
+
+void GameObject::setOwnerId(int pid) {
+    ownerId=pid;
+}
+
+GameObject * GameObject::shot(Bullet_t BULLET) {
+
 }

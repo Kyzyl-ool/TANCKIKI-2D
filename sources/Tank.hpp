@@ -6,25 +6,29 @@
 #define TANCKIKI_2D_TANK_H
 
 #include "GameObject.hpp"
+#include "Bullet.hpp"
 
 class Tank : public GameObject {
 protected:
-    int health;
+    float health;
+
+    Bullet_t bulType;
 
 public:
-    void update() override;
+    Tank(float health);
+    void update(float time) override;
 
-    void draw(sf::RenderWindow* window) override;
+    void draw(sf::RenderWindow &window) override;
 
-    bool collideCheck(GameObject* obj) override;
 
-    void collideResponse(GameObject* obj) override;
+    void collideResponse(GameObject *obj, float time) override;
+    void collideResponse(Match *match, float time) override;
 
-    Tank();
+    GameObject * shot(Bullet_t BULLET) override;
 
-    int getHealth();
+    float getHealth();
 
-    void setHealth(int healthScore);
+    void setHealth(float healthScore);
 };
 
 

@@ -16,22 +16,25 @@ class ObjectManager
 {
 private:
     /// \todo Нужно придумать свойство, в котором будут храниться все игровые объекты.
-    std::vector <GameObject*> objects;
+    std::vector<GameObject*> objects;
+    std::vector <GameObject*> tanks;
+public:
+    const std::vector<GameObject *> &getTanks() const;
+
 public:
     const std::vector<GameObject *> &getObjects() const;
 
+
 private:
-    sf::RenderWindow mainWindow;
+    sf::RenderWindow& mainWindow;
 
 public:
-    ObjectManager(sf::RenderWindow* window);
+    ObjectManager(sf::RenderWindow &window);
 
     void addGameObject(GameObject* obj);
     void removeGameObjectById(int gameObjectId);
     GameObject* getGameObjectById(int gameObjectId);
     const sf::RenderWindow &getMainWindow() const;
-
-
 
 };
 

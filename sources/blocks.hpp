@@ -7,9 +7,9 @@
 
 typedef enum blocks {
     ERROR = -1,
-    BLOCK_0,
-    BLOCK_1,
-    BLOCK_2,
+    BL_0,
+    BL_1,
+    BL_2,
     ///......
 }block_t;
 
