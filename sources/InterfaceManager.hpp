@@ -29,6 +29,7 @@ private:
     ObjectManager* objectManager;
     std::string mapName;
     sf::Event event{};
+    bool heathbarloaded = false;
 
 public:
     void setMapName(const std::string &the_mapName);
