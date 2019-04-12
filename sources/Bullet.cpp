@@ -14,14 +14,14 @@ void Bullet::draw(sf::RenderWindow &window) {
 }
 
 
-void Bullet::collideResponse(GameObject *obj) {
+void Bullet::collideResponse(GameObject *obj, float time) {
     if(obj->getType()==TANK && obj->getObjectId() != ownerId) {
         alive = false;
     }
 }
 
-void Bullet::update() {
-    setPosition(x+speedX*TIME,y+speedY*TIME);
+void Bullet::update(float time) {
+    setPosition(x+speedX*time,y+speedY*time);
 }
 
 int Bullet::getPower() {
@@ -32,7 +32,7 @@ void Bullet::setPower(int pow) {
     power=pow;
 }
 
-//void Bullet::collideResponse(Match *match, std::vector<int> vec) {
-//    setAlive(false);
-//}
+void Bullet::collideResponse(Match *match, float time) {
+    setAlive(false);
+}
 

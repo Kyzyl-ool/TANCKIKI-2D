@@ -8,43 +8,45 @@
 #include <iostream>
 
 
-Tank::Tank(int health) : GameObject::GameObject(), health(health) {
+Tank::Tank(float health) : GameObject::GameObject(), health(health) {
     Tank::type=TANK;
 }
 
 
-int Tank::getHealth() {
+float Tank::getHealth() {
     return Tank::health;
 }
 
-void Tank::setHealth(int health_) {
+void Tank::setHealth(float health_) {
     Tank::health=health_;
 }
 
-void Tank::update() {
-    setPosition(x+speedX*TIME,y+speedY*TIME);
+void Tank::update(float time) {
+    setPosition(x+speedX*time,y+speedY*time);
+    if(health < 1) setAlive(false);
 }
 
 
 void Tank::draw(sf::RenderWindow &window) {
+    if(isAlive())
     window.draw(Tank::sprite);
 }
 
 
-void Tank::collideResponse(GameObject *obj) {
+void Tank::collideResponse(GameObject *obj, float time) {
     if(obj->getType()==TANK) {
-        alive=false;
+        health = health-0.04;
+        setPosition(x-speedX*time,y-speedY*time);
     }
     if(obj->getType()==BULLET && obj->getOwnerId() != gameObjectId) {
         health = health - ((Bullet*)obj)->getPower();
-        if(health < 1) setAlive(false);
     }
 }
 
-//void Tank::collideResponse(Match *match, std::vector<int> vec) {
-//    setAlive(false);
-//
-//}
+void Tank::collideResponse(Match *match, float time) {
+    health = health-0.02;
+    setPosition(x-speedX*time,y-speedY*time);
+}
 
 GameObject * Tank::shot(Bullet_t BULLET) {
     Bullet *bul;

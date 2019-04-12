@@ -8,7 +8,7 @@ gui(the_gui),
 event(the_event)
 {
     ///@todo проверить наличие файла player_info.json
-    state = GAME_STATE_CREATE_MATCH;
+    state = GAME_STATE_MAIN_MENU;
     interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui);
     eventManager = new EventManager(mainWindow, event, -1, &state, gui);
 }
@@ -18,10 +18,7 @@ void GameManager::runGame() {
     while (mainWindow.isOpen()) {
 
         interfaceManager->makeInterface();
-        if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) {
-            handleEvent();
-            gui.draw();
-        }
+        if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
 
         mainWindow.display();
         mainWindow.clear();

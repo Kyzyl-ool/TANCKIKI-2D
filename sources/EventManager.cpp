@@ -40,8 +40,6 @@ std::string EventManager::getMessageFromGameObjects() {
             default:
                 break;
         }
-
-
     }
     return std::string();
 }
@@ -76,15 +74,6 @@ std::string EventManager::returnMessageFromMatchActions() {
 //                    std::cout << "Game state is MATCH_PAUSE\n";
                         ///@todo return json message with paused state
                         break;
-                    }
-                    case sf::Keyboard::Space: {
-                        json json_message;
-                        json_message["status"] = "OK";
-                        json_message["from"] = playerId;
-                        json_message["method"] = "shoot";
-                        json_message["params"] = json::array({});
-//                    std::cout << json_message.dump() << std::endl;
-                        return json_message.dump();
                     }
                     default: {
 //                    std::cout << "You pressed " << event.key.code << std::endl;
@@ -126,6 +115,22 @@ std::string EventManager::returnMessageFromMatchActions() {
         }
     }
     switch (event.type) {
+        case sf::Event::KeyPressed: {
+            switch (event.key.code) {
+                case sf::Keyboard::Space: {
+                    json json_message;
+                    json_message["status"] = "OK";
+                    json_message["from"] = playerId;
+                    json_message["method"] = "shoot";
+                    json_message["params"] = json::array({});
+//                        std::cout << json_message.dump() << std::endl;
+                    return json_message.dump();
+                }
+                default:
+                    break;
+            }
+            break;
+        }
         case sf::Event::Closed: {
             mainWindow.close();
             ///@todo return json message about closing
