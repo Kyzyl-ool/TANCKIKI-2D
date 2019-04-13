@@ -85,18 +85,26 @@ std::string EventManager::returnMessageFromMatchActions() {
             default:
                 break;
     }
-    else {
         switch (event.type) {
             case sf::Event::KeyReleased: {
                 switch (event.key.code) {
+                    case sf::Keyboard::A:
+                    case sf::Keyboard::D:
                     case sf::Keyboard::Left:
-                    case sf::Keyboard::Right:
+                    case sf::Keyboard::Right: {
+                        json json_message;
+                        json_message["status"] = "OK";
+                        json_message["from"] = playerId;
+                        json_message["method"] = "noRotation";
+                        json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                        return json_message.dump();
+                    }
                     case sf::Keyboard::Up:
                     case sf::Keyboard::Down:
-                    case sf::Keyboard::A:
                     case sf::Keyboard::S:
                     case sf::Keyboard::W:
-                    case sf::Keyboard::D: {
+                    {
                         json json_message;
                         json_message["status"] = "OK";
                         json_message["from"] = playerId;
@@ -113,7 +121,7 @@ std::string EventManager::returnMessageFromMatchActions() {
             default:
                 break;
         }
-    }
+
     switch (event.type) {
         case sf::Event::KeyPressed: {
             switch (event.key.code) {
@@ -221,15 +229,6 @@ std::string EventManager::goMessage(char direction) {
             json_message["status"] = "OK";
             json_message["from"] = playerId;
             json_message["method"] = "moveRight";
-            json_message["params"] = json::array();
-//                    std::cout << json_message.dump();
-            return json_message.dump();
-        }
-        case 0b1111: {
-            json json_message;
-            json_message["status"] = "OK";
-            json_message["from"] = playerId;
-            json_message["method"] = "stop";
             json_message["params"] = json::array();
 //                    std::cout << json_message.dump();
             return json_message.dump();

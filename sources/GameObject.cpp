@@ -190,3 +190,27 @@ void GameObject::setOwnerId(int pid) {
 GameObject * GameObject::shot(Bullet_t BULLET) {
 
 }
+
+void GameObject::rotateLeft() {
+    std::cout << "rotateLeft" << std::endl;
+}
+
+void GameObject::rotateRight() {
+    std::cout << "rotateRight" << std::endl;
+}
+
+void GameObject::stopRotate() {
+    std::cout << "stopRotate" << std::endl;
+}
+
+void GameObject::go() {
+    std::cout << "go" << std::endl;
+}
+
+void GameObject::stop() {
+    std::cout << "stop" << std::endl;
+}
+
+void GameObject::brake() {
+    std::cout << "brake" << std::endl;
+}
