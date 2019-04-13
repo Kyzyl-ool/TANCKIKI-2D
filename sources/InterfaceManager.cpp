@@ -104,13 +104,14 @@ InterfaceManager::InterfaceManager(
 
         settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
 
-        buttonLogin->connect("pressed", &InterfaceManager::login, editBoxUsername, editBoxPassword);
         buttonLogin->connect("pressed", [&](){
-            loginWindow->setVisible(false);
-            singleButton->setEnabled(true);
-            multiButton->setEnabled(true);
-            settingsButton->setEnabled(true);
-            quitButton->setEnabled(true);
+            InterfaceManager::login(editBoxUsername,
+                                    editBoxPassword,
+                                    loginWindow,
+                                    singleButton,
+                                    multiButton,
+                                    settingsButton,
+                                    quitButton);
         });
 
         buttonCancel->connect("pressed", [&](){
@@ -120,6 +121,8 @@ InterfaceManager::InterfaceManager(
             settingsButton->setEnabled(true);
             quitButton->setEnabled(true);
         });
+
+        ///@todo Enter pressed -> LOGIN
     }
     catch (const tgui::Exception& e)
     {
@@ -171,9 +174,32 @@ void InterfaceManager::setState(gameState_t gameState) {
     *InterfaceManager::state = gameState;
 }
 
-void InterfaceManager::login(const tgui::EditBox::Ptr &username, const tgui::EditBox::Ptr& password) {
-    std::cout << "Username: " << username->getText().toAnsiString() << std::endl;
-    std::cout << "Password: " << password->getText().toAnsiString() << std::endl;
-    ///@todo сформировать http-запрос
-    std::string message("Authorization...");
+void InterfaceManager::login(const tgui::EditBox::Ptr &username,
+                             const tgui::EditBox::Ptr &password,
+                             const tgui::MessageBox::Ptr &window,
+                             const tgui::Button::Ptr &single,
+                             const tgui::Button::Ptr &multi,
+                             const tgui::Button::Ptr &set,
+                             const tgui::Button::Ptr &quit) {
+    if (username->getText().isEmpty() || password->getText().isEmpty()) {
+        if(username->getText().isEmpty()) {
+            username->setDefaultText("Enter the username");
+        }
+        if(password->getText().isEmpty()) {
+            password->setDefaultText("Enter the password");
+        }
+    }
+    else {
+        std::cout << "Username: " << username->getText().toAnsiString() << std::endl;
+        std::cout << "Password: " << password->getText().toAnsiString() << std::endl;
+        ///@todo сформировать http-запрос
+        std::string message("Authorization...");
+
+        window->setVisible(false);
+        single->setEnabled(true);
+        multi->setEnabled(true);
+        set->setEnabled(true);
+        quit->setEnabled(true);
+    }
 }
+

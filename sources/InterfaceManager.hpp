@@ -47,7 +47,13 @@ public:
 
     static void signalHandler4(InterfaceManager *manager);
 
-    static void login(const tgui::EditBox::Ptr& username, const tgui::EditBox::Ptr& password);
+    static void login(const tgui::EditBox::Ptr& username,
+                      const tgui::EditBox::Ptr& password,
+                      const tgui::MessageBox::Ptr& window,
+                      const tgui::Button::Ptr& single,
+                      const tgui::Button::Ptr& multi,
+                      const tgui::Button::Ptr& set,
+                      const tgui::Button::Ptr &quit);
 
 };
 
