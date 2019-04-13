@@ -53,7 +53,7 @@ std::string EventManager::returnMessageFromMatchActions() {
                     case sf::Keyboard::D:
                     case sf::Keyboard::Left:
                     case sf::Keyboard::Right: {
-                        if (arrows & 0b1000 || arrows & 0b0001) {   
+                        if (arrows & 0b1000 || arrows & 0b0001) {
                             return goMessage(arrows);
                         }
                             json json_message;
