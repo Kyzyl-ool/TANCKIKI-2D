@@ -19,7 +19,8 @@ void PhysicsManager::updateGameObjects(Match *match) {
 
     for (const auto &object1 : objectManager->getObjects()) {
         object1->update(time);
-
+        if(object1->getObjectId() == 1 && time == (int)time)
+            object1->checkOrient(300,300);
         for (const auto &object2 : objectManager->getObjects()) {
             if(object1 == object2) break;
             if (object1 != nullptr && object1->isAlive() && object2 != nullptr && object2->isAlive() && object1->collideCheck(object2)) {

@@ -115,8 +115,6 @@ const std::string &Match::getMapName() const {
     return mapName;
 }
 
-#define TANK_VELOCITY_X 1
-#define TANK_VELOCITY_Y 1
 void Match::processMessage(std::string message) {
     ///@todo распарсить message
     assert(message.size());
@@ -129,23 +127,23 @@ void Match::processMessage(std::string message) {
 
     switch (gameObjectMessageId[j["method"]]) {
         case GAMEOBJECT_MESSAGE_MOVE_DOWN: {
-            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY_Y);
+            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY);
             objectManager->getGameObjectById(0)->setRotation(90);
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_LEFT: {
-            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY_X);
+            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY);
             objectManager->getGameObjectById(0)->setRotation(180);
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_RIGHT: {
-            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY_X);
+            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY);
             objectManager->getGameObjectById(0)->setRotation(0);
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_UP: {
             auto t = objectManager->getTanks();
-            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY_Y);
+            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY);
             objectManager->getGameObjectById(0)->setRotation(-90);
             break;
         }
