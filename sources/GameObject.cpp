@@ -207,7 +207,7 @@ void GameObject::rotateLeft() {
 
 void GameObject::rotateRight() {
     if(type == TANK) {
-        setSpeedAngle(-TANK_ANGLE_SPEED);
+        setSpeedAngle(TANK_ANGLE_SPEED);
     }
 }
 
@@ -217,10 +217,14 @@ void GameObject::stopRotate() {
 
 void GameObject::go() {
     if(type == TANK) {
-        setSpeedAngle(TANK_VELOCITY);
+        setSpeed(TANK_VELOCITY);
     }
 }
 
 void GameObject::stop() {
-    setSpeedAngle(0);
+    setSpeed(0);
+}
+
+void GameObject::brake() {
+    setSpeed(-TANK_VELOCITY);
 }
