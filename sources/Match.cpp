@@ -129,28 +129,32 @@ void Match::processMessage(std::string message) {
 
     switch (gameObjectMessageId[j["method"]]) {
         case GAMEOBJECT_MESSAGE_MOVE_DOWN: {
-            objectManager->getGameObjectById(0)->setSpeed(0,TANK_VELOCITY_Y);
-            objectManager->getGameObjectById(0)->setRotation(270);
+            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY_Y);
+            objectManager->getGameObjectById(0)->setRotation(90);
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_LEFT: {
-            objectManager->getGameObjectById(0)->setSpeed(-TANK_VELOCITY_X,0);
+            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY_X);
             objectManager->getGameObjectById(0)->setRotation(180);
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_RIGHT: {
-            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY_X,0);
+            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY_X);
             objectManager->getGameObjectById(0)->setRotation(0);
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_UP: {
             auto t = objectManager->getTanks();
-            objectManager->getGameObjectById(0)->setSpeed(0,-TANK_VELOCITY_Y);
-            objectManager->getGameObjectById(0)->setRotation(90);
+            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY_Y);
+            objectManager->getGameObjectById(0)->setRotation(-90);
             break;
         }
         case GAMEOBJECT_MESSAGE_STOP: {
-            objectManager->getGameObjectById(0)->setSpeed(0,0);
+            objectManager->getGameObjectById(0)->setSpeed(0);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_SHOOT: {
+            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
@@ -188,6 +192,16 @@ unsigned int Match::getAmountBlocksX() {
 
 unsigned int Match::getAmountBlocksY() {
     return amount_of_blocks_y;
+}
+
+Match::~Match() {
+    delete(blocks);
+    delete(graphicsManager);
+    delete(physicsManager);
+    delete(objectManager);
+    for(const auto &object : objectManager->getObjects()) {
+        delete(object);
+    }
 }
 
 
