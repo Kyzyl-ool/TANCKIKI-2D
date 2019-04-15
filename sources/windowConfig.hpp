@@ -16,5 +16,6 @@ const float SPEED_OF_LOW_BULLET = 1.4;
 const char IMAGE_FOR_MAP[] = "images/textu.png";
 const float TANK_VELOCITY = 1;
 const float TANK_ANGLE_SPEED = 1;
+const float TANK_TOWER_SPEED = 1;
 
 #endif //TANCHIKI_CONFIG_HPP
