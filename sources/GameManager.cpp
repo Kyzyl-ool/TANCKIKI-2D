@@ -36,6 +36,7 @@ void GameManager::runGame() {
             case GAME_STATE_MATCH: {
                 std::string message = eventManager->getMessageFromGameObjects();
                 if (!message.empty()) match->processMessage(message);
+//                match->getObjectManager()->getGameObjectById(0)->
                 match->updateMatch();
                 match->drawMatch();
                 break;

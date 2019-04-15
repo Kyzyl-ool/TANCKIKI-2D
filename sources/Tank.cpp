@@ -36,8 +36,9 @@ void Tank::draw(sf::RenderWindow &window) {
 
 void Tank::collideResponse(GameObject *obj, float time) {
     if(obj->getType()==TANK) {
-        health = health-0.04;
+        health = health-0;
         setPosition(x-speed*cosf(getRotation()/180*M_PI)*time,y-speed*sinf(getRotation()/180*M_PI)*time);
+        setRotation(getRotation()-speedAngle*time);
     }
     if(obj->getType()==BULLET && obj->getOwnerId() != gameObjectId) {
         health = health - ((Bullet*)obj)->getPower();

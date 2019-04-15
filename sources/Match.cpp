@@ -197,5 +197,9 @@ Match::~Match() {
     }
 }
 
+ObjectManager *Match::getObjectManager() const {
+    return objectManager;
+}
+
 
 
