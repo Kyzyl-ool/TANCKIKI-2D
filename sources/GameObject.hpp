@@ -127,8 +127,6 @@ public:
 
     void setSpeed(float sp);
 
-    void setSizeObj(float sizeX, float sizeY);
-
     void setSizeSprite(float sizeX, float sizeY); ///задает размеры спрайта, если размеры спрайта и объекта совпадают!!!
 
     void setAlive(bool alive);

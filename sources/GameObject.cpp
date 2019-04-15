@@ -36,13 +36,12 @@ float GameObject::getSizeY() const {
     return sizeY;
 }
 
-void GameObject::setSizeObj(float sizeX_, float sizeY_) {
-    GameObject::sizeX=sizeX_;
-    GameObject::sizeY=sizeY_;
-}
+
 
 void GameObject::setSizeSprite(float sizeX_, float sizeY_) {
     GameObject::sprite.setScale(sizeX_/GameObject::sizeX, sizeY_/GameObject::sizeY);
+    GameObject::sizeX=sizeX_;
+    GameObject::sizeY=sizeY_;
 }
 
 GameObject::~GameObject() {
@@ -130,7 +129,9 @@ void GameObject::setSprite(int X, int Y, int sizeX_, int sizeY_){
     GameObject::sizeY=sizeY_;
     GameObject::sprite.setTexture(GameObject::texture);
     GameObject::sprite.setTextureRect(sf::IntRect(X,Y,sizeX_,sizeY_));
-    GameObject::sprite.setOrigin(sizeX_/2,sizeY_/2);
+    if(type == TANK) {
+        GameObject::sprite.setOrigin(sizeX_ *24/70, sizeY_ / 2);
+    }
 }
 
 void GameObject::setTexture(sf::Texture texture_){
@@ -140,6 +141,7 @@ void GameObject::setTexture(sf::Texture texture_){
 void GameObject::setTexture(const char* address) {
     sf::Image image;
     image.loadFromFile(address);
+    image.createMaskFromColor(sf::Color::White);
     GameObject::texture.loadFromImage(image);
 }
 
