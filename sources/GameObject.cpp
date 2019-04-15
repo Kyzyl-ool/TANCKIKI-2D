@@ -202,3 +202,6 @@ float GameObject::checkOrient(float X, float Y) { ///определяет уго
     if(phi<0) phi = phi + 360;
     return phi-getRotation();
 }
+
+void GameObject::rotateLeft() {
+}
