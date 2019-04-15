@@ -96,6 +96,9 @@ void Tank::setTextureTower(const char* address) {
     textureTower.loadFromImage(image);
 }
 
+float Tank::checkOrient(float X, float Y) {
+    return (Y-y)*cosf(spriteTower.getRotation()/180*M_PI) - (X-x)*sinf(spriteTower.getRotation()/180*M_PI);
+}
 
 
 

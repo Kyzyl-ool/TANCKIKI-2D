@@ -1,6 +1,7 @@
 #include "GameManager.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Tank.hpp"
 
 GameManager::GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event) :
 mainWindow(the_mainWindow),
@@ -36,7 +37,17 @@ void GameManager::runGame() {
             case GAME_STATE_MATCH: {
                 std::string message = eventManager->getMessageFromGameObjects();
                 if (!message.empty()) match->processMessage(message);
-//                match->getObjectManager()->getGameObjectById(0)->
+                Tank* tmp = (Tank* )match->getObjectManager()->getGameObjectById(0);
+                auto tmp1 = sf::Mouse::getPosition(mainWindow);
+                auto sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+                if (abs(sinus) > 0.2) {
+                    if (sinus < 0)
+                        tmp->setSpeedTower(-TANK_TOWER_SPEED);
+                    else
+                        tmp->setSpeedTower(TANK_TOWER_SPEED);
+                } else{
+                    tmp->setSpeedTower(0);
+                }
                 match->updateMatch();
                 match->drawMatch();
                 break;

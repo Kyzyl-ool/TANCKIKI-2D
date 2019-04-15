@@ -197,9 +197,7 @@ void GameObject::setSpeedAngle(float spAngle) {
     speedAngle = spAngle;
 }
 
-float GameObject::checkOrient(float X, float Y) { ///определяет синус угла направления минус угол объекта, если положительный, то крутить по часовой стрелки
-    return (Y-y)*cosf(getRotation()/180*M_PI) - (X-x)*sinf(getRotation()/180*M_PI);
-}
+
 
 void GameObject::rotateLeft() {
     if(type == TANK) {
