@@ -126,29 +126,28 @@ void Match::processMessage(std::string message) {
 
 
     switch (gameObjectMessageId[j["method"]]) {
-        case GAMEOBJECT_MESSAGE_MOVE_DOWN: {
-            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY);
-            objectManager->getGameObjectById(0)->setRotation(90);
+        case GAMEOBJECT_MESSAGE_NO_ROTATION: {
+            objectManager->getGameObjectById(0)->stopRotate();
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_MOVE_BRAKE: {
+            objectManager->getGameObjectById(0)->brake();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_LEFT: {
-            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY);
-            objectManager->getGameObjectById(0)->setRotation(180);
+            objectManager->getGameObjectById(0)->rotateLeft();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_RIGHT: {
-            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY);
-            objectManager->getGameObjectById(0)->setRotation(0);
+            objectManager->getGameObjectById(0)->rotateRight();
             break;
         }
-        case GAMEOBJECT_MESSAGE_MOVE_UP: {
-            auto t = objectManager->getTanks();
-            objectManager->getGameObjectById(0)->setSpeed(TANK_VELOCITY);
-            objectManager->getGameObjectById(0)->setRotation(-90);
+        case GAMEOBJECT_MESSAGE_MOVE_FORWARD: {
+            objectManager->getGameObjectById(0)->go();
             break;
         }
-        case GAMEOBJECT_MESSAGE_STOP: {
-            objectManager->getGameObjectById(0)->setSpeed(0);
+        case GAMEOBJECT_MESSAGE_NO_ACTION: {
+            objectManager->getGameObjectById(0)->stop();
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
