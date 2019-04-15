@@ -46,13 +46,54 @@ std::string EventManager::getMessageFromGameObjects() {
 
 std::string EventManager::returnMessageFromMatchActions() {
     char arrows = getPressedArrows(sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Up, sf::Keyboard::Right);
-    if (arrows)
         switch (event.type) {
             case sf::Event::KeyReleased: {
-                return goMessage(arrows);
+                switch (event.key.code) {
+                    case sf::Keyboard::A:
+                    case sf::Keyboard::D:
+                    case sf::Keyboard::Left:
+                    case sf::Keyboard::Right: {
+                        if (arrows & 0b1000 || arrows & 0b0001) {
+                            return goMessage(arrows);
+                        }
+                            json json_message;
+                            json_message["status"] = "OK";
+                            json_message["from"] = playerId;
+                            json_message["method"] = "noRotation";
+                            json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                            return json_message.dump();
+
+                    }
+                    case sf::Keyboard::Up:
+                    case sf::Keyboard::Down:
+                    case sf::Keyboard::S:
+                    case sf::Keyboard::W:
+                    {
+                        json json_message;
+                        json_message["status"] = "OK";
+                        json_message["from"] = playerId;
+                        json_message["method"] = "stop";
+                        json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                        return json_message.dump();
+                    }
+                    default:
+                        break;
+                }
+                break;
             }
             case sf::Event::KeyPressed: {
                 switch (event.key.code) {
+                    case sf::Keyboard::Space: {
+                        json json_message;
+                        json_message["status"] = "OK";
+                        json_message["from"] = playerId;
+                        json_message["method"] = "shoot";
+                        json_message["params"] = json::array({});
+//                        std::cout << json_message.dump() << std::endl;
+                        return json_message.dump();
+                    }
                     case sf::Keyboard::Left:
                     case sf::Keyboard::A: {
                         return goMessage(0b1000);
@@ -82,62 +123,13 @@ std::string EventManager::returnMessageFromMatchActions() {
                 }
                 break;
             }
-            default:
-                break;
-    }
-    else {
-        switch (event.type) {
-            case sf::Event::KeyReleased: {
-                switch (event.key.code) {
-                    case sf::Keyboard::Left:
-                    case sf::Keyboard::Right:
-                    case sf::Keyboard::Up:
-                    case sf::Keyboard::Down:
-                    case sf::Keyboard::A:
-                    case sf::Keyboard::S:
-                    case sf::Keyboard::W:
-                    case sf::Keyboard::D: {
-                        json json_message;
-                        json_message["status"] = "OK";
-                        json_message["from"] = playerId;
-                        json_message["method"] = "stop";
-                        json_message["params"] = json::array();
-//                    std::cout << json_message.dump();
-                        return json_message.dump();
-                    }
-                    default:
-                        break;
-                }
+            case sf::Event::Closed: {
+                mainWindow.close();
+                ///@todo return json message about closing
                 break;
             }
             default:
                 break;
-        }
-    }
-    switch (event.type) {
-        case sf::Event::KeyPressed: {
-            switch (event.key.code) {
-                case sf::Keyboard::Space: {
-                    json json_message;
-                    json_message["status"] = "OK";
-                    json_message["from"] = playerId;
-                    json_message["method"] = "shoot";
-                    json_message["params"] = json::array({});
-//                        std::cout << json_message.dump() << std::endl;
-                    return json_message.dump();
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        case sf::Event::Closed: {
-            mainWindow.close();
-            ///@todo return json message about closing
-            break;
-        }
-        default:
-            break;
     }
     return std::string();
 }
@@ -221,15 +213,6 @@ std::string EventManager::goMessage(char direction) {
             json_message["status"] = "OK";
             json_message["from"] = playerId;
             json_message["method"] = "moveRight";
-            json_message["params"] = json::array();
-//                    std::cout << json_message.dump();
-            return json_message.dump();
-        }
-        case 0b1111: {
-            json json_message;
-            json_message["status"] = "OK";
-            json_message["from"] = playerId;
-            json_message["method"] = "stop";
             json_message["params"] = json::array();
 //                    std::cout << json_message.dump();
             return json_message.dump();
