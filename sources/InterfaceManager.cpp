@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include "InterfaceManager.hpp"
+#include "WidgetsMenu.hpp"
 
 
 InterfaceManager::InterfaceManager(
@@ -26,24 +27,28 @@ InterfaceManager::InterfaceManager(
         singleButton->setPosition({"25%", "10%"});
         singleButton->setTextSize(0);
         gui.add(singleButton);
+        WidgetsMenu::add_widget(singleButton);
 
         static auto multiButton = tgui::Button::create("Multiplayer"); //кнопка Multiplayer
         multiButton->setSize({"50%", "16.67%"});
         multiButton->setPosition({"25%", "30%"});
         multiButton->setTextSize(0);
         gui.add(multiButton);
+        WidgetsMenu::add_widget(multiButton);
 
         static auto settingsButton = tgui::Button::create("Settings"); //кнопка Settings
         settingsButton->setSize({"50%", "16.67%"});
         settingsButton->setPosition({"25%", "50%"});
         settingsButton->setTextSize(0);
         gui.add(settingsButton);
+        WidgetsMenu::add_widget(settingsButton);
 
         static auto quitButton = tgui::Button::create("Exit"); //кнопка Exit
         quitButton->setSize({"50%", "16.67%"});
         quitButton->setPosition({"25%", "70%"});
         quitButton->setTextSize(0);
         gui.add(quitButton);
+        WidgetsMenu::add_widget(quitButton);
 
         static auto loginWindow = tgui::MessageBox::create();
         loginWindow->setSize({"40%", "30%"});
@@ -51,9 +56,8 @@ InterfaceManager::InterfaceManager(
         loginWindow->setTitle("Please Login");
         loginWindow->setVisible(false);
         loginWindow->setPositionLocked(true);
-//            loginWindow->setMaximumSize(fictButton->getSize()); // как эту функцию юзать?
-//            loginWindow->setMinimumSize(fictButton->getSize());
         gui.add(loginWindow);
+        WidgetsMenu::add_widget(loginWindow);
 
         static auto editBoxUsername = tgui::EditBox::create();
         editBoxUsername->setSize({"66.67%", "12.5%"});
@@ -61,6 +65,7 @@ InterfaceManager::InterfaceManager(
         editBoxUsername->setDefaultText("Username");
         editBoxUsername->setTextSize(0);
         loginWindow->add(editBoxUsername);
+        WidgetsMenu::add_box(editBoxUsername);
 
         static auto editBoxPassword = tgui::EditBox::copy(editBoxUsername);
         editBoxPassword->setPosition({"16.67%", "41.6%"});
@@ -68,6 +73,7 @@ InterfaceManager::InterfaceManager(
         editBoxPassword->setDefaultText("Password");
         editBoxPassword->setTextSize(0);
         loginWindow->add(editBoxPassword);
+        WidgetsMenu::add_box(editBoxPassword);
 
         static auto buttonLogin = tgui::Button::create("Login");
         buttonLogin->setSize({"20%", "16.67%"});
@@ -88,15 +94,19 @@ InterfaceManager::InterfaceManager(
             gui.remove(multiButton);
             gui.remove(quitButton);
             gui.remove(settingsButton);
+            WidgetsMenu::widget_remove();
         });
 
         multiButton->connect("pressed", &InterfaceManager::signalHandler2, this);
         multiButton->connect("pressed", [&](){
-            loginWindow->setVisible(true);
-            singleButton->setEnabled(false);
-            multiButton->setEnabled(false);
-            settingsButton->setEnabled(false);
-            quitButton->setEnabled(false);
+
+            WidgetsMenu::change_ava(1);
+
+//            loginWindow->setVisible(true);
+//            singleButton->setEnabled(false);
+//            multiButton->setEnabled(false);
+//            settingsButton->setEnabled(false);
+//            quitButton->setEnabled(false);
         });
 
         quitButton->connect("pressed", &InterfaceManager::signalHandler3, this);
@@ -105,23 +115,30 @@ InterfaceManager::InterfaceManager(
         settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
 
         buttonLogin->connect("pressed", [&](){
-            InterfaceManager::login(editBoxUsername,
-                                    editBoxPassword,
-                                    loginWindow,
-                                    singleButton,
-                                    multiButton,
-                                    settingsButton,
-                                    quitButton);
+
+            WidgetsMenu::login();
+
+//            InterfaceManager::login(editBoxUsername,
+//                                    editBoxPassword,
+//                                    loginWindow,
+//                                    singleButton,
+//                                    multiButton,
+//                                    settingsButton,
+//                                    quitButton);
         });
 
         buttonCancel->connect("pressed", [&](){
-            loginWindow->setVisible(false);
-            singleButton->setEnabled(true);
-            multiButton->setEnabled(true);
-            settingsButton->setEnabled(true);
-            quitButton->setEnabled(true);
+
+            WidgetsMenu::change_ava(0);
+
+//            loginWindow->setVisible(false);
+//            singleButton->setEnabled(true);
+//            multiButton->setEnabled(true);
+//            settingsButton->setEnabled(true);
+//            quitButton->setEnabled(true);
         });
 
+        ///@todo check that login AND password were typed
         ///@todo Enter pressed -> LOGIN
     }
     catch (const tgui::Exception& e)
@@ -174,6 +191,7 @@ void InterfaceManager::setState(gameState_t gameState) {
     *InterfaceManager::state = gameState;
 }
 
+/*
 void InterfaceManager::login(const tgui::EditBox::Ptr &username,
                              const tgui::EditBox::Ptr &password,
                              const tgui::MessageBox::Ptr &window,
@@ -200,6 +218,18 @@ void InterfaceManager::login(const tgui::EditBox::Ptr &username,
         multi->setEnabled(true);
         set->setEnabled(true);
         quit->setEnabled(true);
+
+        ///@todo вызывать это непосредственно,
+        ///@todo то есть через класс.
+        ///@todo для этого сделать класс
+
+//        loginWindow->setVisible(false);
+//        singleButton->setEnabled(true);
+//        multiButton->setEnabled(true);
+//        settingsButton->setEnabled(true);
+//        quitButton->setEnabled(true);
     }
-}
+
+//    WidgetsMenu::get_widget();
+}*/
 
