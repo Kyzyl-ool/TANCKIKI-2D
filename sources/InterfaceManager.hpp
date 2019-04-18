@@ -31,6 +31,7 @@ private:
     sf::Event event{};
     bool heathbarloaded = false;
 
+
 public:
     void setMapName(const std::string &the_mapName);
 
@@ -47,7 +48,7 @@ public:
 
     static void signalHandler4(InterfaceManager *manager);
 
-    static void login(const tgui::EditBox::Ptr& username, const tgui::EditBox::Ptr& password);
+    bool login();
 
 };
 
