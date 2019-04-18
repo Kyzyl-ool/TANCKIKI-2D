@@ -51,7 +51,7 @@ void WidgetsMenu::change_ava(int sysok) {
     }
 }
 
-void WidgetsMenu::login() {
+bool WidgetsMenu::login() {
     if (widgetsMenu.boxes[0]->getText().isEmpty() || widgetsMenu.boxes[1]->getText().isEmpty()) {
         if (widgetsMenu.boxes[0]->getText().isEmpty()) {
             widgetsMenu.boxes[0]->setDefaultText("Enter the username");
@@ -59,6 +59,7 @@ void WidgetsMenu::login() {
         if (widgetsMenu.boxes[1]->getText().isEmpty()) {
             widgetsMenu.boxes[1]->setDefaultText("Enter the password");
         }
+        return false;
     }
     else {
         std::cout << "Username: " << widgetsMenu.boxes[0]->getText().toAnsiString() << std::endl;
@@ -67,6 +68,7 @@ void WidgetsMenu::login() {
         std::string message("Authorization...");
 
         WidgetsMenu::change_ava(0);
+        return true;
     }
 }
 

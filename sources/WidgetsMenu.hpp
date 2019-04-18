@@ -32,7 +32,7 @@ public:
 
     static void change_ava(int sysok);
 
-    static void login();
+    static bool login();
 
 };
 

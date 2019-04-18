@@ -191,6 +191,10 @@ void InterfaceManager::setState(gameState_t gameState) {
     *InterfaceManager::state = gameState;
 }
 
+bool InterfaceManager::login() {
+    return WidgetsMenu::login();
+}
+
 /*
 void InterfaceManager::login(const tgui::EditBox::Ptr &username,
                              const tgui::EditBox::Ptr &password,
