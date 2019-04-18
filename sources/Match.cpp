@@ -157,10 +157,6 @@ void Match::processMessage(std::string message) {
             objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
             break;
         }
-        case GAMEOBJECT_MESSAGE_SHOOT: {
-            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
-            break;
-        }
     }
     ///@todo обработать message
 }
