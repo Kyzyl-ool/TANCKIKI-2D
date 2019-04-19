@@ -128,8 +128,11 @@ InterfaceManager::InterfaceManager(
 void InterfaceManager::makeInterface() {
     switch (*state) {
         case GAME_STATE_MATCH: {
-            ///@todo проверить, что шкалы здоровья добавлены if(heathbarloaded)
-            ///@todo если да, то
+            ///@todo проверить, что имена добавлены
+            ///@todo если нет, добавить
+
+            ///@todo показывать, если нажата Alt (Ctrl)
+
 
             auto tanks = objectManager->getTanks(); //вектор танков
 
@@ -144,8 +147,12 @@ void InterfaceManager::makeInterface() {
                     auto sx = tanks[i]->getSizeX();
                     auto sy = tanks[i]->getSizeY();
 
+                    auto name = tanks[i]->getName();
+
+
+
                     try {
-                        healthTanks[i]->setPosition(x, y - sy * 0.5);
+                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy);
                         healthTanks[i]->setSize(sx, sy * 0.3);
                         healthTanks[i]->setValue((unsigned int) (100 * h / mh));
 //                        progressBar->setInheritedOpacity(0.5);
@@ -158,45 +165,19 @@ void InterfaceManager::makeInterface() {
                         assert(0);
                     }
                 }
-
             }
-
-            ///@todo проверить жив ли танк, если нет, то SetVis = false;
-
-            ///@todo задать положение setPos
-            ///@todo обновить здоровье
-
-//                auto x = objectManager->getTanks()[0]->getX();
-//                auto y = objectManager->getTanks()[0]->getY();
-            ///@todo если нет, то create (вектор виджетов)
-            ///@todo добавить шкалы здоровья (try) ----> heathbarloaded = true;
-
             else {
-
-                for (auto i : tanks) {
-
-                    auto h  = i->getHealth();
-                    auto mh = i->getMaxHealth();
-                    auto x  = i->getX();
-                    auto y  = i->getY();
-                    auto sx = i->getSizeX();
-                    auto sy = i->getSizeY();
+                for (auto i = 0; i < tanks.size(); i++) {
 
                     try {
-                        static auto progressBar = tgui::ProgressBar::create();
-                        progressBar->setPosition(x, y - sy * 0.5);
-                        progressBar->setSize(sx, sy * 0.3);
-                        progressBar->setValue((unsigned int) (100 * h / mh));
-//                        progressBar->setInheritedOpacity(0.5);
-                        gui.add(progressBar);
-                        healthTanks.push_back(progressBar);
+                        healthTanks.push_back(tgui::ProgressBar::create());
+                        gui.add(healthTanks[i]);
                     }
                     catch (const tgui::Exception& e) {
                         std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
                         assert(0);
                     }
                 }
-
                 heathbarloaded = true;
             }
             break;
