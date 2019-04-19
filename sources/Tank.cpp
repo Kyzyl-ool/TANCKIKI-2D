@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-Tank::Tank(float health, std::string the_name) : GameObject::GameObject(), health(health) {
+Tank::Tank(float health, std::string the_name) : GameObject::GameObject(), health(health), maxHealth(health) {
     Tank::type=TANK;
 }
 
