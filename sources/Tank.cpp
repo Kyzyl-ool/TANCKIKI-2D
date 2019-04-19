@@ -41,7 +41,6 @@ void Tank::collideResponse(GameObject *obj, float time) {
     }
     if(obj->getType()==BULLET && obj->getOwnerId() != gameObjectId) {
         health = health - ((Bullet*)obj)->getPower();
-        delete obj;
     }
 }
 
