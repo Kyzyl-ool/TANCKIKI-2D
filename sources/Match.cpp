@@ -199,9 +199,6 @@ Match::~Match() {
     delete(graphicsManager);
     delete(physicsManager);
     delete(objectManager);
-    for(const auto &object : objectManager->getObjects()) {
-        delete(object);
-    }
 }
 
 

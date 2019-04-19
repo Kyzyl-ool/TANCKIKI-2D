@@ -38,3 +38,12 @@ const std::vector<GameObject *> &ObjectManager::getObjects() const {
 const std::vector<Tank *> & ObjectManager::getTanks() const {
     return tanks;
 }
+
+ObjectManager::~ObjectManager() {
+    for (const auto &item : objects) {
+        delete(item);
+    }
+    for (const auto &tank : tanks) {
+        delete(tank);
+    }
+}

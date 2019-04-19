@@ -32,6 +32,8 @@ private:
 public:
     ObjectManager(sf::RenderWindow &window);
 
+    virtual ~ObjectManager();
+
     void addGameObject(GameObject* obj);
     void removeGameObjectById(int gameObjectId);
     GameObject* getGameObjectById(int gameObjectId);
