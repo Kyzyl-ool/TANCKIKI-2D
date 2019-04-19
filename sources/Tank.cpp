@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-Tank::Tank(float health) : GameObject::GameObject(), health(health), maxHealth(health) {
+Tank::Tank(float health, std::string the_name) : GameObject::GameObject(), health(health) {
     Tank::type=TANK;
 }
 
@@ -71,6 +71,10 @@ GameObject * Tank::shot(Bullet_t BULLET) {
 
 float Tank::getMaxHealth() const {
     return maxHealth;
+}
+
+const std::string &Tank::getName() const {
+    return name;
 }
 
 

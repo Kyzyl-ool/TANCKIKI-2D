@@ -17,11 +17,13 @@ public:
     float getMaxHealth() const;
 
 protected:
-
     Bullet_t bulType;
+    std::string name = "Unnamed";
+public:
+    const std::string &getName() const;
 
 public:
-    Tank(float health);
+    Tank(float health, std::string the_name);
     void update(float time) override;
 
     void draw(sf::RenderWindow &window) override;
