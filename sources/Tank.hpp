@@ -23,7 +23,7 @@ public:
     const std::string &getName() const;
 
 public:
-    Tank(float health, std::string the_name);
+    Tank(float health, const std::string& the_name);
     void update(float time) override;
 
     void draw(sf::RenderWindow &window) override;
