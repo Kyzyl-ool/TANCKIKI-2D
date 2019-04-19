@@ -195,10 +195,10 @@ ObjectManager *Match::getObjectManager() const {
 }
 
 Match::~Match() {
-    delete(blocks);
     delete(graphicsManager);
     delete(physicsManager);
     delete(objectManager);
+    delete blocks;
 }
 
 
