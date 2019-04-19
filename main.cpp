@@ -11,5 +11,7 @@ int main() {
     sf::Event event{};
     GameManager* Game = new GameManager(mainWindow, gui, event);
     Game->runGame();
+
+    delete Game;
     return 0;
 }
