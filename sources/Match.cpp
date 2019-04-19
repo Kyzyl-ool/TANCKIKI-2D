@@ -80,7 +80,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     tank2->setPosition(300, 300);
     tank2->setSizeSprite(140,100);
     tank2->setTextureTower("images/Htanks.png");
-    tank2->setSpriteTower(96,328,90,40);
+    tank2->setSpriteTower(96,328,90,40); 
     tank2->setAlive(true);
     tank2->setObjectId(1);
     objectManager->addGameObject(tank2);
@@ -95,6 +95,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     Tank *tank1 = new Tank(50);
     tank1->setTexture("images/Htanks.png");
     tank1->setSprite(96,370,74,50);  //задает вид спрайта на основе уже имеющейся тестуры
+  
     tank1->setPosition(300, 100);
     tank1->setSizeSprite(140,100);
     tank1->setTextureTower("images/Htanks.png");
@@ -152,10 +153,6 @@ void Match::processMessage(std::string message) {
             objectManager->getGameObjectById(0)->stop();
             break;
         }
-        case GAMEOBJECT_MESSAGE_SHOOT: {
-            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
-            break;
-        }
     }
     ///@todo обработать message
 }
@@ -189,14 +186,15 @@ unsigned int Match::getAmountBlocksY() {
     return amount_of_blocks_y;
 }
 
+ObjectManager *Match::getObjectManager() const {
+    return objectManager;
+}
+
 Match::~Match() {
-    delete(blocks);
     delete(graphicsManager);
     delete(physicsManager);
     delete(objectManager);
-    for(const auto &object : objectManager->getObjects()) {
-        delete(object);
-    }
+    delete blocks;
 }
 
 ObjectManager *Match::getObjectManager() const {

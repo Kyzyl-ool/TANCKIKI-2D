@@ -28,8 +28,15 @@ private:
     std::string errString;
     ObjectManager* objectManager;
     std::string mapName;
+public:
+    void setObjectManager(ObjectManager *objectManager);
+
+private:
     sf::Event event{};
     bool heathbarloaded = false;
+
+    std::vector <tgui::ProgressBar::Ptr> healthTanks;
+
 
 public:
     void setMapName(const std::string &the_mapName);
@@ -47,7 +54,7 @@ public:
 
     static void signalHandler4(InterfaceManager *manager);
 
-    static void login(const tgui::EditBox::Ptr& username, const tgui::EditBox::Ptr& password);
+    bool login();
 
 };
 

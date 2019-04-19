@@ -33,6 +33,7 @@ void GameManager::runGame() {
                 ///@todo прочитать players_info_json, map_json;
                 match = new Match(mainWindow, players_info_json, map_json);
                 interfaceManager->setMapName(match->getMapName());
+                interfaceManager->setObjectManager(match->getObjectManager());
                 state = GAME_STATE_MATCH;
                 break;
             }
@@ -85,6 +86,12 @@ void GameManager::handleEvent() {
             }
             case sf::Event::KeyPressed: {
                 switch (event.key.code) {
+                    case sf::Keyboard::Enter: {
+                        if (state == GAME_STATE_ENTER_LOGIN_PASSWORD)
+                            if (interfaceManager->login())
+                                state = GAME_STATE_MAIN_MENU;
+                        break;
+                    }
                     case sf::Keyboard::Escape: {
                         mainWindow.close();
                         std::cout << "Window closed by Escape\n";

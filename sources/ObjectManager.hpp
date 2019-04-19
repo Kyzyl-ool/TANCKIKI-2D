@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameObject.hpp"
+#include "Tank.hpp"
 
 
 /*!
@@ -20,11 +21,13 @@ private:
     std::vector <GameObject*> tanks;
     sf::RenderWindow& mainWindow;
 public:
-    const std::vector<GameObject *> &getTanks() const;
+    const std::vector<Tank *> & getTanks() const;
 
     const std::vector<GameObject *> &getObjects() const;
 
     ObjectManager(sf::RenderWindow &window);
+
+    virtual ~ObjectManager();
 
     void addGameObject(GameObject* obj);
     void removeGameObjectById(int gameObjectId);
