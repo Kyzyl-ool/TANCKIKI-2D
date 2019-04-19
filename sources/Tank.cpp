@@ -22,7 +22,8 @@ void Tank::setHealth(float health_) {
 }
 
 void Tank::update(float time) {
-    setPosition(x+speedX*time,y+speedY*time);
+    setPosition(x+speed*cosf(getRotation()/180*M_PI)*time,y+speed*sinf(getRotation()/180*M_PI)*time);
+    setRotation(getRotation()+speedAngle*time);
     if(health < 1) setAlive(false);
 }
 
@@ -36,28 +37,28 @@ void Tank::draw(sf::RenderWindow &window) {
 void Tank::collideResponse(GameObject *obj, float time) {
     if(obj->getType()==TANK) {
         health = health-0.04;
-        setPosition(x-speedX*time,y-speedY*time);
+        setPosition(x-speed*cosf(getRotation()/180*M_PI)*time,y-speed*sinf(getRotation()/180*M_PI)*time);
     }
     if(obj->getType()==BULLET && obj->getOwnerId() != gameObjectId) {
         health = health - ((Bullet*)obj)->getPower();
+        delete obj;
     }
 }
 
 void Tank::collideResponse(Match *match, float time) {
     health = health-0.02;
-    setPosition(x-speedX*time,y-speedY*time);
+    setPosition(x-speed*cosf(getRotation()/180*M_PI)*time,y-speed*sinf(getRotation()/180*M_PI)*time);
 }
 
 GameObject * Tank::shot(Bullet_t BULLET) {
     Bullet *bul;
     bul = new Bullet;
-    float angle= getRotation()/ 2 / (float) M_PI;
+    float angle= getRotation()/ 180* M_PI;
     bul->setOwnerId(gameObjectId);
     if(BULLET==LOWSHOT) {
         bul->setPosition(x + (sizeX + X_OF_LOW_BULLET)/2 * cosf(angle),
-                         y - (sizeY + Y_OF_LOW_BULLET)/2 * sinf(angle));
-        bul->setSpeed(SPEED_OF_LOW_BULLET * cosf(angle),
-                      SPEED_OF_LOW_BULLET * sinf(angle));
+                         y + (sizeY + Y_OF_LOW_BULLET)/2 * sinf(angle));
+        bul->setSpeed(SPEED_OF_LOW_BULLET);
         bul->setTexture("images/bullet_1.png");
         bul->setSprite(20,13,10,8);
         bul->setSizeSprite(X_OF_LOW_BULLET, Y_OF_LOW_BULLET);
@@ -65,7 +66,7 @@ GameObject * Tank::shot(Bullet_t BULLET) {
         bul->setPower(10);
     }
     bul->setAlive(true);
-    bul->setRotation(angle);
+    bul->setRotation(getRotation());
     return bul;
 }
 

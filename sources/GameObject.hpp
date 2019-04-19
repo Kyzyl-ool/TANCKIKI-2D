@@ -39,10 +39,11 @@ enum Tank_t {
 class GameObject
 {
 protected:
-    bool alive;             /// жив ли ещё объект
+    bool alive;            /// жив ли ещё объект
     float x, y;            /// координаты объекта на экране (центр)
     float sizeX, sizeY;    /// размеры
-    float speedX, speedY;  /// cкорость движения
+    float speed;           /// cкорость движения
+    float speedAngle;      /// угловая скорость в градусах
     sf::Sprite sprite;
     sf::Texture texture;
     int gameObjectId;       ///айди объекта
@@ -100,9 +101,7 @@ public:
 
     float getY() const;
 
-    float getSpeedX() const;
-
-    float getSpeedY() const;
+    float getSpeed() const;
 
     float getSizeX() const;
 
@@ -116,6 +115,8 @@ public:
 
     int getObjectId() const;
 
+    float getSpeedAngle() const;
+
     virtual const sf::Sprite &getSprite() const;
 
     virtual const sf::Texture &getTexture() const;
@@ -124,7 +125,7 @@ public:
 
     void setPosition(float x, float y);
 
-    void setSpeed(float spX, float spY);
+    void setSpeed(float sp);
 
     void setSizeObj(float sizeX, float sizeY);
 
@@ -143,6 +144,17 @@ public:
     void setOwnerId(int pid);
 
     void setObjectId(int id);
+
+    void setSpeedAngle(float apAngle);
+
+    float checkOrient(float X, float Y); ///определяет угол направления минус угол объекта, если положительный, то крутить против часовой стрелки
+
+    void rotateLeft();      // задаёт движение в левую сторону, срабатывает при нажатии влево
+    void rotateRight();     // задаёт движение в правую сторону, срабатывает при нажатии вправо
+    void stopRotate();      // задаёт прекращение поворота, срабатывает при отпускании клавиш влево/вправо
+    void go();              // задаёт движение вперёд, срабатывает при нажатии вперёд
+    void stop();            // задаёт прекращение движения, срабатывает при отпускании клавиш вперед/назад
+    void brake();           // задаёт торможение, срабатывает при нажатии назад
 };
 
 #endif //TANCHIKI_GAMEOBJECT_HPP

@@ -89,3 +89,9 @@ void GameManager::handleEvent() {
 
 
 }
+
+GameManager::~GameManager() {
+    delete(interfaceManager);
+    delete(eventManager);
+    delete(match);
+}
