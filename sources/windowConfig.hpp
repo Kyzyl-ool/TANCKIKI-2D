@@ -9,7 +9,7 @@
 const unsigned int WINDOW_HEIGHT = 720;
 const unsigned int WINDOW_WIDTH = 960;
 const char WINDOW_NAME[] = "TANCHIKI GAME";
-const float KTIME = 20;
+const float KTIME = 5;
 const float X_OF_LOW_BULLET = 20;
 const float Y_OF_LOW_BULLET = 10;
 const float SPEED_OF_LOW_BULLET = 0.8;
