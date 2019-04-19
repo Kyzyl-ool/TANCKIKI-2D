@@ -18,15 +18,6 @@ void WidgetsMenu::add_box(const tgui::EditBox::Ptr &box) {
     widgetsMenu.boxes.push_back(box);
 }
 
-//void WidgetsMenu::add_widget(const tgui::Widget::Ptr &widgetPtr, const sf::String &widgetName){
-//    widgetsMenu.widgets.push_back(widgetPtr);
-//}
-
-//void WidgetsMenu::get_widget() {
-//    for (auto i = 0; i < widgetsMenu.widgets.size(); i++)
-//        std::cout << i+1 << "-й виджет: " << widgetsMenu.widgets[i] << " is " << widgetsMenu.available[i] << std::endl;
-//}
-
 void WidgetsMenu::widget_remove() {
     widgetsMenu.widgets.clear();
 }

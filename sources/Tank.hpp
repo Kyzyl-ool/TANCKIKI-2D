@@ -11,11 +11,19 @@
 class Tank : public GameObject {
 protected:
     float health;
-
-    Bullet_t bulType;
+    float maxHealth;
 
 public:
-    Tank(float health);
+    float getMaxHealth() const;
+
+protected:
+    Bullet_t bulType;
+    std::string name = "Unnamed";
+public:
+    const std::string &getName() const;
+
+public:
+    Tank(float health, const std::string& the_name);
     void update(float time) override;
 
     void draw(sf::RenderWindow &window) override;

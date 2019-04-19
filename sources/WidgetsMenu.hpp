@@ -14,8 +14,6 @@ private:
 
     std::vector <tgui::Widget::Ptr> widgets;
 
-//    std::vector <bool> available;
-
     std::vector <tgui::EditBox::Ptr> boxes;
 
 public:
@@ -23,10 +21,6 @@ public:
     static void add_widget(const tgui::Widget::Ptr &widget);
 
     static void add_box(const tgui::EditBox::Ptr &box);
-
-//    static void add_widget(const tgui::Widget::Ptr& widgetPtr, const sf::String& widgetName = "");
-
-//    static void get_widget();
 
     static void widget_remove();
 
