@@ -49,6 +49,7 @@ protected:
     int gameObjectId;       ///айди объекта
     int ownerId;            ///айди владельца
     gameObject_t type;
+    float scale;
 public:
     gameObject_t getType() const;
     /// тип
@@ -109,6 +110,8 @@ public:
 
     float getRotation() const;
 
+    float getScale();
+
     bool isAlive() const;
 
     int getOwnerId() const;
@@ -144,6 +147,8 @@ public:
     void setObjectId(int id);
 
     void setSpeedAngle(float apAngle);
+
+    void setScale(float sc);
 
 //    float checkOrient(float X, float Y); ///определяет синус угла направления минус угол объекта, если положительный, то объект крутить по часовой стрелки
 

@@ -31,9 +31,10 @@ void Tank::update(float time) {
 
 
 void Tank::draw(sf::RenderWindow &window) {
-    if(isAlive())
-    window.draw(Tank::sprite);
-    window.draw(Tank::spriteTower);
+    if(isAlive()) {
+        window.draw(Tank::sprite);
+        window.draw(Tank::spriteTower);
+    }
 }
 
 
@@ -56,19 +57,18 @@ void Tank::collideResponse(Match *match, float time) {
 GameObject * Tank::shot(Bullet_t BULLET) {
     Bullet *bul;
     bul = new Bullet;
-    float angle= getRotation()/ 180* M_PI;
+    float angle= spriteTower.getRotation()/ 180* M_PI;
     bul->setOwnerId(gameObjectId);
     if(BULLET==LOWSHOT) {
-        bul->setPosition(x + (sizeX + X_OF_LOW_BULLET)/2 * cosf(angle),
-                         y + (sizeY + Y_OF_LOW_BULLET)/2 * sinf(angle));
+        bul->setPosition(x + sizeX*0.8 * cosf(angle), y + sizeX*0.8 * sinf(angle));
         bul->setSpeed(SPEED_OF_LOW_BULLET);
         bul->setTexture("images/bullet_1.png");
         bul->setSprite(20,13,10,8);
-        bul->setSizeSprite(X_OF_LOW_BULLET, Y_OF_LOW_BULLET);
+        bul->setSizeSprite(20, 12);
         bul->setPower(10);
     }
     bul->setAlive(true);
-    bul->setRotation(getRotation());
+    bul->setRotation(spriteTower.getRotation());
     return bul;
 }
 
@@ -84,9 +84,9 @@ void Tank::setSpriteTower(int X, int Y, int sizeX_, int sizeY_) {
     spriteTower.setTexture(texture);
     spriteTower.setTextureRect(sf::IntRect(X,Y,sizeX_,sizeY_));
     if(type == TANK) {
-        spriteTower.setOrigin(sizeX_ *24/80, sizeY_ / 2);
+        spriteTower.setOrigin(sizeX_ *24/90, sizeY_ * 22/50);
     }
-    spriteTower.setPosition(x+sizeX*24/70,y+sizeY*1/2);
+    spriteTower.setScale(1.8,1.8);
 }
 
 void Tank::setTextureTower(const char* address) {
@@ -96,8 +96,8 @@ void Tank::setTextureTower(const char* address) {
     textureTower.loadFromImage(image);
 }
 
-float Tank::checkOrient(float X, float Y) {
-    return (Y-y)*cosf(spriteTower.getRotation()/180*M_PI) - (X-x)*sinf(spriteTower.getRotation()/180*M_PI);
+int Tank::checkOrient(float X, float Y) {
+    return lround((Y-y)*cosf(spriteTower.getRotation()/180*M_PI) - (X-x)*sinf(spriteTower.getRotation()/180*M_PI)+0.5);
 }
 
 

@@ -35,7 +35,7 @@ public:
     void setSpriteTower(int X, int Y, int sizeX_, int sizeY_);
     void setSpeedTower(float angleSpeed);
     void setHealth(float healthScore);
-    float checkOrient(float X, float Y);
+    int checkOrient(float X, float Y);
 };
 
 

@@ -18,17 +18,12 @@ private:
     /// \todo Нужно придумать свойство, в котором будут храниться все игровые объекты.
     std::vector<GameObject*> objects;
     std::vector <GameObject*> tanks;
+    sf::RenderWindow& mainWindow;
 public:
     const std::vector<GameObject *> &getTanks() const;
 
-public:
     const std::vector<GameObject *> &getObjects() const;
 
-
-private:
-    sf::RenderWindow& mainWindow;
-
-public:
     ObjectManager(sf::RenderWindow &window);
 
     void addGameObject(GameObject* obj);
@@ -36,6 +31,7 @@ public:
     GameObject* getGameObjectById(int gameObjectId);
     const sf::RenderWindow &getMainWindow() const;
 
+    ~ObjectManager();
 };
 
 #endif //TANCHIKI_OBJECTMANAGER_HPP

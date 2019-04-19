@@ -16,7 +16,7 @@ void PhysicsManager::updateGameObjects(Match *match) {
     sf::Clock clock;
     float time = clock.getElapsedTime().asMicroseconds();
     clock.restart();
-    time = time / KTIME;
+    time = time*KTIME/60;
 
     for (const auto &object1 : objectManager->getObjects()) {
         object1->update(time);

@@ -37,7 +37,6 @@ float GameObject::getSizeY() const {
 }
 
 
-
 void GameObject::setSizeSprite(float sizeX_, float sizeY_) {
     GameObject::sprite.setScale(sizeX_/GameObject::sizeX, sizeY_/GameObject::sizeY);
     GameObject::sizeX=sizeX_;
@@ -51,8 +50,8 @@ GameObject::~GameObject() {
 bool GameObject::collideCheck(GameObject *obj) {
         sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
         sf::Sprite spr2 = obj->getSprite();
-        spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
-        spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
+        //spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
+        //spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
 
         if (Collision::CircleTest(spr1, spr2)) {
             return Collision::BoundingBoxTest(spr1, spr2);
@@ -130,7 +129,7 @@ void GameObject::setSprite(int X, int Y, int sizeX_, int sizeY_){
     GameObject::sprite.setTexture(GameObject::texture);
     GameObject::sprite.setTextureRect(sf::IntRect(X,Y,sizeX_,sizeY_));
     if(type == TANK) {
-        GameObject::sprite.setOrigin(sizeX_ *24/70, sizeY_ / 2);
+        GameObject::sprite.setOrigin(sizeX_ *26/70, sizeY_ / 2);
     }
 }
 
@@ -141,7 +140,7 @@ void GameObject::setTexture(sf::Texture texture_){
 void GameObject::setTexture(const char* address) {
     sf::Image image;
     image.loadFromFile(address);
-    image.createMaskFromColor(sf::Color::White);
+    //image.createMaskFromColor(sf::Color::White);
     GameObject::texture.loadFromImage(image);
 }
 
@@ -227,4 +226,12 @@ void GameObject::stop() {
 
 void GameObject::brake() {
     setSpeed(-TANK_VELOCITY);
+}
+
+float GameObject::getScale() {
+    return scale;
+}
+
+void GameObject::setScale(float sc) {
+    scale = sc;
 }
