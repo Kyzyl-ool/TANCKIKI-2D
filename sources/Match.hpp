@@ -13,6 +13,10 @@
 class Match {
 private:
     ObjectManager* objectManager;
+public:
+    ObjectManager *getObjectManager() const;
+
+private:
     GraphicsManager* graphicsManager;
     PhysicsManager* physicsManager;
     std::string mapName;

@@ -190,5 +190,9 @@ unsigned int Match::getAmountBlocksY() {
     return amount_of_blocks_y;
 }
 
+ObjectManager *Match::getObjectManager() const {
+    return objectManager;
+}
+
 
 

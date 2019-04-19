@@ -28,6 +28,10 @@ private:
     std::string errString;
     ObjectManager* objectManager;
     std::string mapName;
+public:
+    void setObjectManager(ObjectManager *objectManager);
+
+private:
     sf::Event event{};
     bool heathbarloaded = false;
 

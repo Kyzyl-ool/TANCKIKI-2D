@@ -29,6 +29,7 @@ void GameManager::runGame() {
                 ///@todo прочитать players_info_json, map_json;
                 match = new Match(mainWindow, players_info_json, map_json);
                 interfaceManager->setMapName(match->getMapName());
+                interfaceManager->setObjectManager(match->getObjectManager());
                 state = GAME_STATE_MATCH;
                 break;
             }

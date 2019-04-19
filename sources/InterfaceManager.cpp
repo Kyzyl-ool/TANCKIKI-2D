@@ -235,4 +235,8 @@ bool InterfaceManager::login() {
     return WidgetsMenu::login();
 }
 
+void InterfaceManager::setObjectManager(ObjectManager *objectManager) {
+    InterfaceManager::objectManager = objectManager;
+}
+
 
