@@ -31,6 +31,8 @@ private:
     sf::Event event{};
     bool heathbarloaded = false;
 
+    std::vector <tgui::ProgressBar::Ptr> healthTanks;
+
 
 public:
     void setMapName(const std::string &the_mapName);

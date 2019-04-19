@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameObject.hpp"
+#include "Tank.hpp"
 
 
 /*!
@@ -17,9 +18,9 @@ class ObjectManager
 private:
     /// \todo Нужно придумать свойство, в котором будут храниться все игровые объекты.
     std::vector<GameObject*> objects;
-    std::vector <GameObject*> tanks;
+    std::vector <Tank*> tanks;
 public:
-    const std::vector<GameObject *> &getTanks() const;
+    const std::vector<Tank *> & getTanks() const;
 
 public:
     const std::vector<GameObject *> &getObjects() const;

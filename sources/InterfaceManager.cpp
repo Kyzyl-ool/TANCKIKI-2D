@@ -5,6 +5,7 @@
 #include <iostream>
 #include "InterfaceManager.hpp"
 #include "WidgetsMenu.hpp"
+#include "Tank.hpp"
 
 
 InterfaceManager::InterfaceManager(
@@ -99,14 +100,7 @@ InterfaceManager::InterfaceManager(
 
         multiButton->connect("pressed", &InterfaceManager::signalHandler2, this);
         multiButton->connect("pressed", [&](){
-
             WidgetsMenu::change_ava(1);
-
-//            loginWindow->setVisible(true);
-//            singleButton->setEnabled(false);
-//            multiButton->setEnabled(false);
-//            settingsButton->setEnabled(false);
-//            quitButton->setEnabled(false);
         });
 
         quitButton->connect("pressed", &InterfaceManager::signalHandler3, this);
@@ -115,34 +109,17 @@ InterfaceManager::InterfaceManager(
         settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
 
         buttonLogin->connect("pressed", [&](){
-
             WidgetsMenu::login();
-
-//            InterfaceManager::login(editBoxUsername,
-//                                    editBoxPassword,
-//                                    loginWindow,
-//                                    singleButton,
-//                                    multiButton,
-//                                    settingsButton,
-//                                    quitButton);
         });
 
         buttonCancel->connect("pressed", [&](){
-
             WidgetsMenu::change_ava(0);
-
-//            loginWindow->setVisible(false);
-//            singleButton->setEnabled(true);
-//            multiButton->setEnabled(true);
-//            settingsButton->setEnabled(true);
-//            quitButton->setEnabled(true);
         });
 
         ///@todo check that login AND password were typed
         ///@todo Enter pressed -> LOGIN
     }
-    catch (const tgui::Exception& e)
-    {
+    catch (const tgui::Exception& e) {
         std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
         assert(0);
     }
@@ -151,14 +128,77 @@ InterfaceManager::InterfaceManager(
 void InterfaceManager::makeInterface() {
     switch (*state) {
         case GAME_STATE_MATCH: {
-            ///@todo проверить, что шкалы здоровья добавлены
+            ///@todo проверить, что шкалы здоровья добавлены if(heathbarloaded)
             ///@todo если да, то
-            ///@todo задать положение
+
+            auto tanks = objectManager->getTanks(); //вектор танков
+
+            if(heathbarloaded) {
+
+                for (auto i = 0; i < tanks.size(); i++) {
+
+                    auto h  = tanks[i]->getHealth();
+                    auto mh = tanks[i]->getMaxHealth();
+                    auto x  = tanks[i]->getX();
+                    auto y  = tanks[i]->getY();
+                    auto sx = tanks[i]->getSizeX();
+                    auto sy = tanks[i]->getSizeY();
+
+                    try {
+                        healthTanks[i]->setPosition(x, y - sy * 0.5);
+                        healthTanks[i]->setSize(sx, sy * 0.3);
+                        healthTanks[i]->setValue((unsigned int) (100 * h / mh));
+//                        progressBar->setInheritedOpacity(0.5);
+                        if(!tanks[i]->isAlive()) {
+                            healthTanks[i]->setVisible(false);
+                        }
+                    }
+                    catch (const tgui::Exception& e) {
+                        std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                        assert(0);
+                    }
+                }
+
+            }
+
+            ///@todo проверить жив ли танк, если нет, то SetVis = false;
+
+            ///@todo задать положение setPos
+            ///@todo обновить здоровье
+
 //                auto x = objectManager->getTanks()[0]->getX();
-//                auto y =objectManager->getTanks()[0]->getY();
-            ///@todo если нет, то
-            ///@todo добавить шкалы здоровья
-            heathbarloaded = true;
+//                auto y = objectManager->getTanks()[0]->getY();
+            ///@todo если нет, то create (вектор виджетов)
+            ///@todo добавить шкалы здоровья (try) ----> heathbarloaded = true;
+
+            else {
+
+                for (auto i : tanks) {
+
+                    auto h  = i->getHealth();
+                    auto mh = i->getMaxHealth();
+                    auto x  = i->getX();
+                    auto y  = i->getY();
+                    auto sx = i->getSizeX();
+                    auto sy = i->getSizeY();
+
+                    try {
+                        static auto progressBar = tgui::ProgressBar::create();
+                        progressBar->setPosition(x, y - sy * 0.5);
+                        progressBar->setSize(sx, sy * 0.3);
+                        progressBar->setValue((unsigned int) (100 * h / mh));
+//                        progressBar->setInheritedOpacity(0.5);
+                        gui.add(progressBar);
+                        healthTanks.push_back(progressBar);
+                    }
+                    catch (const tgui::Exception& e) {
+                        std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                        assert(0);
+                    }
+                }
+
+                heathbarloaded = true;
+            }
             break;
         }
     }
@@ -195,45 +235,4 @@ bool InterfaceManager::login() {
     return WidgetsMenu::login();
 }
 
-/*
-void InterfaceManager::login(const tgui::EditBox::Ptr &username,
-                             const tgui::EditBox::Ptr &password,
-                             const tgui::MessageBox::Ptr &window,
-                             const tgui::Button::Ptr &single,
-                             const tgui::Button::Ptr &multi,
-                             const tgui::Button::Ptr &set,
-                             const tgui::Button::Ptr &quit) {
-    if (username->getText().isEmpty() || password->getText().isEmpty()) {
-        if(username->getText().isEmpty()) {
-            username->setDefaultText("Enter the username");
-        }
-        if(password->getText().isEmpty()) {
-            password->setDefaultText("Enter the password");
-        }
-    }
-    else {
-        std::cout << "Username: " << username->getText().toAnsiString() << std::endl;
-        std::cout << "Password: " << password->getText().toAnsiString() << std::endl;
-        ///@todo сформировать http-запрос
-        std::string message("Authorization...");
-
-        window->setVisible(false);
-        single->setEnabled(true);
-        multi->setEnabled(true);
-        set->setEnabled(true);
-        quit->setEnabled(true);
-
-        ///@todo вызывать это непосредственно,
-        ///@todo то есть через класс.
-        ///@todo для этого сделать класс
-
-//        loginWindow->setVisible(false);
-//        singleButton->setEnabled(true);
-//        multiButton->setEnabled(true);
-//        settingsButton->setEnabled(true);
-//        quitButton->setEnabled(true);
-    }
-
-//    WidgetsMenu::get_widget();
-}*/
 

@@ -11,6 +11,12 @@
 class Tank : public GameObject {
 protected:
     float health;
+    float maxHealth;
+
+public:
+    float getMaxHealth() const;
+
+protected:
 
     Bullet_t bulType;
 
