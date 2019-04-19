@@ -43,7 +43,4 @@ ObjectManager::~ObjectManager() {
     for (const auto &item : objects) {
         delete(item);
     }
-    for (const auto &tank : tanks) {
-        delete(tank);
-    }
 }
