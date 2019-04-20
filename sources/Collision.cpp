@@ -1,6 +1,7 @@
 #include "Collision.hpp"
 #include <SFML/Graphics.hpp>
 #include <cmath>
+#include <iostream>
 
 /*
  * File:   Collision.cpp
@@ -142,22 +143,20 @@ bool Collision::CircleTest(const sf::Sprite& Object1, const sf::Sprite& Object2)
     //Simplest circle test possible
     //Distance between points <= sum of radius
 
-    float Radius1 = (Object1.getTextureRect().width + Object1.getTextureRect().height) / 2;
-    float Radius2 = (Object2.getTextureRect().width + Object2.getTextureRect().height) / 2;
+    float Radius1 = (Object1.getGlobalBounds().width + Object1.getGlobalBounds ().height) / 2;
+    float Radius2 = (Object2.getGlobalBounds ().width + Object2.getGlobalBounds ().height) / 2;
     float xd = Object1.getPosition().x - Object2.getPosition().x;
     float yd = Object1.getPosition().y - Object2.getPosition().y;
 
-    return sqrt(xd * xd + yd * yd) <= Radius1 + Radius2;
+    return xd * xd + yd * yd <= (Radius1 + Radius2)*(Radius1 + Radius2);
 }
-
 //From Rotated Rectangles Collision Detection, Oren Becker, 2001
 
 bool Collision::BoundingBoxTest(const sf::Sprite& Object1, const sf::Sprite& Object2) {
 
     sf::Vector2f A, B, C, BL, TR;
-    sf::Vector2f HalfSize1 = sf::Vector2f(Object1.getTextureRect().width, Object1.getTextureRect().height);
-    sf::Vector2f HalfSize2 = sf::Vector2f(Object2.getTextureRect().width, Object2.getTextureRect().height);
-
+    sf::Vector2f HalfSize1 = sf::Vector2f(Object1.getLocalBounds().width*Object1.getScale().x, Object1.getLocalBounds().height*Object1.getScale().y);
+    sf::Vector2f HalfSize2 = sf::Vector2f(Object2.getLocalBounds().width*Object2.getScale().x, Object2.getLocalBounds().height*Object2.getScale().y);
     //For somereason the Vector2d divide by operator
     //was misbehaving
     //Doing it manually

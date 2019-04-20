@@ -38,12 +38,12 @@ void GameManager::runGame() {
             }
             case GAME_STATE_MATCH_PAUSE:
             case GAME_STATE_MATCH: {
-//                sf::Clock clock;
-//                float time = clock.getElapsedTime().asMicroseconds();
-//                clock.restart();
-//                frequency += time;
-//                if(frequency < KTIME) continue;
-//                else frequency = 0;
+                sf::Clock clock;
+                float time = clock.getElapsedTime().asMicroseconds();
+                clock.restart();
+                frequency += time;
+                if(frequency < KTIME) continue;
+                else frequency = frequency - KTIME;
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
                 if (!message.empty()) match->processMessage(message);
