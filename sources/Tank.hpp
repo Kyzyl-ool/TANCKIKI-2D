@@ -15,7 +15,8 @@ protected:
     sf::Sprite spriteTower;
     float speedTower;
     float maxHealth;
-
+    sf::Texture textBoom;
+    sf::Sprite sprBoom;
 public:
     float getMaxHealth() const;
 
@@ -39,6 +40,8 @@ public:
 
     float getHealth();
     float getSpeedTower();
+    void setTextBoom(const char* address);
+    void setSprBoom(int X, int Y, int sizeX, int sizeY);
 
     void setTextureTower(const char* address);
     void setSpriteTower(int X, int Y, int sizeX_, int sizeY_);

@@ -48,30 +48,31 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
-        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
-        sf::Sprite spr2 = obj->getSprite();
-        //spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
-        //spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
-
-        if (Collision::CircleTest(spr1, spr2)) {
-            return Collision::BoundingBoxTest(spr1, spr2);
+        if (Collision::CircleTest(sprite, obj->getSprite())) {
+            return Collision::BoundingBoxTest(sprite, obj->getSprite());
         }
     return false;
 }
 
 bool GameObject::collideCheck(Match *match) {
     block_t *blocks = match->getBlocks();
-    int jj = (int) (x - sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int ii = (int) (y - sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-    int n = (int) (x + sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int m = (int) (y + sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-    std::vector<int> vec;
+    int sizeBlx = WINDOW_WIDTH/match->getAmountBlocksX();
+    int sizeBly = WINDOW_HEIGHT/match->getAmountBlocksY();
+
+    int jj =  (int)(x - (sizeX+sizeY)/2)/sizeBlx;
+    int ii = (int)(y - (sizeX+sizeY)/2)/sizeBly;
+    int n = (int)(x + (sizeX+sizeY)/2)/sizeBlx;
+    int m = (int)(y + (sizeX+sizeY)/2)/sizeBly;
 
     for (int i = ii; i < m+1; ++i) {
         for (int j = jj; j < n+1; ++j) {
             if (i * match->getAmountBlocksX() + j < match->getAmountBlocksX()*match->getAmountBlocksY() &&
             blocks[i * match->getAmountBlocksX() + j] == BL_0) {
-                return true;
+                sf::Sprite spr;
+                spr.setTextureRect(sf::IntRect(0, 0, sizeBlx, sizeBly));
+                spr.setPosition((j+0.5)*sizeBlx, (i+0.5)*sizeBly);
+                if(Collision::BoundingBoxTest(spr, sprite))
+                    return true;
                 }
             }
         }
@@ -129,8 +130,9 @@ void GameObject::setSprite(int X, int Y, int sizeX_, int sizeY_){
     GameObject::sprite.setTexture(GameObject::texture);
     GameObject::sprite.setTextureRect(sf::IntRect(X,Y,sizeX_,sizeY_));
     if(type == TANK) {
-        GameObject::sprite.setOrigin(sizeX_ *26/70, sizeY_ / 2);
+        GameObject::sprite.setOrigin(sizeX_ *1/2, sizeY_ / 2);
     }
+    else sprite.setOrigin(sizeX_ *1/2, sizeY_ / 2);
 }
 
 void GameObject::setTexture(sf::Texture texture_){
@@ -140,7 +142,7 @@ void GameObject::setTexture(sf::Texture texture_){
 void GameObject::setTexture(const char* address) {
     sf::Image image;
     image.loadFromFile(address);
-    //image.createMaskFromColor(sf::Color::White);
+    image.createMaskFromColor(sf::Color::White);
     GameObject::texture.loadFromImage(image);
 }
 

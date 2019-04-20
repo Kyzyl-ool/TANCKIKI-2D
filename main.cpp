@@ -7,6 +7,7 @@
 
 int main() {
     sf::RenderWindow mainWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), WINDOW_NAME);
+    mainWindow.setFramerateLimit(60);
     tgui::Gui gui(mainWindow);
     sf::Event event{};
     GameManager* Game = new GameManager(mainWindow, gui, event);

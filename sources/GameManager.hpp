@@ -31,6 +31,7 @@ private:
     gameState_t state;
     sf::Event& event;
     std::string playerName;
+    sf::Clock clock;
 
 public:
     GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event);

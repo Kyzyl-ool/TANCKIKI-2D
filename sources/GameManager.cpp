@@ -38,12 +38,6 @@ void GameManager::runGame() {
             }
             case GAME_STATE_MATCH_PAUSE:
             case GAME_STATE_MATCH: {
-//                sf::Clock clock;
-//                float time = clock.getElapsedTime().asMicroseconds();
-//                clock.restart();
-//                frequency += time;
-//                if(frequency < KTIME) continue;
-//                else frequency = 0;
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
                 if (!message.empty()) match->processMessage(message);
@@ -56,7 +50,10 @@ void GameManager::runGame() {
                         tmp->setSpeedTower(-TANK_TOWER_SPEED);
                 if(sinus == 0)
                     tmp->setSpeedTower(0);
-                match->updateMatch();
+
+                float time = clock.getElapsedTime().asMilliseconds();
+                clock.restart();
+                match->updateMatch(time);
                 match->drawMatch();
                 break;
             }

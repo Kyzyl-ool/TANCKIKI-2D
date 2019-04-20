@@ -75,32 +75,12 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     ///@todo узнать свой player_id (подумать, кто будет назначать player_id)
 
     Tank *tank2 = new Tank(50, "ChickenKiller");
-    tank2->setTexture("images/Htanks.png");
-    tank2->setSprite(96,276,74,50);  //задает вид спрайта на основе уже имеющейся тестуры
-    tank2->setPosition(300, 300);
-    tank2->setSizeSprite(140,100);
-    tank2->setTextureTower("images/Htanks.png");
-    tank2->setSpriteTower(96,328,90,40);
-    tank2->setSpriteTower(96,328,90,40);
-    tank2->setAlive(true);
+    tank2->setPosition(100, 200);
     tank2->setObjectId(1);
     objectManager->addGameObject(tank2);
 
-    for(int p=4; p<5;++p) {
-        GameObject *bul = tank2->shot(LOWSHOT);
-        bul->setAlive(true);
-        bul->setObjectId(p);
-        objectManager->addGameObject(bul);
-    }
-
-    Tank *tank1 = new Tank(50);
-    tank1->setTexture("images/Htanks.png");
-    tank1->setSprite(96,370,74,50);  //задает вид спрайта на основе уже имеющейся тестуры
-    tank1->setPosition(300, 100);
-    tank1->setSizeSprite(140,100);
-    tank1->setTextureTower("images/Htanks.png");
-    tank1->setSpriteTower(96,422,90,40);
-    tank1->setAlive(true);
+    Tank *tank1 = new Tank(50, "ChickenKiller");
+    tank1->setPosition(300, 300);
     tank1->setObjectId(3);
     objectManager->addGameObject(tank1);
 }
@@ -110,8 +90,8 @@ void Match::drawMatch() {
     graphicsManager->drawGameObjects();
 }
 
-void Match::updateMatch() {
-    physicsManager->updateGameObjects(this);
+void Match::updateMatch(float time) {
+    physicsManager->updateGameObjects(this, time);
 }
 
 const std::string &Match::getMapName() const {
@@ -198,7 +178,7 @@ Match::~Match() {
     delete(graphicsManager);
     delete(physicsManager);
     delete(objectManager);
-    delete blocks;
+    delete(blocks);
 }
 
 
