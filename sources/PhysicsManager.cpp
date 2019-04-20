@@ -21,9 +21,7 @@ void PhysicsManager::updateGameObjects(Match *match, float time) {
                 object1->collideResponse(object2, time);
                 object2->collideResponse(object1, time);
             }
-
         }
-
         if(object1->collideCheck(match)) {
             object1->collideResponse(match, time);
         }
