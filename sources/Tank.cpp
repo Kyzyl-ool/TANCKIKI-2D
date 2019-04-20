@@ -59,9 +59,10 @@ void Tank::draw(sf::RenderWindow &window) {
 
 void Tank::collideResponse(GameObject *obj, float time) {
     if(obj->getType()==TANK) {
+        float kk = 1.002;
         health = health-0;
-        setPosition(x-1.002*speed*cosf(getRotation()/180*M_PI)*time,y-1.002*speed*sinf(getRotation()/180*M_PI)*time);
-        setRotation(getRotation()-1.002*speedAngle*time);
+        setPosition(x-kk*speed*cosf(getRotation()/180*M_PI)*time,y-kk*speed*sinf(getRotation()/180*M_PI)*time);
+        setRotation(getRotation()-kk*speedAngle*time);
     }
     if(obj->getType()==BULLET && obj->getOwnerId() != gameObjectId) {
         health = health - ((Bullet*)obj)->getPower();
@@ -69,9 +70,10 @@ void Tank::collideResponse(GameObject *obj, float time) {
 }
 
 void Tank::collideResponse(Match *match, float time) {
+    float kk = 1.002;
     health = health-0.002;
-    setPosition(x-1.002*speed*cosf(getRotation()/180*M_PI)*time,y-1.002*speed*sinf(getRotation()/180*M_PI)*time);
-    setRotation(getRotation()-1.002*speedAngle*time);
+    setPosition(x-kk*speed*cosf(getRotation()/180*M_PI)*time,y-kk*speed*sinf(getRotation()/180*M_PI)*time);
+    setRotation(getRotation()-kk*speedAngle*time);
 }
 
 GameObject * Tank::shot(Bullet_t BULLET) {

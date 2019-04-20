@@ -51,8 +51,7 @@ void GameManager::runGame() {
                 if(sinus == 0)
                     tmp->setSpeedTower(0);
 
-                sf::Clock clock;
-                float time = clock.getElapsedTime().asMicroseconds();
+                float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
                 match->updateMatch(time);
                 match->drawMatch();
