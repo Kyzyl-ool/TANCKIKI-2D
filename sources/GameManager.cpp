@@ -23,7 +23,6 @@ void GameManager::runGame() {
 
         interfaceManager->makeInterface();
         if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
-
         mainWindow.display();
 
         switch (state) {
@@ -46,7 +45,6 @@ void GameManager::runGame() {
 //                if(frequency < KTIME) continue;
 //                else frequency = 0;
                 mainWindow.clear();
-
                 std::string message = eventManager->getMessageFromGameObjects();
                 if (!message.empty()) match->processMessage(message);
                 Tank* tmp = (Tank* )match->getObjectManager()->getGameObjectById(0);
