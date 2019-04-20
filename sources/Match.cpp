@@ -90,8 +90,8 @@ void Match::drawMatch() {
     graphicsManager->drawGameObjects();
 }
 
-void Match::updateMatch() {
-    physicsManager->updateGameObjects(this);
+void Match::updateMatch(float time) {
+    physicsManager->updateGameObjects(this, time);
 }
 
 const std::string &Match::getMapName() const {
@@ -178,7 +178,7 @@ Match::~Match() {
     delete(graphicsManager);
     delete(physicsManager);
     delete(objectManager);
-    delete blocks;
+    delete(blocks);
 }
 
 

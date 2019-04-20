@@ -12,9 +12,7 @@ PhysicsManager::PhysicsManager(ObjectManager *theObjectManager) {
     objectManager = theObjectManager;
 }
 
-void PhysicsManager::updateGameObjects(Match *match) {
-    float time = KTIME;
-
+void PhysicsManager::updateGameObjects(Match *match, float time) {
     for (const auto &object1 : objectManager->getObjects()) {
         object1->update(time);
         for (const auto &object2 : objectManager->getObjects()) {
@@ -31,3 +29,4 @@ void PhysicsManager::updateGameObjects(Match *match) {
         }
     }
 }
+

@@ -36,7 +36,7 @@ public:
     ~Match();
 
     void drawMatch();
-    void updateMatch();
+    void updateMatch(float time);
     void processMessage(std::string message);
     const std::string &getMapName() const;
     void drawMap(sf::RenderWindow &window);
