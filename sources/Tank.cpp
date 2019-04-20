@@ -8,7 +8,7 @@
 #include <iostream>
 
 
-Tank::Tank(float health) : GameObject::GameObject(), health(health) {
+Tank::Tank(float health, const std::string& the_name) : GameObject::GameObject(), health(health), maxHealth(health) {
     Tank::type=TANK;
 }
 
@@ -98,6 +98,14 @@ void Tank::setTextureTower(const char* address) {
 
 int Tank::checkOrient(float X, float Y) {
     return lround((Y-y)*cosf(spriteTower.getRotation()/180*M_PI) - (X-x)*sinf(spriteTower.getRotation()/180*M_PI)+0.5);
+}
+
+float Tank::getMaxHealth() const {
+    return maxHealth;
+}
+
+const std::string &Tank::getName() const {
+    return name;
 }
 
 

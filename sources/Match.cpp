@@ -74,7 +74,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
 
     ///@todo узнать свой player_id (подумать, кто будет назначать player_id)
 
-    Tank *tank2 = new Tank(50);
+    Tank *tank2 = new Tank(50, "ChickenKiller");
     tank2->setTexture("images/Htanks.png");
     tank2->setSprite(96,276,74,50);  //задает вид спрайта на основе уже имеющейся тестуры
     tank2->setPosition(300, 300);
@@ -152,10 +152,6 @@ void Match::processMessage(std::string message) {
             objectManager->getGameObjectById(0)->stop();
             break;
         }
-        case GAMEOBJECT_MESSAGE_SHOOT: {
-            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
-            break;
-        }
     }
     ///@todo обработать message
 }
@@ -189,14 +185,15 @@ unsigned int Match::getAmountBlocksY() {
     return amount_of_blocks_y;
 }
 
+ObjectManager *Match::getObjectManager() const {
+    return objectManager;
+}
+
 Match::~Match() {
-    delete(blocks);
     delete(graphicsManager);
     delete(physicsManager);
     delete(objectManager);
-    for(const auto &object : objectManager->getObjects()) {
-        delete(object);
-    }
+    delete blocks;
 }
 
 ObjectManager *Match::getObjectManager() const {

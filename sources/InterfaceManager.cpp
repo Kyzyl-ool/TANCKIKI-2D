@@ -4,6 +4,8 @@
 
 #include <iostream>
 #include "InterfaceManager.hpp"
+#include "WidgetsMenu.hpp"
+#include "Tank.hpp"
 
 
 InterfaceManager::InterfaceManager(
@@ -26,24 +28,28 @@ InterfaceManager::InterfaceManager(
         singleButton->setPosition({"25%", "10%"});
         singleButton->setTextSize(0);
         gui.add(singleButton);
+        WidgetsMenu::add_widget(singleButton);
 
         static auto multiButton = tgui::Button::create("Multiplayer"); //кнопка Multiplayer
         multiButton->setSize({"50%", "16.67%"});
         multiButton->setPosition({"25%", "30%"});
         multiButton->setTextSize(0);
         gui.add(multiButton);
+        WidgetsMenu::add_widget(multiButton);
 
         static auto settingsButton = tgui::Button::create("Settings"); //кнопка Settings
         settingsButton->setSize({"50%", "16.67%"});
         settingsButton->setPosition({"25%", "50%"});
         settingsButton->setTextSize(0);
         gui.add(settingsButton);
+        WidgetsMenu::add_widget(settingsButton);
 
         static auto quitButton = tgui::Button::create("Exit"); //кнопка Exit
         quitButton->setSize({"50%", "16.67%"});
         quitButton->setPosition({"25%", "70%"});
         quitButton->setTextSize(0);
         gui.add(quitButton);
+        WidgetsMenu::add_widget(quitButton);
 
         static auto loginWindow = tgui::MessageBox::create();
         loginWindow->setSize({"40%", "30%"});
@@ -51,9 +57,8 @@ InterfaceManager::InterfaceManager(
         loginWindow->setTitle("Please Login");
         loginWindow->setVisible(false);
         loginWindow->setPositionLocked(true);
-//            loginWindow->setMaximumSize(fictButton->getSize()); // как эту функцию юзать?
-//            loginWindow->setMinimumSize(fictButton->getSize());
         gui.add(loginWindow);
+        WidgetsMenu::add_widget(loginWindow);
 
         static auto editBoxUsername = tgui::EditBox::create();
         editBoxUsername->setSize({"66.67%", "12.5%"});
@@ -61,6 +66,7 @@ InterfaceManager::InterfaceManager(
         editBoxUsername->setDefaultText("Username");
         editBoxUsername->setTextSize(0);
         loginWindow->add(editBoxUsername);
+        WidgetsMenu::add_box(editBoxUsername);
 
         static auto editBoxPassword = tgui::EditBox::copy(editBoxUsername);
         editBoxPassword->setPosition({"16.67%", "41.6%"});
@@ -68,6 +74,7 @@ InterfaceManager::InterfaceManager(
         editBoxPassword->setDefaultText("Password");
         editBoxPassword->setTextSize(0);
         loginWindow->add(editBoxPassword);
+        WidgetsMenu::add_box(editBoxPassword);
 
         static auto buttonLogin = tgui::Button::create("Login");
         buttonLogin->setSize({"20%", "16.67%"});
@@ -88,15 +95,12 @@ InterfaceManager::InterfaceManager(
             gui.remove(multiButton);
             gui.remove(quitButton);
             gui.remove(settingsButton);
+            WidgetsMenu::widget_remove();
         });
 
         multiButton->connect("pressed", &InterfaceManager::signalHandler2, this);
         multiButton->connect("pressed", [&](){
-            loginWindow->setVisible(true);
-            singleButton->setEnabled(false);
-            multiButton->setEnabled(false);
-            settingsButton->setEnabled(false);
-            quitButton->setEnabled(false);
+            WidgetsMenu::change_ava(1);
         });
 
         quitButton->connect("pressed", &InterfaceManager::signalHandler3, this);
@@ -104,25 +108,18 @@ InterfaceManager::InterfaceManager(
 
         settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
 
-        buttonLogin->connect("pressed", &InterfaceManager::login, editBoxUsername, editBoxPassword);
         buttonLogin->connect("pressed", [&](){
-            loginWindow->setVisible(false);
-            singleButton->setEnabled(true);
-            multiButton->setEnabled(true);
-            settingsButton->setEnabled(true);
-            quitButton->setEnabled(true);
+            WidgetsMenu::login();
         });
 
         buttonCancel->connect("pressed", [&](){
-            loginWindow->setVisible(false);
-            singleButton->setEnabled(true);
-            multiButton->setEnabled(true);
-            settingsButton->setEnabled(true);
-            quitButton->setEnabled(true);
+            WidgetsMenu::change_ava(0);
         });
+
+        ///@todo check that login AND password were typed
+        ///@todo Enter pressed -> LOGIN
     }
-    catch (const tgui::Exception& e)
-    {
+    catch (const tgui::Exception& e) {
         std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
         assert(0);
     }
@@ -131,14 +128,58 @@ InterfaceManager::InterfaceManager(
 void InterfaceManager::makeInterface() {
     switch (*state) {
         case GAME_STATE_MATCH: {
-            ///@todo проверить, что шкалы здоровья добавлены
-            ///@todo если да, то
-            ///@todo задать положение
-//                auto x = objectManager->getTanks()[0]->getX();
-//                auto y =objectManager->getTanks()[0]->getY();
-            ///@todo если нет, то
-            ///@todo добавить шкалы здоровья
-            heathbarloaded = true;
+            ///@todo проверить, что имена добавлены
+            ///@todo если нет, добавить
+
+            ///@todo показывать, если нажата Alt (Ctrl)
+
+
+            auto tanks = objectManager->getTanks(); //вектор танков
+
+            if(heathbarloaded) {
+
+                for (auto i = 0; i < tanks.size(); i++) {
+
+                    auto h  = tanks[i]->getHealth();
+                    auto mh = tanks[i]->getMaxHealth();
+                    auto x  = tanks[i]->getX();
+                    auto y  = tanks[i]->getY();
+                    auto sx = tanks[i]->getSizeX();
+                    auto sy = tanks[i]->getSizeY();
+
+                    auto name = tanks[i]->getName();
+
+
+
+                    try {
+                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy);
+                        healthTanks[i]->setSize(sx, sy * 0.3);
+                        healthTanks[i]->setValue((unsigned int) (100 * h / mh));
+//                        progressBar->setInheritedOpacity(0.5);
+                        if(!tanks[i]->isAlive()) {
+                            healthTanks[i]->setVisible(false);
+                        }
+                    }
+                    catch (const tgui::Exception& e) {
+                        std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                        assert(0);
+                    }
+                }
+            }
+            else {
+                for (auto i = 0; i < tanks.size(); i++) {
+
+                    try {
+                        healthTanks.push_back(tgui::ProgressBar::create());
+                        gui.add(healthTanks[i]);
+                    }
+                    catch (const tgui::Exception& e) {
+                        std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                        assert(0);
+                    }
+                }
+                heathbarloaded = true;
+            }
             break;
         }
     }
@@ -171,9 +212,12 @@ void InterfaceManager::setState(gameState_t gameState) {
     *InterfaceManager::state = gameState;
 }
 
-void InterfaceManager::login(const tgui::EditBox::Ptr &username, const tgui::EditBox::Ptr& password) {
-    std::cout << "Username: " << username->getText().toAnsiString() << std::endl;
-    std::cout << "Password: " << password->getText().toAnsiString() << std::endl;
-    ///@todo сформировать http-запрос
-    std::string message("Authorization...");
+bool InterfaceManager::login() {
+    return WidgetsMenu::login();
 }
+
+void InterfaceManager::setObjectManager(ObjectManager *objectManager) {
+    InterfaceManager::objectManager = objectManager;
+}
+
+
