@@ -8,9 +8,9 @@
 #include <iostream>
 
 
-Tank::Tank(float health, const std::string& the_name) : GameObject::GameObject(), health(health), maxHealth(health) {
+Tank::Tank(float health, const std::string& the_player_name) : GameObject::GameObject(), health(health), maxHealth(health) {
     Tank::type=TANK;
-    if(the_name=="ChickenKiller") {
+    if(the_player_name=="ChickenKiller") {
         setTexture("images/Htanks.png");
         setSprite(297,108,95,53);
         setSizeSprite(90,50);
@@ -129,7 +129,7 @@ float Tank::getMaxHealth() const {
 }
 
 const std::string &Tank::getName() const {
-    return name;
+    return playerName;
 }
 
 
