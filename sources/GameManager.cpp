@@ -1,6 +1,8 @@
 #include "GameManager.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "Tank.hpp"
+#include <cmath>
 
 GameManager::GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event) :
 mainWindow(the_mainWindow),
@@ -15,16 +17,17 @@ event(the_event)
 
 void GameManager::runGame() {
     mainWindow.setKeyRepeatEnabled(false);
+    float frequency(0);
+
     while (mainWindow.isOpen()) {
 
         interfaceManager->makeInterface();
         if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
-
         mainWindow.display();
-        mainWindow.clear();
 
         switch (state) {
             case GAME_STATE_CREATE_MATCH: {
+                mainWindow.clear();
                 std::string players_info_json, map_json;
                 ///@todo прочитать players_info_json, map_json;
                 match = new Match(mainWindow, players_info_json, map_json);
@@ -35,13 +38,30 @@ void GameManager::runGame() {
             }
             case GAME_STATE_MATCH_PAUSE:
             case GAME_STATE_MATCH: {
+//                sf::Clock clock;
+//                float time = clock.getElapsedTime().asMicroseconds();
+//                clock.restart();
+//                frequency += time;
+//                if(frequency < KTIME) continue;
+//                else frequency = 0;
+                mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
                 if (!message.empty()) match->processMessage(message);
+                Tank* tmp = (Tank* )match->getObjectManager()->getGameObjectById(0);
+                auto tmp1 = sf::Mouse::getPosition(mainWindow);
+                int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+                if(sinus>0)
+                        tmp->setSpeedTower(TANK_TOWER_SPEED);
+                else
+                        tmp->setSpeedTower(-TANK_TOWER_SPEED);
+                if(sinus == 0)
+                    tmp->setSpeedTower(0);
                 match->updateMatch();
                 match->drawMatch();
                 break;
             }
             default: {
+                mainWindow.clear();
                 break;
             }
         }

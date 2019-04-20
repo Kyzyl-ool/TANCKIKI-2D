@@ -36,13 +36,11 @@ float GameObject::getSizeY() const {
     return sizeY;
 }
 
-void GameObject::setSizeObj(float sizeX_, float sizeY_) {
-    GameObject::sizeX=sizeX_;
-    GameObject::sizeY=sizeY_;
-}
 
 void GameObject::setSizeSprite(float sizeX_, float sizeY_) {
     GameObject::sprite.setScale(sizeX_/GameObject::sizeX, sizeY_/GameObject::sizeY);
+    GameObject::sizeX=sizeX_;
+    GameObject::sizeY=sizeY_;
 }
 
 GameObject::~GameObject() {
@@ -52,8 +50,8 @@ GameObject::~GameObject() {
 bool GameObject::collideCheck(GameObject *obj) {
         sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
         sf::Sprite spr2 = obj->getSprite();
-        spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
-        spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
+        //spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
+        //spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
 
         if (Collision::CircleTest(spr1, spr2)) {
             return Collision::BoundingBoxTest(spr1, spr2);
@@ -130,7 +128,9 @@ void GameObject::setSprite(int X, int Y, int sizeX_, int sizeY_){
     GameObject::sizeY=sizeY_;
     GameObject::sprite.setTexture(GameObject::texture);
     GameObject::sprite.setTextureRect(sf::IntRect(X,Y,sizeX_,sizeY_));
-    GameObject::sprite.setOrigin(sizeX_/2,sizeY_/2);
+    if(type == TANK) {
+        GameObject::sprite.setOrigin(sizeX_ *26/70, sizeY_ / 2);
+    }
 }
 
 void GameObject::setTexture(sf::Texture texture_){
@@ -140,6 +140,7 @@ void GameObject::setTexture(sf::Texture texture_){
 void GameObject::setTexture(const char* address) {
     sf::Image image;
     image.loadFromFile(address);
+    //image.createMaskFromColor(sf::Color::White);
     GameObject::texture.loadFromImage(image);
 }
 
@@ -195,13 +196,42 @@ void GameObject::setSpeedAngle(float spAngle) {
     speedAngle = spAngle;
 }
 
-float GameObject::checkOrient(float X, float Y) { ///определяет угол направления минус угол объекта, если положительный, то крутить против часовой стрелки
-    float phi;
-    if(X>x) phi = atanf((Y-y)/(X-x))/M_PI*180;
-    else phi = -atanf((Y-y)/(X-x))/M_PI*180;
-    if(phi<0) phi = phi + 360;
-    return phi-getRotation();
-}
+
 
 void GameObject::rotateLeft() {
+    if(type == TANK) {
+        setSpeedAngle(-TANK_ANGLE_SPEED);
+    }
+}
+
+void GameObject::rotateRight() {
+    if(type == TANK) {
+        setSpeedAngle(TANK_ANGLE_SPEED);
+    }
+}
+
+void GameObject::stopRotate() {
+    setSpeedAngle(0);
+}
+
+void GameObject::go() {
+    if(type == TANK) {
+        setSpeed(TANK_VELOCITY);
+    }
+}
+
+void GameObject::stop() {
+    setSpeed(0);
+}
+
+void GameObject::brake() {
+    setSpeed(-TANK_VELOCITY);
+}
+
+float GameObject::getScale() {
+    return scale;
+}
+
+void GameObject::setScale(float sc) {
+    scale = sc;
 }
