@@ -81,6 +81,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     tank2->setSizeSprite(140,100);
     tank2->setTextureTower("images/Htanks.png");
     tank2->setSpriteTower(96,328,90,40);
+    tank2->setSpriteTower(96,328,90,40);
     tank2->setAlive(true);
     tank2->setObjectId(1);
     objectManager->addGameObject(tank2);
