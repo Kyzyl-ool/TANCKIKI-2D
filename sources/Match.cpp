@@ -196,9 +196,4 @@ Match::~Match() {
     delete blocks;
 }
 
-ObjectManager *Match::getObjectManager() const {
-    return objectManager;
-}
-
-
 
