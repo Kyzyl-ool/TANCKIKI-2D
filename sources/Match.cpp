@@ -153,6 +153,10 @@ void Match::processMessage(std::string message) {
             objectManager->getGameObjectById(0)->stop();
             break;
         }
+        case GAMEOBJECT_MESSAGE_SHOOT: {
+            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
+            break;
+        }
     }
     ///@todo обработать message
 }
