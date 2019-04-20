@@ -61,6 +61,14 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     physicsManager = new PhysicsManager(objectManager);
 
     ///@todo распарсить players_info_json
+    /*
+     * {
+     * "amount_of_players": 3,
+     * "players_names": ["Maxim", "Artem", "Kezhik"]
+     * }
+     */
+
+
     amount_of_players = 3;
     players_names = std::vector <std::string> (amount_of_players);
     ///@todo заполнить players_names
