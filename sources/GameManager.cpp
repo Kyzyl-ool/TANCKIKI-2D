@@ -3,6 +3,7 @@
 #include <iostream>
 #include "Tank.hpp"
 #include <cmath>
+#include <fstream>
 
 GameManager::GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event,
                          NetworkManager &the_networkmanager) :
@@ -30,8 +31,23 @@ void GameManager::runGame() {
         switch (state) {
             case GAME_STATE_CREATE_MATCH: {
                 mainWindow.clear();
-                std::string players_info_json, map_json;
                 ///@todo прочитать players_info_json, map_json;
+                std::string line, players_info_json, map_json;
+                std::ifstream mapfile (".\\sources\\json\\map1.txt");
+                std::ifstream playerInfofile (".\\sources\\json\\players_info.txt");
+                if (mapfile.is_open())  {
+                    while (getline(mapfile,line))  {
+                        map_json = map_json + line + '\n';
+                    }
+                    mapfile.close();
+                }
+                if (playerInfofile.is_open())  {
+                    while (getline(playerInfofile,line))  {
+                        players_info_json = players_info_json + line + '\n';
+                    }
+                    playerInfofile.close();
+                }
+
                 match = new Match(mainWindow, players_info_json, map_json);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());

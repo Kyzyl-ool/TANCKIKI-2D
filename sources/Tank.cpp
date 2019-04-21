@@ -131,7 +131,7 @@ void Tank::draw(sf::RenderWindow &window) {
 
 void Tank::collideResponse(GameObject *obj, float time) {
     if(obj->getType()==TANK) {
-        health = health-0.03*time;
+        health = health-DAMAGE_OF_COLLISION*time;
         setRotation(getRotation()-speedAngle*time);
         setPosition(x-speed*cosf(getRotation()/180*M_PI)*time,y-speed*sinf(getRotation()/180*M_PI)*time);
         spriteTower.setPosition(x,y);
@@ -142,7 +142,7 @@ void Tank::collideResponse(GameObject *obj, float time) {
 }
 
 void Tank::collideResponse(Match *match, float time) {
-    health = health-0.03*time;
+    health = health-DAMAGE_OF_COLLISION*time;
     setRotation(getRotation()-speedAngle*time);
     setPosition(x-speed*cosf(getRotation()/180*M_PI)*time,y-speed*sinf(getRotation()/180*M_PI)*time);
     spriteTower.setPosition(x,y);

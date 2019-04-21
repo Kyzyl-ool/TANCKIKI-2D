@@ -15,19 +15,28 @@ using json = nlohmann::json;
 
 
 Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json) {
-    ///@todo распарсить map_json
-    mapName = "MAP_NAME";
-    amount_of_blocks_x = 30;
-    amount_of_blocks_y = 30;;
+    json map_j = json::parse(map_json);
+    mapName = map_j["mapName"];
+    amount_of_blocks_x = map_j["amount_of_blocks_x"];
+    amount_of_blocks_y = map_j["amount_of_blocks_y"];
+    /*
+     * {
+     * "mapName": "Ugaagga",
+     * "amount_of_blocks_x": 30,
+     * "amount_of_blocks_y": 30,
+     * "blocks": [1,1,1,1,2,2,2,2,2,3,3,3,3,3]
+     * }
+     */
 
     blocks = new block_t[amount_of_blocks_x*amount_of_blocks_y];
+    std::vector<int> vec = map_j["blocks"].get< std::vector <int> >();
     for(int i=0;i < amount_of_blocks_y; ++i) {
         for(int j=0;j<amount_of_blocks_x;++j) {
-            if((i==0 || i == 29 || j ==0 || j==20 || j==29))
-                blocks[amount_of_blocks_x*i+j]=BL_0;
-            else  blocks[amount_of_blocks_x*i+j]=BL_1;
+            if(vec[amount_of_blocks_x * i + j] == 0)
+                blocks[amount_of_blocks_x * i + j] = BL_0;
+            if(vec[amount_of_blocks_x * i + j] == 1)
+                blocks[amount_of_blocks_x * i + j] = BL_1;
         }
-        blocks[50]=BL_1; blocks[80]=BL_1; blocks[110]=BL_1; blocks[320]=BL_1; blocks[350]=BL_1;
     }
     ///@todo заполнить blocks
 
@@ -61,38 +70,43 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     physicsManager = new PhysicsManager(objectManager);
 
     ///@todo распарсить players_info_json
+
+    json players_info_j = json::parse(players_info_json);
+
     /*
      * {
      * "amount_of_players": 3,
      * "players_names": ["Maxim", "Artem", "Kezhik"]
+     * ["players_names"].get< std::vector <std::string> >()
      * }
      */
 
 
-    amount_of_players = 3;
-    players_names = std::vector <std::string> (amount_of_players);
+    amount_of_players = players_info_j["amount_of_players"];
+    players_names = players_info_j["players_names"].get< std::vector <std::string> >();
     ///@todo заполнить players_names
 
     ///@todo решить, с какими начальными координатами ставить игроков на карту
     std::pair <int, int> playersInitialCoordinates[amount_of_players];
+    for(int i = 0; i < amount_of_players; ++i) {
+        playersInitialCoordinates[i].first = 200*(i+1);
+        playersInitialCoordinates[i].second = 200*(i+1);
+    }
     ///@todo заполнить playersInitialCoordinates
 
     ///@todo создать amount_of_players танков
+
+    for(int i = 0; i < amount_of_players; ++i) {
+        Tank *tank = new Tank(1000, players_names[i], "blue1");
+        tank->setPosition(playersInitialCoordinates[i].first, playersInitialCoordinates[i].second);
+        tank->setObjectId(i);
+        tank->setTypeBullet(POWERFULLSHOT);
+        objectManager->addGameObject(tank);
+    }
+
     ///@todo передать все эти танки в objectManager, вызывая у него addGameObject
 
     ///@todo узнать свой player_id (подумать, кто будет назначать player_id)
-
-    Tank *tank1 = new Tank(1000, "ChickenKiller", "blue1");
-    tank1->setPosition(100, 200);
-    tank1->setObjectId(1);
-    tank1->setTypeBullet(POWERFULLSHOT);
-    objectManager->addGameObject(tank1);
-
-    Tank *tank2 = new Tank(1000, "ChickenKiller", "blue2");
-    tank2->setPosition(300, 200);
-    tank2->setObjectId(2);
-    tank2->setTypeBullet(MIDDLESHOT);
-    objectManager->addGameObject(tank2);
 }
 
 void Match::drawMatch() {
