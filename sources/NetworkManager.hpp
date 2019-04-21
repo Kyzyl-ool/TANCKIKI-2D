@@ -20,6 +20,8 @@ private:
     int playerId;
 private:
     bool isAuthorized;
+public:
+    bool isAuthorized1() const;
 
 public:
     explicit NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort);

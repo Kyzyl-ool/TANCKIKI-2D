@@ -48,17 +48,28 @@ json NetworkManager::jsonRPC(std::string method, json::array_t params) {
     request.setBody(j.dump());
 
 
+
     sf::Http::Response response = http.sendRequest(request);
 
 //    std::cout << "status: " << response.getStatus() << std::endl;
 //    std::cout << "HTTP version: " << response.getMajorHttpVersion() << "." << response.getMinorHttpVersion() << std::endl;
 //    std::cout << "Content-Type header:" << response.getField("Content-Type") << std::endl;
 //    std::cout << "Body: " << response.getBody() << std::endl;
-    return json::parse(response.getBody());
+
+    try {
+        return json::parse(response.getBody());
+    }
+    catch (json::parse_error ) {
+        std::cout << "Sorry, probably server is down.\n";
+        return json();
+    }
+
 }
 
 bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_password) {
     json response = jsonRPC("check_password_by_nickname", {login_password.first, login_password.second});
+    if (response.empty())
+        return false;
 //    std::cout << response.dump();
     isAuthorized = response["result"]["count"] == 1;
     if (isAuthorized) {
@@ -69,6 +80,10 @@ bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_
     } else {
         std::cout << "Incorrect login or password.\n";
     }
+    return isAuthorized;
+}
+
+bool NetworkManager::isAuthorized1() const {
     return isAuthorized;
 }
 
