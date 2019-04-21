@@ -76,7 +76,9 @@ bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_
         json r1 = jsonRPC("get_vk_id", {login_password.first});
 //        std::cout << r1["result"];
         playerId = std::stoi( std::string( r1["result"]["vk_user_id"] ) );
-        std::cout << "Authorization successful, " << playerId << std::endl;
+
+        json r2 = jsonRPC("get_user_data_by_vk_id", {std::to_string(playerId)});
+        std::cout << "Authorization successful, " << r2["result"]["first_name"].get<std::string>() << " " << r2["result"]["last_name"].get<std::string>() << std::endl;
     } else {
         std::cout << "Incorrect login or password.\n";
     }
