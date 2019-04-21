@@ -14,6 +14,9 @@ PhysicsManager::PhysicsManager(ObjectManager *theObjectManager) {
 
 void PhysicsManager::updateGameObjects(Match *match, float time) {
     for (const auto &object1 : objectManager->getObjects()) {
+        if(!object1->isAlive() && object1->getType() == BULLET) {
+            ///надо сделать чтоб умершие (взорвавшиеся выстрелы) убирались из списка объектов. Для этого надо переделать вектор в лист объектов
+        }
         object1->update(time);
         for (const auto &object2 : objectManager->getObjects()) {
             if(object1 == object2) break;

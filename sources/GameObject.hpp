@@ -96,7 +96,7 @@ public:
 
     virtual void collideResponse(Match *match, float time);
 
-    virtual GameObject * shot(Bullet_t BULLET);
+    virtual GameObject *shot();
 
     float getX() const;
 

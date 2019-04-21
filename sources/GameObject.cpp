@@ -142,7 +142,12 @@ void GameObject::setTexture(sf::Texture texture_){
 void GameObject::setTexture(const char* address) {
     sf::Image image;
     image.loadFromFile(address);
-    image.createMaskFromColor(sf::Color::White);
+    if(type == TANK) {
+        image.createMaskFromColor(sf::Color::White);
+    }
+    if(type == BULLET) {
+        image.createMaskFromColor(sf::Color::Black);
+    }
     GameObject::texture.loadFromImage(image);
 }
 
@@ -186,7 +191,7 @@ void GameObject::setOwnerId(int pid) {
     ownerId=pid;
 }
 
-GameObject * GameObject::shot(Bullet_t BULLET) {
+GameObject * GameObject::shot() {
 
 }
 

@@ -27,7 +27,7 @@ public:
     const std::string &getName() const;
 
 public:
-    Tank(float health, const std::string& the_player_name = "Unnamed");
+    Tank(float health, const std::string &the_player_name, const std::string color);
     void update(float time) override;
 
     void draw(sf::RenderWindow &window) override;
@@ -36,10 +36,11 @@ public:
     void collideResponse(GameObject *obj, float time) override;
     void collideResponse(Match *match, float time) override;
 
-    GameObject *shot(Bullet_t BULLET) override;
+    GameObject *shot() override;
 
     float getHealth();
     float getSpeedTower();
+    Bullet_t getTypeBullet();
     void setTextBoom(const char* address);
     void setSprBoom(int X, int Y, int sizeX, int sizeY);
 
@@ -48,6 +49,7 @@ public:
     void setSpeedTower(float angleSpeed);
     void setHealth(float healthScore);
     int checkOrient(float X, float Y);
+    void setTypeBullet(Bullet_t);
 };
 
 

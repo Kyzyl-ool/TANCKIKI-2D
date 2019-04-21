@@ -9,6 +9,31 @@ Bullet::Bullet() : GameObject::GameObject() {
     type=BULLET;
 }
 
+Bullet::Bullet(Bullet_t typeBullet) : GameObject::GameObject() {
+    type=BULLET;
+    if(typeBullet==LOWSHOT) {
+        setSpeed(SPEED_OF_LOW_BULLET);
+        setTexture("images/bullet_1.png");
+        setSprite(20,13,10,8);
+        setSizeSprite(13, 10);
+        setPower(50);
+    }
+    if(typeBullet==MIDDLESHOT) {
+        setSpeed(SPEED_OF_MIDDLE_BULLET);
+        setTexture("images/bullet_1.png");
+        setSprite(39,222,20,11);
+        setSizeSprite(18, 10);
+        setPower(100);
+    }
+    if(typeBullet==POWERFULLSHOT) {
+        setSpeed(SPEED_OF_FULL_BULLET);
+        setTexture("images/bullet_1.png");
+        setSprite(279,214,15,12);
+        setSizeSprite(25, 20);
+        setPower(450);
+    }
+}
+
 void Bullet::draw(sf::RenderWindow &window) {
     if(alive)
     window.draw(Bullet::sprite);

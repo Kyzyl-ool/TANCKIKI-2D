@@ -82,15 +82,17 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
 
     ///@todo узнать свой player_id (подумать, кто будет назначать player_id)
 
-    Tank *tank2 = new Tank(50, "ChickenKiller");
-    tank2->setPosition(100, 200);
-    tank2->setObjectId(1);
-    objectManager->addGameObject(tank2);
-
-    Tank *tank1 = new Tank(50, "ChickenKiller");
-    tank1->setPosition(300, 300);
-    tank1->setObjectId(3);
+    Tank *tank1 = new Tank(1000, "ChickenKiller", "blue1");
+    tank1->setPosition(100, 200);
+    tank1->setObjectId(1);
+    tank1->setTypeBullet(POWERFULLSHOT);
     objectManager->addGameObject(tank1);
+
+    Tank *tank2 = new Tank(1000, "ChickenKiller", "blue2");
+    tank2->setPosition(300, 200);
+    tank2->setObjectId(2);
+    tank2->setTypeBullet(MIDDLESHOT);
+    objectManager->addGameObject(tank2);
 }
 
 void Match::drawMatch() {
@@ -142,7 +144,7 @@ void Match::processMessage(std::string message) {
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
-            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
+            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot());
             break;
         }
     }
