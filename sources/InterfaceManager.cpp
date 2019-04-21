@@ -212,7 +212,7 @@ void InterfaceManager::setState(gameState_t gameState) {
     *InterfaceManager::state = gameState;
 }
 
-bool InterfaceManager::login() {
+std::pair<std::string, std::string> InterfaceManager::login() {
     return WidgetsMenu::login();
 }
 

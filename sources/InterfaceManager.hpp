@@ -54,7 +54,7 @@ public:
 
     static void signalHandler4(InterfaceManager *manager);
 
-    bool login();
+    static std::pair<std::string, std::string> login();
 
 };
 

@@ -13,6 +13,7 @@ event(the_event)
     state = GAME_STATE_MAIN_MENU;
     interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui);
     eventManager = new EventManager(mainWindow, event, -1, &state, gui);
+    networkManager = new NetworkManager("95.163.180.31", 54000, std::pair<std::string, std::string>());
 }
 
 void GameManager::runGame() {
@@ -82,9 +83,13 @@ void GameManager::handleEvent() {
             case sf::Event::KeyPressed: {
                 switch (event.key.code) {
                     case sf::Keyboard::Enter: {
-                        if (state == GAME_STATE_ENTER_LOGIN_PASSWORD)
-                            if (interfaceManager->login())
+                        if (state == GAME_STATE_ENTER_LOGIN_PASSWORD) {
+                            std::pair<std::string, std::string> loginPass = interfaceManager->login();
+                            if (!loginPass.first.empty()) {
                                 state = GAME_STATE_MAIN_MENU;
+                                networkManager = new NetworkManager("95.163.180.31", 54000, loginPass);
+                            }
+                        }
                         break;
                     }
                     case sf::Keyboard::Escape: {
@@ -111,4 +116,5 @@ GameManager::~GameManager() {
     delete(interfaceManager);
     delete(eventManager);
     delete(match);
+    delete(networkManager);
 }

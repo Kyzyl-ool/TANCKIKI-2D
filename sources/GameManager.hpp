@@ -14,6 +14,7 @@
 #include "Match.hpp"
 #include "constants/gameStates.hpp"
 #include "EventManager.hpp"
+#include "NetworkManager.hpp"
 
 
 /*!
@@ -27,6 +28,7 @@ private:
     Match* match;
     InterfaceManager* interfaceManager;
     EventManager* eventManager;
+    NetworkManager* networkManager;
 
     gameState_t state;
     sf::Event& event;
