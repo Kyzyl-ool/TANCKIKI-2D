@@ -5,22 +5,13 @@
 #include "NetworkManager.hpp"
 #include <thread>
 #include <iostream>
+#include "json/json.hpp"
 
+using json = nlohmann::json;
 
-NetworkManager::NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort,
-                               const std::pair<std::string, std::string>& login_password)
-        : serverIpAddress(serverIp), serverPort(defaultPort) {
-//    assert(udpSocket.bind(defaultPort) == sf::Socket::Done);
-//    sf::Packet testPacket;
-//    testPacket << "{\"player_id\":-1}";
-//    assert(udpSocket.send(testPacket, serverIpAddress, serverPort) == sf::Socket::Done);
-//    sf::Packet responsePacket;
-//    assert(udpSocket.receive(responsePacket, serverIpAddress, serverPort) == sf::Socket::Done);
-//    std::string responseString;
-//    responsePacket >> responseString;
-//    assert(responseString == "OK");
+NetworkManager::NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort)
+        : serverIpAddress(serverIp), serverPort(defaultPort), isAuthorized(false) {
 //    std::cout << login_password.first << login_password.second << std::endl;
-//    sf::Http http;
 
 }
 
@@ -38,6 +29,40 @@ sf::Socket::Status NetworkManager::sendStringToServer(std::string string) {
     sf::Packet p;
     p << string;
     return udpSocket.send(p, serverIpAddress, serverPort);
+}
+
+json NetworkManager::jsonRPC(std::string method, json::array_t params) {
+    sf::Http http("http://meowbook.ru");
+    sf::Http::Request request;
+
+    request.setMethod(sf::Http::Request::Post);
+    request.setUri("/tanchiki");
+    request.setField("Content-Type", "application/json");
+
+    json j;
+    j["jsonrpc"] = "2.0";
+    j["id"] = 0;
+    j["method"] = method;
+    j["params"] = params;
+
+    request.setBody(j.dump());
+
+
+    sf::Http::Response response = http.sendRequest(request);
+
+    std::cout << "status: " << response.getStatus() << std::endl;
+    std::cout << "HTTP version: " << response.getMajorHttpVersion() << "." << response.getMinorHttpVersion() << std::endl;
+    std::cout << "Content-Type header:" << response.getField("Content-Type") << std::endl;
+    return json::parse(response.getBody());
+}
+
+bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_password) {
+    std::cout << jsonRPC("check_password", {login_password.first, login_password.second}).dump();
+    return false;
+}
+
+void NetworkManager::setIsAuthorized(bool isAuthorized) {
+    NetworkManager::isAuthorized = isAuthorized;
 }
 
 NetworkManager::~NetworkManager() = default;

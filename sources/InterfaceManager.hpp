@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include "ObjectManager.hpp"
 #include "constants/gameStates.hpp"
+#include "NetworkManager.hpp"
 #include <TGUI/TGUI.hpp>
 
 /*!
@@ -21,6 +22,7 @@ private:
     sf::RenderWindow& mainWindow;
     tgui::Gui& gui;
     gameState_t* state;
+    NetworkManager& networkManager;
 public:
     void setState(gameState_t gameState);
 
@@ -42,7 +44,7 @@ public:
     void setMapName(const std::string &the_mapName);
 
     InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager, gameState_t *the_state,
-                     tgui::Gui &the_gui);
+                     tgui::Gui &the_gui, NetworkManager &the_networkmanager);
 
     void makeInterface();
 

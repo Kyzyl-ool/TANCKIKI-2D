@@ -8,6 +8,9 @@
 
 #include <string>
 #include <SFML/Network.hpp>
+#include "json/json.hpp"
+
+using json = nlohmann::json;
 
 class NetworkManager {
 private:
@@ -15,16 +18,22 @@ private:
     sf::UdpSocket udpSocket;
     unsigned short serverPort;
     int playerId;
+    bool isAuthorized;
+public:
+    void setIsAuthorized(bool isAuthorized);
 
 public:
-    explicit NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort,
-                            const std::pair<std::string, std::string>& login_password);
+    explicit NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort);
     ~NetworkManager();
 
     sf::Socket::Status sendPacketToServer(sf::Packet packet);
     sf::Packet receivePacketsFromServer();
 
     sf::Socket::Status sendStringToServer(std::string string);
+
+    json jsonRPC(std::string method, json::array_t params);
+
+    bool authorize(const std::pair<std::string, std::string>& login_password);
 };
 
 

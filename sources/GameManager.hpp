@@ -28,7 +28,7 @@ private:
     Match* match;
     InterfaceManager* interfaceManager;
     EventManager* eventManager;
-    NetworkManager* networkManager;
+    NetworkManager& networkManager;
 
     gameState_t state;
     sf::Event& event;
@@ -36,7 +36,8 @@ private:
     sf::Clock clock;
 
 public:
-    GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event);
+    GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event,
+                NetworkManager &the_networkmanager);
     ~GameManager();
 
     /*!

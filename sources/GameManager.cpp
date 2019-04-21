@@ -4,16 +4,17 @@
 #include "Tank.hpp"
 #include <cmath>
 
-GameManager::GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event) :
+GameManager::GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event,
+                         NetworkManager &the_networkmanager) :
 mainWindow(the_mainWindow),
 gui(the_gui),
-event(the_event)
+event(the_event),
+networkManager(the_networkmanager)
 {
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_MAIN_MENU;
-    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui);
+    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager);
     eventManager = new EventManager(mainWindow, event, -1, &state, gui);
-    networkManager = new NetworkManager("95.163.180.31", 54000, std::pair<std::string, std::string>());
 }
 
 void GameManager::runGame() {
@@ -84,10 +85,10 @@ void GameManager::handleEvent() {
                 switch (event.key.code) {
                     case sf::Keyboard::Enter: {
                         if (state == GAME_STATE_ENTER_LOGIN_PASSWORD) {
-                            std::pair<std::string, std::string> loginPass = interfaceManager->login();
+                            std::pair<std::string, std::string> loginPass = InterfaceManager::login();
                             if (!loginPass.first.empty()) {
                                 state = GAME_STATE_MAIN_MENU;
-                                networkManager = new NetworkManager("95.163.180.31", 54000, loginPass);
+                                networkManager.authorize(loginPass);
                             }
                         }
                         break;
@@ -116,5 +117,4 @@ GameManager::~GameManager() {
     delete(interfaceManager);
     delete(eventManager);
     delete(match);
-    delete(networkManager);
 }
