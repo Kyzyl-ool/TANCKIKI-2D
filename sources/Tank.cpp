@@ -117,6 +117,7 @@ void Tank::update(float time) {
     setRotation(getRotation()+speedAngle*time);
     spriteTower.setPosition(x,y);
     spriteTower.setRotation(spriteTower.getRotation()+speedTower*time);
+    updateRecharge(time);
     if(health <= 0) setAlive(false);
 }
 
@@ -149,18 +150,23 @@ void Tank::collideResponse(Match *match, float time) {
 }
 
 GameObject * Tank::shot() {
+    if(getRecharge()>0) return nullptr;
+
     Bullet *bul;
     bul = new Bullet(bulType);
     float angle= spriteTower.getRotation()/ 180* M_PI;
     bul->setOwnerId(gameObjectId);
     if(bulType==LOWSHOT) {
         bul->setPosition(x + sizeX*0.70 * cosf(angle), y + sizeX*0.70 * sinf(angle));
+        setRecharge(RECHARGE_OF_LOWSHOT);
     }
     if(bulType==MIDDLESHOT) {
         bul->setPosition(x + sizeX*0.72 * cosf(angle), y + sizeX*0.72 * sinf(angle));
+        setRecharge(RECHARGE_OF_MIDDLESHOT);
     }
     if(bulType==POWERFULLSHOT) {
         bul->setPosition(x + sizeX*0.75 * cosf(angle), y + sizeX*0.75 * sinf(angle));
+        setRecharge(RECHARGE_OF_POWERFULLSHOT);
     }
     bul->setAlive(true);
     bul->setRotation(spriteTower.getRotation());
@@ -209,6 +215,21 @@ Bullet_t Tank::getTypeBullet() {
 void Tank::setTypeBullet(Bullet_t TypeBullet) {
     bulType = TypeBullet;
 }
+
+float Tank::getRecharge() {
+    return recharge;
+}
+
+void Tank::setRecharge(float recharge_) {
+    recharge = recharge_;
+}
+
+void Tank::updateRecharge(float time) {
+    recharge = recharge-time;
+    if(recharge<0) recharge = 0;
+}
+
+
 
 
 

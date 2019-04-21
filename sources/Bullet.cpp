@@ -16,21 +16,21 @@ Bullet::Bullet(Bullet_t typeBullet) : GameObject::GameObject() {
         setTexture("images/bullet_1.png");
         setSprite(20,13,10,8);
         setSizeSprite(13, 10);
-        setPower(50);
+        setPower(DAMAGE_OF_LOWSHOT);
     }
     if(typeBullet==MIDDLESHOT) {
         setSpeed(SPEED_OF_MIDDLE_BULLET);
         setTexture("images/bullet_1.png");
         setSprite(39,222,20,11);
         setSizeSprite(18, 10);
-        setPower(100);
+        setPower(DAMAGE_OF_MIDDLESHOT);
     }
     if(typeBullet==POWERFULLSHOT) {
-        setSpeed(SPEED_OF_FULL_BULLET);
+        setSpeed(SPEED_OF_POWERFULLSHOT);
         setTexture("images/bullet_1.png");
         setSprite(279,214,15,12);
         setSizeSprite(25, 20);
-        setPower(450);
+        setPower(DAMAGE_OF_POWERFULLSHOT);
     }
 }
 

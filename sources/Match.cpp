@@ -100,7 +100,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
         Tank *tank = new Tank(1000, players_names[i], "blue1");
         tank->setPosition(playersInitialCoordinates[i].first, playersInitialCoordinates[i].second);
         tank->setObjectId(i);
-        tank->setTypeBullet(POWERFULLSHOT);
+        tank->setTypeBullet(MIDDLESHOT);
         objectManager->addGameObject(tank);
     }
 
@@ -158,7 +158,8 @@ void Match::processMessage(std::string message) {
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
-            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot());
+            GameObject* bullet = objectManager->getGameObjectById(0)->shot();
+            if(bullet) objectManager->addGameObject(bullet);
             break;
         }
     }
