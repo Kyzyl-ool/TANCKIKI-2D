@@ -10,7 +10,8 @@ int main() {
     mainWindow.setFramerateLimit(60);
     tgui::Gui gui(mainWindow);
     sf::Event event{};
-    GameManager* Game = new GameManager(mainWindow, gui, event);
+    NetworkManager networkManager("95.163.180.31", 54000);
+    GameManager* Game = new GameManager(mainWindow, gui, event, networkManager);
     Game->runGame();
     delete Game;
     return 0;

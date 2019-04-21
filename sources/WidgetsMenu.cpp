@@ -42,7 +42,7 @@ void WidgetsMenu::change_ava(int sysok) {
     }
 }
 
-bool WidgetsMenu::login() {
+std::pair<std::string, std::string> WidgetsMenu::login() {
     if (widgetsMenu.boxes[0]->getText().isEmpty() || widgetsMenu.boxes[1]->getText().isEmpty()) {
         if (widgetsMenu.boxes[0]->getText().isEmpty()) {
             widgetsMenu.boxes[0]->setDefaultText("Enter the username");
@@ -50,16 +50,11 @@ bool WidgetsMenu::login() {
         if (widgetsMenu.boxes[1]->getText().isEmpty()) {
             widgetsMenu.boxes[1]->setDefaultText("Enter the password");
         }
-        return false;
+        return std::make_pair("", "");
     }
     else {
-        std::cout << "Username: " << widgetsMenu.boxes[0]->getText().toAnsiString() << std::endl;
-        std::cout << "Password: " << widgetsMenu.boxes[1]->getText().toAnsiString() << std::endl;
-        ///@todo сформировать http-запрос
-        std::string message("Authorization...");
-
         WidgetsMenu::change_ava(0);
-        return true;
+        return std::make_pair(widgetsMenu.boxes[0]->getText().toAnsiString(), widgetsMenu.boxes[1]->getText().toAnsiString());
     }
 }
 
