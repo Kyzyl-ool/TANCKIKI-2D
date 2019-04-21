@@ -18,9 +18,8 @@ private:
     sf::UdpSocket udpSocket;
     unsigned short serverPort;
     int playerId;
+private:
     bool isAuthorized;
-public:
-    void setIsAuthorized(bool isAuthorized);
 
 public:
     explicit NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort);

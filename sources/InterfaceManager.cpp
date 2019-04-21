@@ -118,9 +118,6 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
         buttonCancel->connect("pressed", [&](){
             WidgetsMenu::change_ava(0);
         });
-
-        ///@todo check that login AND password were typed
-        ///@todo Enter pressed -> LOGIN
     }
     catch (const tgui::Exception& e) {
         std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;

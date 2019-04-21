@@ -89,6 +89,7 @@ void GameManager::handleEvent() {
                             if (!loginPass.first.empty()) {
                                 state = GAME_STATE_MAIN_MENU;
                                 networkManager.authorize(loginPass);
+
                             }
                         }
                         break;
