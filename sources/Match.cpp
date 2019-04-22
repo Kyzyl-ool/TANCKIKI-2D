@@ -90,15 +90,6 @@ void Match::drawMatch() {
 }
 
 void Match::updateMatch(float time) {
-    Tank* tmp = (Tank* )getObjectManager()->getGameObjectById(0);
-    int sinus = tmp->checkOrient(tmp->getTowerX(), tmp->getTowerY());
-    if(sinus>0)
-        tmp->setSpeedTower(TANK_TOWER_SPEED);
-    else
-        tmp->setSpeedTower(-TANK_TOWER_SPEED);
-    if(sinus == 0)
-        tmp->setSpeedTower(0);
-
     physicsManager->updateGameObjects(this, time);
 }
 
@@ -153,9 +144,11 @@ void Match::processMessage(const std::string& message) {
             break;
         }
         case GAMEOBJECT_MESSAGE_APPEAR: {
+            auto params = j["params"].get <std::vector <unsigned short> >();
+            auto iCoordinates = j["initialCoordinates"].get <std::vector <float> >();
             Tank *tank = new Tank(50, "ChickenKiller");
-            tank->setPosition(100, 200);
-            playerId_tankId[j["params"].get <std::vector <unsigned short > >()[0]] = objectManager->addGameObject(tank);
+            tank->setPosition(iCoordinates[0], iCoordinates[1]);
+            playerId_tankId[params[0]] = objectManager->addGameObject(tank);
             break;
         }
     }

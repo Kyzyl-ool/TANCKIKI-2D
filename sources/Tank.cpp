@@ -46,6 +46,14 @@ void Tank::update(float time) {
     setRotation(getRotation()+speedAngle*time);
     spriteTower.setRotation(spriteTower.getRotation()+speedTower*time);
     if(health <= 0) setAlive(false);
+
+    int sinus = checkOrient(towerX, towerY);
+    if(sinus>0)
+        setSpeedTower(TANK_TOWER_SPEED);
+    else
+        setSpeedTower(-TANK_TOWER_SPEED);
+    if(sinus == 0)
+        setSpeedTower(0);
 }
 
 
