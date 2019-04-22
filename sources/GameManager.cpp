@@ -43,16 +43,6 @@ void GameManager::runGame() {
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
                 if (!message.empty()) match->processMessage(message);
-                Tank* tmp = (Tank* )match->getObjectManager()->getGameObjectById(0);
-                auto tmp1 = sf::Mouse::getPosition(mainWindow);
-                int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
-                if(sinus>0)
-                        tmp->setSpeedTower(TANK_TOWER_SPEED);
-                else
-                        tmp->setSpeedTower(-TANK_TOWER_SPEED);
-                if(sinus == 0)
-                    tmp->setSpeedTower(0);
-
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
                 match->updateMatch(time);

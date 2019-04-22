@@ -17,6 +17,7 @@ public:
     ObjectManager *getObjectManager() const;
 
 private:
+    sf::RenderWindow& mainWindow;
     GraphicsManager* graphicsManager;
     PhysicsManager* physicsManager;
     std::string mapName;

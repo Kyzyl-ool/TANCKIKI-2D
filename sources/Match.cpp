@@ -14,7 +14,8 @@ using json = nlohmann::json;
 
 
 
-Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json) {
+Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json):
+mainWindow(mainWindow){
     ///@todo распарсить map_json
     mapName = "MAP_NAME";
     amount_of_blocks_x = 30;
@@ -92,6 +93,15 @@ void Match::drawMatch() {
 
 void Match::updateMatch(float time) {
     physicsManager->updateGameObjects(this, time);
+    Tank* tmp = (Tank* )getObjectManager()->getGameObjectById(0);
+    auto tmp1 = sf::Mouse::getPosition(mainWindow);
+    int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+    if(sinus>0)
+        tmp->setSpeedTower(TANK_TOWER_SPEED);
+    else
+        tmp->setSpeedTower(-TANK_TOWER_SPEED);
+    if(sinus == 0)
+        tmp->setSpeedTower(0);
 }
 
 const std::string &Match::getMapName() const {
