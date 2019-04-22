@@ -20,6 +20,7 @@ void NetworkManager::processPakcetsFromServer() {
     udpSocket.receive(p, serverIpAddress, serverPort);
     std::string content;
     p >> content;
+    std::cout << "Received from server: " << content << std::endl;
     match->processMessage(content);
 }
 
