@@ -37,7 +37,7 @@ public:
 
     bool authorize(const std::pair<std::string, std::string>& login_password);
 
-    void establishConnection();
+    unsigned short establishConnection();
 };
 
 

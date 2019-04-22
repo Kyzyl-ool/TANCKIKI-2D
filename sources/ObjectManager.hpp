@@ -27,9 +27,10 @@ public:
 
     ObjectManager(sf::RenderWindow &window);
 
-    void addGameObject(GameObject* obj);
+    unsigned long addGameObject(GameObject *obj);
     void removeGameObjectById(int gameObjectId);
     GameObject* getGameObjectById(int gameObjectId);
+    Tank* getTankById(int tankId);
     const sf::RenderWindow &getMainWindow() const;
 
     ~ObjectManager();

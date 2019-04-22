@@ -23,8 +23,8 @@ void GameManager::runGame() {
 
     while (mainWindow.isOpen()) {
 
-        interfaceManager->makeInterface();
-        if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
+        if (state != GAME_STATE_MULTIPLAYER_MATCH) interfaceManager->makeInterface(); ///temporary
+        if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE && state != GAME_STATE_MULTIPLAYER_MATCH && GAME_STATE_MULTIPLAYER_MATCH_PAUSE) handleEvent();
         mainWindow.display();
 
         switch (state) {
@@ -47,8 +47,8 @@ void GameManager::runGame() {
                 match = new Match(mainWindow, players_info_json, map_json);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
-                networkManager.establishConnection();
                 networkManager.setMatch(match);
+                networkManager.establishConnection();
                 state = GAME_STATE_MULTIPLAYER_MATCH;
                 break;
             }

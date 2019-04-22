@@ -88,7 +88,7 @@ void NetworkManager::sendMessageToServer(const std::string& message) {
     udpSocket.send(packet, "95.163.180.31", 54000);
 }
 
-void NetworkManager::establishConnection() {
+unsigned short NetworkManager::establishConnection() {
     sf::Packet packet;
     packet << "CONN";
     udpSocket.send(packet, serverIpAddress, serverPort);
@@ -97,9 +97,13 @@ void NetworkManager::establishConnection() {
     udpSocket.receive(packet, serverIpAddress, serverPort);
     std::string response;
     packet >> response;
-    if (response == "OK") {
+    json j;
+    j = json::parse(response);
+    if (j["status"] == "OK") {
         std::cout << "OK.\n";
         udpSocket.setBlocking(false);
+        match->setMyPlayerId(j["playerId"].get <unsigned short>());
+        std::cout << "Your player Id: " << match->getMyPlayerId() << std::endl;
     } else {
         assert(!"Not OK");
     }

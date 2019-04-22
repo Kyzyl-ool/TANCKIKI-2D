@@ -17,6 +17,19 @@ protected:
     float maxHealth;
     sf::Texture textBoom;
     sf::Sprite sprBoom;
+    float towerX, towerY;
+public:
+    void setTowerY(float towerY);
+
+public:
+    void setTowerX(float towerX);
+
+public:
+    float getTowerY() const;
+
+public:
+    float getTowerX() const;
+
 public:
     float getMaxHealth() const;
 

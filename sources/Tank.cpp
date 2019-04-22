@@ -130,5 +130,21 @@ const std::string &Tank::getName() const {
     return name;
 }
 
+float Tank::getTowerX() const {
+    return towerX;
+}
+
+float Tank::getTowerY() const {
+    return towerY;
+}
+
+void Tank::setTowerX(float towerX) {
+    Tank::towerX = towerX;
+}
+
+void Tank::setTowerY(float towerY) {
+    Tank::towerY = towerY;
+}
+
 
 
