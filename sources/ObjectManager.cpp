@@ -27,7 +27,6 @@ void ObjectManager::removeGameObjectById(int gameObjectId) {
 }
 
 GameObject* ObjectManager::getGameObjectById(int gameObjectId) {
-    ///@todo реализовать
     return objects[gameObjectId];
 }
 

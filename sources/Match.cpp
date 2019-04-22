@@ -108,47 +108,45 @@ const std::string &Match::getMapName() const {
     return mapName;
 }
 
-void Match::processMessage(std::string message) {
-    ///@todo распарсить message
+void Match::processMessage(const std::string& message) {
     assert(message.size());
     json j = json::parse(message.c_str());
 //    std::cout << j["status"] << std::endl;s
 //    std::cout << j["from"] << std::endl;
-//    std::cout << j["method"] << std::endl;
 //    std::cout << j["params"] << std::endl;
+    auto from = j["from"].get <unsigned short>();
 
 
     switch (gameObjectMessageId[j["method"]]) {
         case GAMEOBJECT_MESSAGE_NO_ROTATION: {
-            objectManager->getGameObjectById(0)->stopRotate();
+            objectManager->getGameObjectById(from)->stopRotate();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_BRAKE: {
-            objectManager->getGameObjectById(0)->brake();
+            objectManager->getGameObjectById(from)->brake();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_LEFT: {
-            objectManager->getGameObjectById(0)->rotateLeft();
+            objectManager->getGameObjectById(from)->rotateLeft();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_RIGHT: {
-            objectManager->getGameObjectById(0)->rotateRight();
+            objectManager->getGameObjectById(from)->rotateRight();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_FORWARD: {
-            objectManager->getGameObjectById(0)->go();
+            objectManager->getGameObjectById(from)->go();
             break;
         }
         case GAMEOBJECT_MESSAGE_NO_ACTION: {
-            objectManager->getGameObjectById(0)->stop();
+            objectManager->getGameObjectById(from)->stop();
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
-            objectManager->addGameObject(objectManager->getGameObjectById(0)->shot(LOWSHOT));
+            objectManager->addGameObject(objectManager->getGameObjectById(from)->shot(LOWSHOT));
             break;
         }
     }
-    ///@todo обработать message
 }
 
 void Match::drawMap(sf::RenderWindow &window) {

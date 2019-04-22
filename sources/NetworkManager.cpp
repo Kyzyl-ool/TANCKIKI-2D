@@ -10,7 +10,7 @@
 using json = nlohmann::json;
 
 NetworkManager::NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort)
-        : serverIpAddress(serverIp), serverPort(defaultPort), isAuthorized(false) {
+        : serverIpAddress(serverIp), serverPort(defaultPort), isAuthorized(false), match(match) {
 //    std::cout << login_password.first << login_password.second << std::endl;
     assert(udpSocket.bind(defaultPort) == sf::Socket::Done);
 }
@@ -20,8 +20,10 @@ void NetworkManager::processPakcetsFromServer() {
     udpSocket.receive(p, serverIpAddress, serverPort);
     std::string content;
     p >> content;
-    std::cout << "Received from server: " << content << std::endl;
-    match->processMessage(content);
+    if (!content.empty()) {
+        std::cout << "Received from server: " << content << std::endl;
+        match->processMessage(content);
+    }
 }
 
 json NetworkManager::jsonRPC(std::string method, json::array_t params) {
@@ -79,9 +81,31 @@ bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_
 }
 
 void NetworkManager::sendMessageToServer(const std::string& message) {
+    if (message.empty())
+        return;
     sf::Packet packet;
     packet << message;
+    udpSocket.send(packet, "95.163.180.31", 54000);
+}
+
+void NetworkManager::establishConnection() {
+    sf::Packet packet;
+    packet << "CONN";
     udpSocket.send(packet, serverIpAddress, serverPort);
+    packet.clear();
+    udpSocket.receive(packet, serverIpAddress, serverPort);
+    std::string response;
+    packet >> response;
+    if (response == "OK") {
+        std::cout << "OK.\n";
+        udpSocket.setBlocking(false);
+    } else {
+        assert(!"Not OK");
+    }
+}
+
+void NetworkManager::setMatch(Match *match) {
+    NetworkManager::match = match;
 }
 
 

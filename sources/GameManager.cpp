@@ -14,7 +14,7 @@ networkManager(the_networkmanager)
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_MAIN_MENU;
     interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager);
-    eventManager = new EventManager(mainWindow, event, -1, &state, gui);
+    eventManager = new EventManager(mainWindow, event, 0, &state, gui);
 }
 
 void GameManager::runGame() {
@@ -35,6 +35,9 @@ void GameManager::runGame() {
                 match = new Match(mainWindow, players_info_json, map_json);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
+                networkManager.establishConnection();
+                networkManager.setMatch(match);
+//                networkManager.processPakcetsFromServer();
                 state = GAME_STATE_MATCH;
                 break;
             }
@@ -43,7 +46,7 @@ void GameManager::runGame() {
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
                 networkManager.sendMessageToServer(message);
-                if (!message.empty()) match->processMessage(message);
+//                if (!message.empty()) match->processMessage(message);
                 networkManager.processPakcetsFromServer();
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();

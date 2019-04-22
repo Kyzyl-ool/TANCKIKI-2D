@@ -20,6 +20,9 @@ private:
     unsigned short serverPort;
     int playerId;
     Match* match;
+public:
+    void setMatch(Match *match);
+
 private:
     bool isAuthorized;
 
@@ -33,6 +36,8 @@ public:
     json jsonRPC(std::string method, json::array_t params);
 
     bool authorize(const std::pair<std::string, std::string>& login_password);
+
+    void establishConnection();
 };
 
 

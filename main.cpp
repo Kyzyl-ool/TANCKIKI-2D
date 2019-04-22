@@ -11,7 +11,7 @@ int main() {
     tgui::Gui gui(mainWindow);
     sf::Event event{};
     NetworkManager networkManager("95.163.180.31", 54000);
-    GameManager* Game = new GameManager(mainWindow, gui, event, networkManager);
+    auto* Game = new GameManager(mainWindow, gui, event, networkManager);
     Game->runGame();
     delete Game;
     return 0;
