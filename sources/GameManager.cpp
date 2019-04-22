@@ -28,7 +28,19 @@ void GameManager::runGame() {
         mainWindow.display();
 
         switch (state) {
-            case GAME_STATE_CREATE_MATCH: {
+            case GAME_STATE_MULTIPLAYER_MATCH_PAUSE:
+            case GAME_STATE_MULTIPLAYER_MATCH: {
+                mainWindow.clear();
+                std::string message = eventManager->getMessageFromGameObjects();
+                networkManager.sendMessageToServer(message);
+                networkManager.processPakcetsFromServer();
+                float time = clock.getElapsedTime().asMilliseconds();
+                clock.restart();
+                match->updateMatch(time);
+                match->drawMatch();
+                break;
+            }
+            case GAME_STATE_MULTIPLAYER_CREATE_MATCH: {
                 mainWindow.clear();
                 std::string players_info_json, map_json;
                 ///@todo прочитать players_info_json, map_json;
@@ -37,7 +49,16 @@ void GameManager::runGame() {
                 interfaceManager->setObjectManager(match->getObjectManager());
                 networkManager.establishConnection();
                 networkManager.setMatch(match);
-//                networkManager.processPakcetsFromServer();
+                state = GAME_STATE_MULTIPLAYER_MATCH;
+                break;
+            }
+            case GAME_STATE_CREATE_MATCH: {
+                mainWindow.clear();
+                std::string players_info_json, map_json;
+                ///@todo прочитать players_info_json, map_json;
+                match = new Match(mainWindow, players_info_json, map_json);
+                interfaceManager->setMapName(match->getMapName());
+                interfaceManager->setObjectManager(match->getObjectManager());
                 state = GAME_STATE_MATCH;
                 break;
             }
@@ -45,9 +66,7 @@ void GameManager::runGame() {
             case GAME_STATE_MATCH: {
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
-                networkManager.sendMessageToServer(message);
-//                if (!message.empty()) match->processMessage(message);
-                networkManager.processPakcetsFromServer();
+                if (!message.empty()) match->processMessage(message);
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
                 match->updateMatch(time);
@@ -83,7 +102,9 @@ void GameManager::handleEvent() {
                             std::pair<std::string, std::string> loginPass = InterfaceManager::login();
                             if (!loginPass.first.empty()) {
                                 state = GAME_STATE_MAIN_MENU;
-                                networkManager.authorize(loginPass);
+                                if (networkManager.authorize(loginPass)) {
+                                    state = GAME_STATE_MULTIPLAYER_CREATE_MATCH;
+                                }
                             }
                         }
                         break;

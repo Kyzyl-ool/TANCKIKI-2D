@@ -93,6 +93,7 @@ void NetworkManager::establishConnection() {
     packet << "CONN";
     udpSocket.send(packet, serverIpAddress, serverPort);
     packet.clear();
+    std::cout << "Connecting to server...\n";
     udpSocket.receive(packet, serverIpAddress, serverPort);
     std::string response;
     packet >> response;
