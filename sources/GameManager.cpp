@@ -42,7 +42,9 @@ void GameManager::runGame() {
             case GAME_STATE_MATCH: {
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
+                networkManager.sendMessageToServer(message);
                 if (!message.empty()) match->processMessage(message);
+                networkManager.processPakcetsFromServer();
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
                 match->updateMatch(time);

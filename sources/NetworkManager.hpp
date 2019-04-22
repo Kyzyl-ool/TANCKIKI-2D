@@ -9,6 +9,7 @@
 #include <string>
 #include <SFML/Network.hpp>
 #include "json/json.hpp"
+#include "Match.hpp"
 
 using json = nlohmann::json;
 
@@ -18,19 +19,16 @@ private:
     sf::UdpSocket udpSocket;
     unsigned short serverPort;
     int playerId;
+    Match* match;
 private:
     bool isAuthorized;
-public:
-    bool isAuthorized1() const;
 
 public:
     explicit NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort);
     ~NetworkManager();
 
-    sf::Socket::Status sendPacketToServer(sf::Packet packet);
-    sf::Packet receivePacketsFromServer();
-
-    sf::Socket::Status sendStringToServer(std::string string);
+    void processPakcetsFromServer();
+    void sendMessageToServer(const std::string& message);
 
     json jsonRPC(std::string method, json::array_t params);
 
