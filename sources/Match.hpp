@@ -38,9 +38,6 @@ private:
 
     unsigned int amount_of_players;
     std::vector <std::string> players_names;
-
-    std::map <unsigned short, unsigned long> playerId_tankId;
-
 public:
     Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json);
     ~Match();
@@ -58,6 +55,7 @@ public:
 
     void setBlock(int i, int j, block_t BL);
 
+    std::map <unsigned short, unsigned long> playerId_tankId;
 };
 
 

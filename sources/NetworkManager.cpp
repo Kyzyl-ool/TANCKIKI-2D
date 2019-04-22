@@ -21,8 +21,22 @@ void NetworkManager::processPakcetsFromServer() {
     std::string content;
     p >> content;
     if (!content.empty()) {
-        std::cout << "Received from server: " << content << std::endl;
-        match->processMessage(content);
+//        std::cout << "Received from server: " << content << std::endl;
+        if (content == "REQUEST") {
+            std::string requestContent;
+            p >> requestContent;
+            if (requestContent == "PLAYERS_INFO") {
+                sf::Packet packet;
+                auto tankID = match->playerId_tankId[match->getMyPlayerId()];
+                auto tanks = match->getObjectManager()->getTanks();
+                packet << "RESPONSE" << "PLAYERS_INFO" << match->getMyPlayerId() << tanks[tankID]->getX() << tanks[tankID]->getY();
+                udpSocket.send(packet, SERVER_IP, SERVER_PORT);
+            }
+//            json j = json::parse(requestContent);
+//            std::cout << requestContent << std::endl;
+        } else {
+            match->processMessage(content);
+        }
     }
 }
 
@@ -85,7 +99,7 @@ void NetworkManager::sendMessageToServer(const std::string& message) {
         return;
     sf::Packet packet;
     packet << message;
-    udpSocket.send(packet, "95.163.180.31", 54000);
+    udpSocket.send(packet, SERVER_IP, SERVER_PORT);
 }
 
 unsigned short NetworkManager::establishConnection() {
@@ -113,5 +127,15 @@ void NetworkManager::setMatch(Match *match) {
     NetworkManager::match = match;
 }
 
+void NetworkManager::sendXYs(std::vector<Tank *> &tanks) {
+    for (int i = 0; i < tanks.size(); ++i) {
+        sf::Packet packet;
+        packet << "CHECK_XY";
+        packet << i;
+        packet << tanks[i]->getX();
+        packet << tanks[i]->getY();
+        udpSocket.send(packet, SERVER_IP, SERVER_PORT);
+    }
+}
 
 NetworkManager::~NetworkManager() = default;

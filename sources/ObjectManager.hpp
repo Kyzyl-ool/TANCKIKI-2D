@@ -31,8 +31,8 @@ public:
     void removeGameObjectById(int gameObjectId);
     GameObject* getGameObjectById(int gameObjectId);
     Tank* getTankById(int tankId);
-    const sf::RenderWindow &getMainWindow() const;
 
+    const sf::RenderWindow &getMainWindow() const;
     ~ObjectManager();
 };
 

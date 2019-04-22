@@ -49,6 +49,7 @@ void GameManager::runGame() {
                 interfaceManager->setObjectManager(match->getObjectManager());
                 networkManager.setMatch(match);
                 networkManager.establishConnection();
+
                 state = GAME_STATE_MULTIPLAYER_MATCH;
                 break;
             }

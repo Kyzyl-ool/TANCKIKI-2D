@@ -40,7 +40,14 @@ class GameObject
 {
 protected:
     bool alive;            /// жив ли ещё объект
-    float x, y;            /// координаты объекта на экране (центр)
+    float x, y;
+public:
+    void setX(float x);
+
+    void setY(float y);
+
+protected:
+    /// координаты объекта на экране (центр)
     float sizeX, sizeY;    /// размеры
     float speed;           /// cкорость движения
     float speedAngle;      /// угловая скорость в градусах

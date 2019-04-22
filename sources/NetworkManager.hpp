@@ -11,6 +11,9 @@
 #include "json/json.hpp"
 #include "Match.hpp"
 
+#define SERVER_IP "95.163.180.31"
+#define SERVER_PORT 54000
+
 using json = nlohmann::json;
 
 class NetworkManager {
@@ -38,6 +41,8 @@ public:
     bool authorize(const std::pair<std::string, std::string>& login_password);
 
     unsigned short establishConnection();
+
+    void sendXYs(std::vector<Tank *>& tanks);
 };
 
 
