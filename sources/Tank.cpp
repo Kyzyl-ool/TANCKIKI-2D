@@ -88,7 +88,8 @@ Tank::Tank(float health, const std::string &the_player_name, const std::string c
         setSprite(397,739,95,53);
         setSpriteTower(400,699,86,40);
     }
-    setSizeSprite(90,50);
+    setSizeSprite(126,70);
+    spriteTower.setScale(1.18,1.18);
     setAlive(true);
 }
 
@@ -157,15 +158,15 @@ GameObject * Tank::shot() {
     float angle= spriteTower.getRotation()/ 180* M_PI;
     bul->setOwnerId(gameObjectId);
     if(bulType==LOWSHOT) {
-        bul->setPosition(x + sizeX*0.70 * cosf(angle), y + sizeX*0.70 * sinf(angle));
+        bul->setPosition(x + sizeX*0.60 * cosf(angle), y + sizeX*0.60 * sinf(angle));
         setRecharge(RECHARGE_OF_LOWSHOT);
     }
     if(bulType==MIDDLESHOT) {
-        bul->setPosition(x + sizeX*0.72 * cosf(angle), y + sizeX*0.72 * sinf(angle));
+        bul->setPosition(x + sizeX*0.62 * cosf(angle), y + sizeX*0.62 * sinf(angle));
         setRecharge(RECHARGE_OF_MIDDLESHOT);
     }
     if(bulType==POWERFULLSHOT) {
-        bul->setPosition(x + sizeX*0.75 * cosf(angle), y + sizeX*0.75 * sinf(angle));
+        bul->setPosition(x + sizeX*0.67 * cosf(angle), y + sizeX*0.67 * sinf(angle));
         setRecharge(RECHARGE_OF_POWERFULLSHOT);
     }
     bul->setAlive(true);
@@ -197,7 +198,7 @@ void Tank::setTextureTower(const char* address) {
 }
 
 int Tank::checkOrient(float X, float Y) {
-    return lround((Y-y)*cosf(spriteTower.getRotation()/180*M_PI) - (X-x)*sinf(spriteTower.getRotation()/180*M_PI)+0.5);
+    return lround((Y-(float)WINDOW_HEIGHT/2)*cosf(spriteTower.getRotation()/180*M_PI) - (X-(float)WINDOW_WIDTH/2)*sinf(spriteTower.getRotation()/180*M_PI)+0.5);
 }
 
 float Tank::getMaxHealth() const {

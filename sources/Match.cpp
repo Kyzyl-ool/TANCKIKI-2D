@@ -14,7 +14,7 @@ using json = nlohmann::json;
 
 
 
-Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json) {
+Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view) {
     json map_j = json::parse(map_json);
     mapName = map_j["mapName"];
     amount_of_blocks_x = map_j["amount_of_blocks_x"];
@@ -62,11 +62,11 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     }
 
     spriteMap.setTexture(textureMap);
-    spriteMap.setScale((float)WINDOW_WIDTH/amount_of_blocks_y/16, (float)WINDOW_HEIGHT/amount_of_blocks_x/16);
+    spriteMap.setScale(((float)MAP_WIDTH)/amount_of_blocks_x/16, ((float)MAP_HEIGHT)/amount_of_blocks_y/16);
 
 
     objectManager = new ObjectManager(mainWindow);
-    graphicsManager = new GraphicsManager(objectManager, blocks, amount_of_blocks_y, amount_of_blocks_x, mainWindow);
+    graphicsManager = new GraphicsManager(objectManager, blocks, amount_of_blocks_y, amount_of_blocks_x, mainWindow, view);
     physicsManager = new PhysicsManager(objectManager);
 
     ///@todo распарсить players_info_json
@@ -89,8 +89,8 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     ///@todo решить, с какими начальными координатами ставить игроков на карту
     std::pair <int, int> playersInitialCoordinates[amount_of_players];
     for(int i = 0; i < amount_of_players; ++i) {
-        playersInitialCoordinates[i].first = 200*(i+1);
-        playersInitialCoordinates[i].second = 200*(i+1);
+        playersInitialCoordinates[i].first = 250*(i+1);
+        playersInitialCoordinates[i].second = 260*(i+1);
     }
     ///@todo заполнить playersInitialCoordinates
 
@@ -175,11 +175,11 @@ void Match::setBlock(int i, int j, block_t BL) {
     sf::Texture texture;
     if(BL==BL_0) {
         texture.loadFromImage(imagesForMap, sf::IntRect(256,16,16,16));
-        textureMap.update(imagesForMap, j*WINDOW_WIDTH/amount_of_blocks_x,  i*WINDOW_HEIGHT/amount_of_blocks_y);
+        textureMap.update(imagesForMap, j*((float)MAP_WIDTH)/amount_of_blocks_x,  i*((float)MAP_HEIGHT)/amount_of_blocks_y);
     }
     if(BL==BL_1) {
         texture.loadFromImage(imagesForMap, sf::IntRect(272,32,16,16));
-        textureMap.update(imagesForMap, j*WINDOW_WIDTH/amount_of_blocks_x,  i*WINDOW_HEIGHT/amount_of_blocks_y);
+        textureMap.update(imagesForMap, j*((float)MAP_WIDTH)/amount_of_blocks_x,  i*((float)MAP_HEIGHT)/amount_of_blocks_y);
     }
 }
 
@@ -206,4 +206,14 @@ Match::~Match() {
     delete(blocks);
 }
 
+float Match::getMyPlayerX() {
+    return objectManager->getObjects()[0]->getX();
+}
 
+float Match::getMyPlayerY() {
+    return objectManager->getObjects()[0]->getY();
+}
+
+void Match::setPlayerCoordVorView() {                                     //функция для считывания координат игрока
+    graphicsManager->getView().setCenter(getMyPlayerX(), getMyPlayerY()); //следим за игроком, передавая его координаты.
+}

@@ -6,11 +6,12 @@
 #include <fstream>
 
 GameManager::GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event,
-                         NetworkManager &the_networkmanager) :
+                         NetworkManager &the_networkmanager, sf::View &the_view) :
 mainWindow(the_mainWindow),
 gui(the_gui),
 event(the_event),
-networkManager(the_networkmanager)
+networkManager(the_networkmanager),
+view(the_view)
 {
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_MAIN_MENU;
@@ -20,8 +21,6 @@ networkManager(the_networkmanager)
 
 void GameManager::runGame() {
     mainWindow.setKeyRepeatEnabled(false);
-    float frequency(0);
-
     while (mainWindow.isOpen()) {
 
         interfaceManager->makeInterface();
@@ -33,7 +32,7 @@ void GameManager::runGame() {
                 mainWindow.clear();
                 ///@todo прочитать players_info_json, map_json;
                 std::string line, players_info_json, map_json;
-                std::ifstream mapfile (".\\sources\\json\\map1.txt");
+                std::ifstream mapfile (".\\sources\\json\\map2.txt");
                 std::ifstream playerInfofile (".\\sources\\json\\players_info.txt");
                 if (mapfile.is_open())  {
                     while (getline(mapfile,line))  {
@@ -48,7 +47,7 @@ void GameManager::runGame() {
                     playerInfofile.close();
                 }
 
-                match = new Match(mainWindow, players_info_json, map_json);
+                match = new Match(mainWindow, players_info_json, map_json, view);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
                 state = GAME_STATE_MATCH;
@@ -72,6 +71,8 @@ void GameManager::runGame() {
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
                 match->updateMatch(time);
+                match->setPlayerCoordVorView();
+                mainWindow.setView(view);
                 match->drawMatch();
                 break;
             }

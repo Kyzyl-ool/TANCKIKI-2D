@@ -24,6 +24,7 @@ class GameManager
 {
 private:
     sf::RenderWindow& mainWindow;
+    sf::View& view;
     tgui::Gui& gui;
     Match* match;
     InterfaceManager* interfaceManager;
@@ -37,7 +38,7 @@ private:
 
 public:
     GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event,
-                NetworkManager &the_networkmanager);
+                NetworkManager &the_networkmanager, sf::View &view);
     ~GameManager();
 
     /*!

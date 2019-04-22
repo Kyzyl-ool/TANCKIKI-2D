@@ -12,10 +12,17 @@ void GraphicsManager::drawGameObjects() {
 }
 
 GraphicsManager::GraphicsManager(ObjectManager *theObjectManager, block_t *blocks, unsigned int amount_of_blocks_y,
-                                 unsigned int amount_of_blocks_x, sf::RenderWindow &the_window): window(the_window){
+                                 unsigned int amount_of_blocks_x, sf::RenderWindow &the_window, sf::View &the_view) :
+window(the_window),
+view(the_view)
+{
     objectManager = theObjectManager;
 }
 
 sf::RenderWindow &GraphicsManager::getWindow() const {
     return window;
+}
+
+sf::View  &GraphicsManager::getView() const {
+    return view;
 }

@@ -56,8 +56,8 @@ bool GameObject::collideCheck(GameObject *obj) {
 
 bool GameObject::collideCheck(Match *match) {
     block_t *blocks = match->getBlocks();
-    int sizeBlx = WINDOW_WIDTH/match->getAmountBlocksX();
-    int sizeBly = WINDOW_HEIGHT/match->getAmountBlocksY();
+    float sizeBlx = ((float)MAP_WIDTH)/match->getAmountBlocksX();
+    float sizeBly = ((float)MAP_HEIGHT)/match->getAmountBlocksY();
 
     int jj =  (int)(x - (sizeX+sizeY)/2)/sizeBlx;
     int ii = (int)(y - (sizeX+sizeY)/2)/sizeBly;
