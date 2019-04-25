@@ -115,9 +115,6 @@ InterfaceManager::InterfaceManager(
         buttonCancel->connect("pressed", [&](){
             WidgetsMenu::change_ava(0);
         });
-
-        ///@todo check that login AND password were typed
-        ///@todo Enter pressed -> LOGIN
     }
     catch (const tgui::Exception& e) {
         std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
@@ -136,6 +133,51 @@ void InterfaceManager::makeInterface() {
 
             auto tanks = objectManager->getTanks(); //вектор танков
 
+            if (tanksnameloaded) {
+
+                for (auto i = 0; i < tanks.size(); i++) {
+
+                    auto x  = tanks[i]->getX();
+                    auto y  = tanks[i]->getY();
+                    auto sx = tanks[i]->getSizeX();
+                    auto sy = tanks[i]->getSizeY();
+
+                    try {
+                        nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.8);
+//                        nameTanks[i]->setSize(5 * sx, 5 * sy * 0.3); //it's large size
+
+                        if(!tanks[i]->isAlive()) {
+                            nameTanks[i]->setVisible(false);
+                        }
+                    }
+                    catch (const tgui::Exception& e) {
+                        std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                        assert(0);
+                    }
+                }
+
+            }
+
+            else {
+                for (auto i = 0; i < tanks.size(); i++) {
+
+                    try {
+                        nameTanks.push_back(tgui::Label::create(tanks[i]->getName()));
+                        nameTanks[i]->getRenderer()->setTextColor(sf::Color::White);
+                        nameTanks[i]->getRenderer()->setTextStyle(sf::Text::Bold);
+                        nameTanks[i]->setTextSize(20);
+                        nameTanks[i]->getRenderer()->setBackgroundColor(sf::Color::Black);
+                        nameTanks[i]->setAutoSize(true);
+                        gui.add(nameTanks[i]);
+                    }
+                    catch (const tgui::Exception& e) {
+                        std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                        assert(0);
+                    }
+                }
+                tanksnameloaded = true;
+            }
+
             if(heathbarloaded) {
 
                 for (auto i = 0; i < tanks.size(); i++) {
@@ -148,8 +190,6 @@ void InterfaceManager::makeInterface() {
                     auto sy = tanks[i]->getSizeY();
 
                     auto name = tanks[i]->getName();
-
-
 
                     try {
                         healthTanks[i]->setPosition(x - 0.5*sx, y - sy);
@@ -220,4 +260,21 @@ void InterfaceManager::setObjectManager(ObjectManager *objectManager) {
     InterfaceManager::objectManager = objectManager;
 }
 
+void InterfaceManager::showHealth() {
+    auto tanks = objectManager->getTanks();
+    for (auto i = 0; i < nameTanks.size(); i++) {
+        if(tanks[i]->isAlive()) {
+            nameTanks[i]->setVisible(true);
+        }
+    }
+}
+
+void InterfaceManager::cancelShow() {
+    auto tanks = objectManager->getTanks();
+    for (auto i = 0; i < nameTanks.size(); i++) {
+        if(tanks[i]->isAlive()) {
+            nameTanks[i]->setVisible(false);
+        }
+    }
+}
 
