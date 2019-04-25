@@ -8,18 +8,21 @@
 
 const unsigned int WINDOW_HEIGHT = 900;
 const unsigned int WINDOW_WIDTH = 1600;
-const unsigned int MAP_HEIGHT = 1800;
+const unsigned int MAP_HEIGHT = 1600;
 const unsigned int MAP_WIDTH = 3000;
 const char WINDOW_NAME[] = "TANCHIKI GAME";
 const float SPEED_OF_LOW_BULLET = 0.4;
 const float RECHARGE_OF_LOWSHOT = 150;
-const float DAMAGE_OF_LOWSHOT = 50;
+const int DAMAGE_OF_LOWSHOT = 50;
+const int COEF_LOWSHOT = 10;
 const float SPEED_OF_MIDDLE_BULLET = 0.28;
 const float RECHARGE_OF_MIDDLESHOT = 400;
-const float DAMAGE_OF_MIDDLESHOT = 100;
+const int DAMAGE_OF_MIDDLESHOT = 100;
+const int COEF_MIDDLESHOT = 5;
 const float SPEED_OF_POWERFULLSHOT = 0.14;
 const float RECHARGE_OF_POWERFULLSHOT = 2000;
-const float DAMAGE_OF_POWERFULLSHOT = 490;
+const int DAMAGE_OF_POWERFULLSHOT = 490;
+const int COEF_POWERFULLSHOT = 2;
 const char IMAGE_FOR_MAP[] = "images/textu.png";
 const float TANK_TOWER_SPEED = 0.12;
 const float TANK_VELOCITY = 0.12;

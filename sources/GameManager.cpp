@@ -36,13 +36,13 @@ void GameManager::runGame() {
                 std::ifstream playerInfofile ("./sources/json/players_info.txt");
                 if (mapfile.is_open())  {
                     while (getline(mapfile,line))  {
-                        map_json = map_json + line + '\n';
+                        map_json += line + '\n';
                     }
                     mapfile.close();
                 }
                 if (playerInfofile.is_open())  {
                     while (getline(playerInfofile,line))  {
-                        players_info_json = players_info_json + line + '\n';
+                        players_info_json += line + '\n';
                     }
                     playerInfofile.close();
                 }
@@ -59,13 +59,14 @@ void GameManager::runGame() {
                 std::string message = eventManager->getMessageFromGameObjects();
                 if (!message.empty()) match->processMessage(message);
                 Tank* tmp = (Tank* )match->getObjectManager()->getGameObjectById(0);
+
                 auto tmp1 = sf::Mouse::getPosition(mainWindow);
                 int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
                 if(sinus>0)
-                        tmp->setSpeedTower(TANK_TOWER_SPEED);
+                    tmp->setSpeedTower(TANK_TOWER_SPEED);
                 else
-                        tmp->setSpeedTower(-TANK_TOWER_SPEED);
-                if(sinus == 0)
+                    tmp->setSpeedTower(-TANK_TOWER_SPEED);
+                if(sinus < 10 && sinus > -10)
                     tmp->setSpeedTower(0);
 
                 float time = clock.getElapsedTime().asMilliseconds();

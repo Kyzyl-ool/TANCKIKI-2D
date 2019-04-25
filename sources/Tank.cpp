@@ -3,12 +3,14 @@
 //
 
 #include "Tank.hpp"
+#include "Ammunition.hpp"
+#include "Repair.hpp"
 #include <cmath>
 
 #include <iostream>
 
 
-Tank::Tank(float health, const std::string &the_player_name, const std::string color)
+Tank::Tank(float health, const std::string &the_player_name, const std::string &color)
         : GameObject::GameObject(), health(health), maxHealth(health) {
     Tank::type=TANK;
     speedTower =0;
@@ -90,7 +92,6 @@ Tank::Tank(float health, const std::string &the_player_name, const std::string c
     }
     setSizeSprite(126,70);
     spriteTower.setScale(1.18,1.18);
-    setAlive(true);
 }
 
 void Tank::setTextBoom(const char* address) {
@@ -119,7 +120,13 @@ void Tank::update(float time) {
     spriteTower.setPosition(x,y);
     spriteTower.setRotation(spriteTower.getRotation()+speedTower*time);
     updateRecharge(time);
-    if(health <= 0) setAlive(false);
+    if(health <= 0) {
+        setAlive(false);
+    }
+}
+
+int Tank::getAmmun() {
+    return ammunition;
 }
 
 
@@ -132,6 +139,18 @@ void Tank::draw(sf::RenderWindow &window) {
 
 
 void Tank::collideResponse(GameObject *obj, float time) {
+    if(obj->getType()==REPAIR) {
+        health += ((Repair*)obj)->getHealth();
+        if(health>maxHealth) health = maxHealth;
+    }
+    if(obj->getType()==AMMUN) {
+        if(getTypeBullet() == LOWSHOT)
+            ammunition += ((Ammunition*)obj)->getCount()*COEF_LOWSHOT;
+        if(getTypeBullet() == MIDDLESHOT)
+            ammunition += ((Ammunition*)obj)->getCount()*COEF_MIDDLESHOT;
+        if(getTypeBullet() == POWERFULLSHOT)
+            ammunition += ((Ammunition*)obj)->getCount()*COEF_POWERFULLSHOT;
+    }
     if(obj->getType()==TANK) {
         health = health-DAMAGE_OF_COLLISION*time;
         setRotation(getRotation()-speedAngle*time);
@@ -151,7 +170,7 @@ void Tank::collideResponse(Match *match, float time) {
 }
 
 GameObject * Tank::shot() {
-    if(getRecharge()>0) return nullptr;
+    if(getRecharge()>0 || ammunition == 0) return nullptr;
 
     Bullet *bul;
     bul = new Bullet(bulType);
@@ -171,6 +190,7 @@ GameObject * Tank::shot() {
     }
     bul->setAlive(true);
     bul->setRotation(spriteTower.getRotation());
+    ammunition = ammunition - 1;
     return bul;
 }
 
@@ -198,7 +218,13 @@ void Tank::setTextureTower(const char* address) {
 }
 
 int Tank::checkOrient(float X, float Y) {
-    return lround((Y-(float)WINDOW_HEIGHT/2)*cosf(spriteTower.getRotation()/180*M_PI) - (X-(float)WINDOW_WIDTH/2)*sinf(spriteTower.getRotation()/180*M_PI)+0.5);
+    float vx = (float)(WINDOW_WIDTH)/2;
+    float vy = (float)(WINDOW_HEIGHT)/2;
+    if(x < (float)(WINDOW_WIDTH)/2) vx = x;
+    if(x > MAP_WIDTH - (float)(WINDOW_WIDTH)/2) vx = WINDOW_WIDTH - (MAP_WIDTH - x);
+    if(y < (float)(WINDOW_HEIGHT)/2) vy = y;
+    if(y > MAP_HEIGHT - (float)(WINDOW_HEIGHT)/2) vy = WINDOW_HEIGHT - (MAP_HEIGHT - y);
+    return lround((Y-vy)*cosf(spriteTower.getRotation()/180*M_PI) - (X-vx)*sinf(spriteTower.getRotation()/180*M_PI)+0.5);
 }
 
 float Tank::getMaxHealth() const {
@@ -215,6 +241,21 @@ Bullet_t Tank::getTypeBullet() {
 
 void Tank::setTypeBullet(Bullet_t TypeBullet) {
     bulType = TypeBullet;
+    int k = 4;
+    if(TypeBullet == LOWSHOT) {
+        count_ammun = COEF_LOWSHOT;
+    }
+    if(TypeBullet == MIDDLESHOT) {
+        count_ammun = COEF_MIDDLESHOT;
+    }
+    if(TypeBullet == POWERFULLSHOT) {
+        count_ammun = COEF_POWERFULLSHOT;
+    }
+    ammunition = k*count_ammun;
+}
+
+int Tank::getCountAmmun() {
+    return count_ammun;
 }
 
 float Tank::getRecharge() {

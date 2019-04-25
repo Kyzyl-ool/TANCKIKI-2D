@@ -20,10 +20,12 @@ protected:
     float recharge;
     Bullet_t bulType;
     std::string playerName = "Unnamed";
+    int ammunition;
+    int count_ammun;
 public:
     const std::string &getName() const;
     float getMaxHealth() const;
-    Tank(float health, const std::string &the_player_name, const std::string color);
+    Tank(float health, const std::string &the_player_name, const std::string &color);
     void update(float time) override;
 
     void draw(sf::RenderWindow &window) override;
@@ -37,6 +39,8 @@ public:
     float getHealth();
     float getSpeedTower();
     Bullet_t getTypeBullet();
+    int getAmmun();
+    int getCountAmmun();
     void setTextBoom(const char* address);
     void setSprBoom(int X, int Y, int sizeX, int sizeY);
 

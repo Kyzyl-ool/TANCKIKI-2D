@@ -16,6 +16,8 @@ enum gameObject_t {
     ABYSS = 0,
     TANK,
     BULLET,
+    AMMUN,
+    REPAIR,
     GROUND
 };
 

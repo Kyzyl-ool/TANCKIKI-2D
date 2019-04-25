@@ -6,6 +6,7 @@
 #include "PhysicsManager.hpp"
 #include "Tank.hpp"
 #include <time.h>
+#include "Ammunition.hpp"
 
 
 PhysicsManager::PhysicsManager(ObjectManager *theObjectManager) {
@@ -23,6 +24,12 @@ void PhysicsManager::updateGameObjects(Match *match, float time) {
                     object2->collideResponse(object1, time);
                 }
             }
+            if(object1->getType() == TANK && !object1->isAlive()) {
+                Ammunition *amm = new Ammunition(((Tank*)object1)->getAmmun()/((Tank*)object1)->getCountAmmun());
+                amm->setPosition(object1->getX(), object1->getY());
+                objectManager->addGameObject(amm);
+            }
+
             if (object1->collideCheck(match)) {
                 object1->collideResponse(match, time);
             }

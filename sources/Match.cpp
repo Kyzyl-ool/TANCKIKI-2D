@@ -7,6 +7,8 @@
 #include "Match.hpp"
 #include "blocks.hpp"
 #include "Tank.hpp"
+#include "Ammunition.hpp"
+#include "Repair.hpp"
 #include "json/json.hpp"
 #include "constants/messages.hpp"
 
@@ -38,6 +40,8 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
                 blocks[amount_of_blocks_x * i + j] = BL_1;
         }
     }
+
+
     ///@todo заполнить blocks
 
     imagesForMap.loadFromFile(IMAGE_FOR_MAP);
@@ -102,6 +106,27 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
         tank->setObjectId(i);
         tank->setTypeBullet(MIDDLESHOT);
         objectManager->addGameObject(tank);
+    }
+
+    srand(time(NULL));
+    for(int l =0; l < 10; ++l) {
+        Ammunition *amm = new Ammunition(2);
+        int i = rand() % (amount_of_blocks_x * amount_of_blocks_y);
+        while (blocks[i] != BL_1) {
+            i = rand() % (amount_of_blocks_x * amount_of_blocks_y);
+        }
+        amm->setPosition((i % amount_of_blocks_x + 0.5)*MAP_WIDTH/amount_of_blocks_x, (i / amount_of_blocks_x + 0.5)*MAP_HEIGHT/amount_of_blocks_y);
+        objectManager->addGameObject(amm);
+    }
+
+    for(int l =0; l < 5; ++l) {
+        Repair *rep = new Repair(500);
+        int i = rand() % (amount_of_blocks_x * amount_of_blocks_y);
+        while (blocks[i] != BL_1) {
+            i = rand() % (amount_of_blocks_x * amount_of_blocks_y);
+        }
+        rep->setPosition((i % amount_of_blocks_x + 0.5)*MAP_WIDTH/amount_of_blocks_x, (i / amount_of_blocks_x + 0.5)*MAP_HEIGHT/amount_of_blocks_y);
+        objectManager->addGameObject(rep);
     }
 
     ///@todo передать все эти танки в objectManager, вызывая у него addGameObject
@@ -214,6 +239,12 @@ float Match::getMyPlayerY() {
     return objectManager->getObjects()[0]->getY();
 }
 
-void Match::setPlayerCoordVorView() {                                     //функция для считывания координат игрока
-    graphicsManager->getView().setCenter(getMyPlayerX(), getMyPlayerY()); //следим за игроком, передавая его координаты.
+void Match::setPlayerCoordVorView() {
+    float x = getMyPlayerX();
+    float y = getMyPlayerY();
+    if(x < (float)(WINDOW_WIDTH)/2) x = (float)WINDOW_WIDTH/2;
+    if(x > MAP_WIDTH-(float)(WINDOW_WIDTH)/2) x = MAP_WIDTH-(float)(WINDOW_WIDTH)/2;
+    if(y < (float)(WINDOW_HEIGHT)/2) y = (float)WINDOW_HEIGHT/2;
+    if(y > MAP_HEIGHT-(float)(WINDOW_HEIGHT)/2) y = MAP_HEIGHT-(float)(WINDOW_HEIGHT)/2;
+    graphicsManager->getView().setCenter(x, y); //следим за игроком, передавая его координаты.
 }

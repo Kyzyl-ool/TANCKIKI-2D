@@ -13,6 +13,7 @@
 GameObject::GameObject() {
     GameObject::speed = 0;
     speedAngle = 0;
+    alive = true;
 }
 
 void GameObject::update(float time) {
@@ -48,10 +49,7 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
-        if (Collision::CircleTest(sprite, obj->getSprite())) {
-            return Collision::BoundingBoxTest(sprite, obj->getSprite());
-        }
-    return false;
+    return Collision::CircleTest(sprite, obj->getSprite()) && Collision::BoundingBoxTest(sprite, obj->getSprite());
 }
 
 bool GameObject::collideCheck(Match *match) {
