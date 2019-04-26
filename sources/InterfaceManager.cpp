@@ -277,3 +277,16 @@ void InterfaceManager::cancelShow() {
     }
 }
 
+void InterfaceManager::ShowMatchesDialog(json j) {
+    json tmp;
+    tmp["amount_of_players_in_match"] = {1, 0, 4}; // кол-во игроков в матче
+    tmp["names"] = {"Join us", "Test match", "Hello everyone"}; // название матча
+    tmp["who"] = {"Kezhik", "Maxim", "Artem"}; // кто создал матч
+    tmp["id"] = {67, 33, 108};
+
+    std::vector <int> amount_of_players_in_match = tmp["amount_of_players_in_match"].get < std::vector <int> >();
+    std::vector <std::string> names = tmp["names"].get <std::vector <std::string> >();
+    std::vector <std::string> who = tmp["who"].get <std::vector <std::string> >();
+    std::vector <int> id = tmp["id"].get < std::vector <int> >();
+}
+

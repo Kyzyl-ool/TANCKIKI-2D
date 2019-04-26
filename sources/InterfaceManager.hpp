@@ -11,6 +11,9 @@
 #include "constants/gameStates.hpp"
 #include "NetworkManager.hpp"
 #include <TGUI/TGUI.hpp>
+#include "json/json.hpp"
+
+using json = nlohmann::json;
 
 /*!
  * Этот класс отвечает за весь игровой интерфейс.
@@ -62,6 +65,17 @@ public:
     void cancelShow();
 
     static std::pair<std::string, std::string> login();
+
+    ///@todo показать окно с доступными матчами
+    void ShowMatchesDialog(json j);
+    ///@todo закрыть окно с матчами
+    void closeMatchesDialog();
+
+    ///@todo срабатывает при старте матча
+    void onMatchClick(int match_id);
+
+    ///@todo срабатывает, если нажать на создание матча
+    void onCreateMatchClick();
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP
