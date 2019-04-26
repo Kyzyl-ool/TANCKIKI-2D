@@ -128,11 +128,6 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 void InterfaceManager::makeInterface() {
     switch (*state) {
         case GAME_STATE_MATCH: {
-            ///@todo проверить, что имена добавлены
-            ///@todo если нет, добавить
-
-            ///@todo показывать, если нажата Alt (Ctrl)
-
 
             auto tanks = objectManager->getTanks(); //вектор танков
 
@@ -171,6 +166,7 @@ void InterfaceManager::makeInterface() {
                         nameTanks[i]->setTextSize(20);
                         nameTanks[i]->getRenderer()->setBackgroundColor(sf::Color::Black);
                         nameTanks[i]->setAutoSize(true);
+                        nameTanks[i]->setVisible(false);
                         gui.add(nameTanks[i]);
                     }
                     catch (const tgui::Exception& e) {
