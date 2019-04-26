@@ -14,7 +14,7 @@ networkManager(the_networkmanager)
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_MAIN_MENU;
     interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager);
-    eventManager = new EventManager(mainWindow, event, -1, &state, gui, interfaceManager);
+    eventManager = new EventManager(mainWindow, event, -1, &state, gui, *interfaceManager);
 }
 
 void GameManager::runGame() {

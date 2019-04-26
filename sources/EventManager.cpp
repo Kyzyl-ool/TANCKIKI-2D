@@ -46,7 +46,7 @@ std::string EventManager::getMessageFromGameObjects() {
 }
 
 std::string EventManager::returnMessageFromMatchActions() {
-    bool labeled = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl);
+    bool labeled = sf::Keyboard::isKeyPressed(sf::Keyboard::Tab);
     if (labeled) {
         interfaceManager.showHealth();
     } else {
