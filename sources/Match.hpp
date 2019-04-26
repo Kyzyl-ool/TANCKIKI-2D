@@ -13,17 +13,14 @@
 class Match {
 private:
     ObjectManager* objectManager;
-public:
-    ObjectManager *getObjectManager() const;
-
-private:
     GraphicsManager* graphicsManager;
     PhysicsManager* physicsManager;
     std::string mapName;
     int myPlayerId;
-
     unsigned int amount_of_blocks_x, amount_of_blocks_y;
     block_t* blocks;
+    float deathTime;
+    int deathLine;
     sf::Texture textureMap;
     sf::Sprite spriteMap;
     sf::Image imagesForMap;
@@ -32,7 +29,8 @@ private:
     std::vector <std::string> players_names;
 
 public:
-    Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json);
+    ObjectManager *getObjectManager() const;
+    Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view);
     ~Match();
 
     void drawMatch();
@@ -48,6 +46,14 @@ public:
 
     void setBlock(int i, int j, block_t BL);
 
+    void setPlayerCoordVorView();
+    void setDeathTime(float dt);
+    float getDeathTime();
+    void setDeathLine(int dt);
+    int getDeathTLine();
+    float getMyPlayerX();
+    float getMyPlayerY();
+    void viewmap(float time);
 };
 
 

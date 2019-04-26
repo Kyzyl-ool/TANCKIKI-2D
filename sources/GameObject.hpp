@@ -16,6 +16,8 @@ enum gameObject_t {
     ABYSS = 0,
     TANK,
     BULLET,
+    AMMUN,
+    REPAIR,
     GROUND
 };
 
@@ -96,7 +98,7 @@ public:
 
     virtual void collideResponse(Match *match, float time);
 
-    virtual GameObject * shot(Bullet_t BULLET);
+    virtual GameObject *shot();
 
     float getX() const;
 

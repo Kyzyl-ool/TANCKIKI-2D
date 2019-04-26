@@ -13,6 +13,7 @@
 GameObject::GameObject() {
     GameObject::speed = 0;
     speedAngle = 0;
+    alive = true;
 }
 
 void GameObject::update(float time) {
@@ -48,16 +49,13 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
-        if (Collision::CircleTest(sprite, obj->getSprite())) {
-            return Collision::BoundingBoxTest(sprite, obj->getSprite());
-        }
-    return false;
+    return Collision::CircleTest(sprite, obj->getSprite()) && Collision::BoundingBoxTest(sprite, obj->getSprite());
 }
 
 bool GameObject::collideCheck(Match *match) {
     block_t *blocks = match->getBlocks();
-    int sizeBlx = WINDOW_WIDTH/match->getAmountBlocksX();
-    int sizeBly = WINDOW_HEIGHT/match->getAmountBlocksY();
+    float sizeBlx = ((float)MAP_WIDTH)/match->getAmountBlocksX();
+    float sizeBly = ((float)MAP_HEIGHT)/match->getAmountBlocksY();
 
     int jj =  (int)(x - (sizeX+sizeY)/2)/sizeBlx;
     int ii = (int)(y - (sizeX+sizeY)/2)/sizeBly;
@@ -142,7 +140,12 @@ void GameObject::setTexture(sf::Texture texture_){
 void GameObject::setTexture(const char* address) {
     sf::Image image;
     image.loadFromFile(address);
-    image.createMaskFromColor(sf::Color::White);
+    if(type == TANK) {
+        image.createMaskFromColor(sf::Color::White);
+    }
+    if(type == BULLET) {
+        image.createMaskFromColor(sf::Color::Black);
+    }
     GameObject::texture.loadFromImage(image);
 }
 
@@ -186,7 +189,7 @@ void GameObject::setOwnerId(int pid) {
     ownerId=pid;
 }
 
-GameObject * GameObject::shot(Bullet_t BULLET) {
+GameObject * GameObject::shot() {
 
 }
 
