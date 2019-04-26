@@ -10,6 +10,7 @@ const unsigned int WINDOW_HEIGHT = 900;
 const unsigned int WINDOW_WIDTH = 1600;
 const unsigned int MAP_HEIGHT = 1600;
 const unsigned int MAP_WIDTH = 3000;
+const int DEATH_TIME = 50000;  ///Milliseconds
 const char WINDOW_NAME[] = "TANCHIKI GAME";
 const float SPEED_OF_LOW_BULLET = 0.4;
 const float RECHARGE_OF_LOWSHOT = 150;
@@ -28,6 +29,6 @@ const float TANK_TOWER_SPEED = 0.12;
 const float TANK_VELOCITY = 0.12;
 const float TANK_ANGLE_SPEED = 0.09;
 const float DAMAGE_OF_COLLISION = 0.04;
-
+const float DAMAGE_OF_DEATHTIME = 2;
 
 #endif //TANCHIKI_CONFIG_HPP

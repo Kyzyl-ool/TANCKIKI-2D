@@ -19,6 +19,8 @@ private:
     int myPlayerId;
     unsigned int amount_of_blocks_x, amount_of_blocks_y;
     block_t* blocks;
+    float deathTime;
+    int deathLine;
     sf::Texture textureMap;
     sf::Sprite spriteMap;
     sf::Image imagesForMap;
@@ -45,6 +47,10 @@ public:
     void setBlock(int i, int j, block_t BL);
 
     void setPlayerCoordVorView();
+    void setDeathTime(float dt);
+    float getDeathTime();
+    void setDeathLine(int dt);
+    int getDeathTLine();
     float getMyPlayerX();
     float getMyPlayerY();
     void viewmap(float time);

@@ -17,6 +17,7 @@ using json = nlohmann::json;
 
 
 Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view) {
+    deathTime = 0;
     json map_j = json::parse(map_json);
     mapName = map_j["mapName"];
     amount_of_blocks_x = map_j["amount_of_blocks_x"];
@@ -64,7 +65,6 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
             }
         }
     }
-
     spriteMap.setTexture(textureMap);
     spriteMap.setScale(((float)MAP_WIDTH)/amount_of_blocks_x/16, ((float)MAP_HEIGHT)/amount_of_blocks_y/16);
 
@@ -140,6 +140,26 @@ void Match::drawMatch() {
 }
 
 void Match::updateMatch(float time) {
+    setDeathTime(getDeathTime()+time);
+    if(getDeathTime() > DEATH_TIME) {
+        setDeathLine(getDeathTLine() + 1);
+        setDeathTime(getDeathTime() - DEATH_TIME);
+
+        sf::Texture texture;
+        sf::Image image;
+        image.create(16,16,sf::Color::Red);
+        texture.loadFromImage(image,sf::IntRect(0,0,16,16));
+        textureMap.create(16*amount_of_blocks_x,16*amount_of_blocks_y);
+        for(int i =0;i< amount_of_blocks_y; ++i) {
+            for(int j=0;j<amount_of_blocks_x; ++j) {
+                if(i<=deathLine || i >= amount_of_blocks_y - deathLine || j<=deathLine || j >= amount_of_blocks_x - deathLine) {
+                    textureMap.update(texture, 16*j, 16*i);
+                }
+            }
+        }
+        spriteMap.setTexture(textureMap);
+        spriteMap.setScale(((float)MAP_WIDTH)/amount_of_blocks_x/16, ((float)MAP_HEIGHT)/amount_of_blocks_y/16);
+    }
     physicsManager->updateGameObjects(this, time);
 }
 
@@ -222,6 +242,22 @@ unsigned int Match::getAmountBlocksY() {
 
 ObjectManager *Match::getObjectManager() const {
     return objectManager;
+}
+
+void Match::setDeathTime(float dt) {
+    deathTime = dt;
+}
+
+float Match::getDeathTime() {
+    return deathTime;
+}
+
+void Match::setDeathLine(int dt) {
+    deathLine = dt;
+}
+
+int Match::getDeathTLine() {
+    return deathLine;
 }
 
 Match::~Match() {
