@@ -57,11 +57,11 @@ public:
 
     static void signalHandler4(InterfaceManager *manager);
 
-    bool login();
-
     void showHealth();
 
     void cancelShow();
+
+    static std::pair<std::string, std::string> login();
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP
