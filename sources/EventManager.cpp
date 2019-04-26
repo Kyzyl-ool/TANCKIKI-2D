@@ -14,13 +14,14 @@ bool EventManager::pollEvent() {
     return mainWindow.pollEvent(event);
 }
 
-EventManager::EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId,
-                           gameState_t *the_state, tgui::Gui &the_gui)
+EventManager::EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId, gameState_t *the_state,
+                           tgui::Gui &the_gui, InterfaceManager &interfaceManager)
         :
         mainWindow(theMainWindow),
 playerId(playerId),
 gui(the_gui),
-event(the_event)
+event(the_event),
+interfaceManager(interfaceManager)
 {
     state = the_state;
 }
@@ -45,6 +46,12 @@ std::string EventManager::getMessageFromGameObjects() {
 }
 
 std::string EventManager::returnMessageFromMatchActions() {
+    bool labeled = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl);
+    if (labeled) {
+        interfaceManager.showHealth();
+    } else {
+        interfaceManager.cancelShow();
+    }
     char arrows = getPressedArrows(sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Up, sf::Keyboard::Right);
         switch (event.type) {
             case sf::Event::KeyReleased: {
