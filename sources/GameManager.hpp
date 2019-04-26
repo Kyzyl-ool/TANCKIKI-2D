@@ -14,6 +14,7 @@
 #include "Match.hpp"
 #include "constants/gameStates.hpp"
 #include "EventManager.hpp"
+#include "NetworkManager.hpp"
 
 
 /*!
@@ -27,13 +28,16 @@ private:
     Match* match;
     InterfaceManager* interfaceManager;
     EventManager* eventManager;
+    NetworkManager& networkManager;
 
     gameState_t state;
     sf::Event& event;
     std::string playerName;
+    sf::Clock clock;
 
 public:
-    GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event);
+    GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event,
+                NetworkManager &the_networkmanager);
     ~GameManager();
 
     /*!

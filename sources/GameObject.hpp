@@ -49,6 +49,7 @@ protected:
     int gameObjectId;       ///айди объекта
     int ownerId;            ///айди владельца
     gameObject_t type;
+    float scale;
 public:
     gameObject_t getType() const;
     /// тип
@@ -109,6 +110,8 @@ public:
 
     float getRotation() const;
 
+    float getScale();
+
     bool isAlive() const;
 
     int getOwnerId() const;
@@ -126,8 +129,6 @@ public:
     void setPosition(float x, float y);
 
     void setSpeed(float sp);
-
-    void setSizeObj(float sizeX, float sizeY);
 
     void setSizeSprite(float sizeX, float sizeY); ///задает размеры спрайта, если размеры спрайта и объекта совпадают!!!
 
@@ -147,7 +148,9 @@ public:
 
     void setSpeedAngle(float apAngle);
 
-    float checkOrient(float X, float Y); ///определяет угол направления минус угол объекта, если положительный, то крутить против часовой стрелки
+    void setScale(float sc);
+
+//    float checkOrient(float X, float Y); ///определяет синус угла направления минус угол объекта, если положительный, то объект крутить по часовой стрелки
 
     void rotateLeft();      // задаёт движение в левую сторону, срабатывает при нажатии влево
     void rotateRight();     // задаёт движение в правую сторону, срабатывает при нажатии вправо

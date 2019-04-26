@@ -8,15 +8,15 @@
 #include "Tank.hpp"
 
 
-InterfaceManager::InterfaceManager(
-        sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
-        gameState_t *the_state,
-        tgui::Gui &the_gui) :
+InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
+                                   gameState_t *the_state,
+                                   tgui::Gui &the_gui, NetworkManager &the_networkmanager) :
 
         mainWindow(the_mainWindow),
         objectManager(the_objectManager),
         state(the_state),
-        gui(the_gui)
+        gui(the_gui),
+        networkManager(the_networkmanager)
 {
     try {
         static auto picture = tgui::Picture::create({"images/forest.svg", {0, 0, 1000, 700}}); //Failed to create texture, invalid size (0x0)
@@ -109,7 +109,10 @@ InterfaceManager::InterfaceManager(
         settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
 
         buttonLogin->connect("pressed", [&](){
-            WidgetsMenu::login();
+            std::pair <std::string, std::string> tmp = WidgetsMenu::login();
+            if (!tmp.first.empty()) {
+                networkManager.authorize(tmp);
+            }
         });
 
         buttonCancel->connect("pressed", [&](){
@@ -252,7 +255,7 @@ void InterfaceManager::setState(gameState_t gameState) {
     *InterfaceManager::state = gameState;
 }
 
-bool InterfaceManager::login() {
+std::pair<std::string, std::string> InterfaceManager::login() {
     return WidgetsMenu::login();
 }
 

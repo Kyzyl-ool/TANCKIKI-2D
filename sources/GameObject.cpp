@@ -36,13 +36,11 @@ float GameObject::getSizeY() const {
     return sizeY;
 }
 
-void GameObject::setSizeObj(float sizeX_, float sizeY_) {
-    GameObject::sizeX=sizeX_;
-    GameObject::sizeY=sizeY_;
-}
 
 void GameObject::setSizeSprite(float sizeX_, float sizeY_) {
     GameObject::sprite.setScale(sizeX_/GameObject::sizeX, sizeY_/GameObject::sizeY);
+    GameObject::sizeX=sizeX_;
+    GameObject::sizeY=sizeY_;
 }
 
 GameObject::~GameObject() {
@@ -50,30 +48,31 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
-        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
-        sf::Sprite spr2 = obj->getSprite();
-        spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
-        spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
-
-        if (Collision::CircleTest(spr1, spr2)) {
-            return Collision::BoundingBoxTest(spr1, spr2);
+        if (Collision::CircleTest(sprite, obj->getSprite())) {
+            return Collision::BoundingBoxTest(sprite, obj->getSprite());
         }
     return false;
 }
 
 bool GameObject::collideCheck(Match *match) {
     block_t *blocks = match->getBlocks();
-    int jj = (int) (x - sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int ii = (int) (y - sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-    int n = (int) (x + sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int m = (int) (y + sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-    std::vector<int> vec;
+    int sizeBlx = WINDOW_WIDTH/match->getAmountBlocksX();
+    int sizeBly = WINDOW_HEIGHT/match->getAmountBlocksY();
+
+    int jj =  (int)(x - (sizeX+sizeY)/2)/sizeBlx;
+    int ii = (int)(y - (sizeX+sizeY)/2)/sizeBly;
+    int n = (int)(x + (sizeX+sizeY)/2)/sizeBlx;
+    int m = (int)(y + (sizeX+sizeY)/2)/sizeBly;
 
     for (int i = ii; i < m+1; ++i) {
         for (int j = jj; j < n+1; ++j) {
             if (i * match->getAmountBlocksX() + j < match->getAmountBlocksX()*match->getAmountBlocksY() &&
             blocks[i * match->getAmountBlocksX() + j] == BL_0) {
-                return true;
+                sf::Sprite spr;
+                spr.setTextureRect(sf::IntRect(0, 0, sizeBlx, sizeBly));
+                spr.setPosition((j+0.5)*sizeBlx, (i+0.5)*sizeBly);
+                if(Collision::BoundingBoxTest(spr, sprite))
+                    return true;
                 }
             }
         }
@@ -130,7 +129,10 @@ void GameObject::setSprite(int X, int Y, int sizeX_, int sizeY_){
     GameObject::sizeY=sizeY_;
     GameObject::sprite.setTexture(GameObject::texture);
     GameObject::sprite.setTextureRect(sf::IntRect(X,Y,sizeX_,sizeY_));
-    GameObject::sprite.setOrigin(sizeX_/2,sizeY_/2);
+    if(type == TANK) {
+        GameObject::sprite.setOrigin(sizeX_ *1/2, sizeY_ / 2);
+    }
+    else sprite.setOrigin(sizeX_ *1/2, sizeY_ / 2);
 }
 
 void GameObject::setTexture(sf::Texture texture_){
@@ -140,6 +142,7 @@ void GameObject::setTexture(sf::Texture texture_){
 void GameObject::setTexture(const char* address) {
     sf::Image image;
     image.loadFromFile(address);
+    image.createMaskFromColor(sf::Color::White);
     GameObject::texture.loadFromImage(image);
 }
 
@@ -195,13 +198,42 @@ void GameObject::setSpeedAngle(float spAngle) {
     speedAngle = spAngle;
 }
 
-float GameObject::checkOrient(float X, float Y) { ///определяет угол направления минус угол объекта, если положительный, то крутить против часовой стрелки
-    float phi;
-    if(X>x) phi = atanf((Y-y)/(X-x))/M_PI*180;
-    else phi = -atanf((Y-y)/(X-x))/M_PI*180;
-    if(phi<0) phi = phi + 360;
-    return phi-getRotation();
-}
+
 
 void GameObject::rotateLeft() {
+    if(type == TANK) {
+        setSpeedAngle(-TANK_ANGLE_SPEED);
+    }
+}
+
+void GameObject::rotateRight() {
+    if(type == TANK) {
+        setSpeedAngle(TANK_ANGLE_SPEED);
+    }
+}
+
+void GameObject::stopRotate() {
+    setSpeedAngle(0);
+}
+
+void GameObject::go() {
+    if(type == TANK) {
+        setSpeed(TANK_VELOCITY);
+    }
+}
+
+void GameObject::stop() {
+    setSpeed(0);
+}
+
+void GameObject::brake() {
+    setSpeed(-TANK_VELOCITY);
+}
+
+float GameObject::getScale() {
+    return scale;
+}
+
+void GameObject::setScale(float sc) {
+    scale = sc;
 }

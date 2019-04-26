@@ -26,7 +26,7 @@ public:
 
     static void change_ava(int sysok);
 
-    static bool login();
+    static std::pair<std::string, std::string> login();
 
 };
 
