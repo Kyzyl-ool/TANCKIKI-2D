@@ -75,18 +75,30 @@ bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_
     if (isAuthorized) {
         json r1 = jsonRPC("get_vk_id", {login_password.first});
 //        std::cout << r1["result"];
-        playerId = std::stoi( std::string( r1["result"]["vk_user_id"] ) );
+        playerId = std::string( r1["result"]["vk_user_id"] );
 
-        json r2 = jsonRPC("get_user_data_by_vk_id", {std::to_string(playerId)});
-        std::cout << "Authorization successful, " << r2["result"]["first_name"].get<std::string>() << " " << r2["result"]["last_name"].get<std::string>() << std::endl;
+        json r2 = jsonRPC("get_user_data_by_vk_id", {playerId});
+        std::cout << "Welcome, " << r2["result"]["first_name"].get<std::string>() << " " << r2["result"]["last_name"].get<std::string>() << std::endl;
     } else {
         std::cout << "Incorrect login or password.\n";
     }
+
+
     return isAuthorized;
 }
 
 bool NetworkManager::isAuthorized1() const {
     return isAuthorized;
+}
+
+json NetworkManager::getGamesList() {
+    return jsonRPC("get_games_list", {token})["result"];
+}
+
+bool NetworkManager::connectToGame(int gameId) {
+    json j = jsonRPC("connect_to_game", {token, playerId, gameId});
+    std::cout << j << std::endl;
+    return true;
 }
 
 NetworkManager::~NetworkManager() = default;

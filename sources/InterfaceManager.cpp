@@ -101,6 +101,8 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
         multiButton->connect("pressed", &InterfaceManager::signalHandler2, this);
         multiButton->connect("pressed", [&](){
             WidgetsMenu::change_ava(1);
+            editBoxUsername->setText("kyzyloolk");
+            editBoxPassword->setText("akTPLWGd");
         });
 
         quitButton->connect("pressed", &InterfaceManager::signalHandler3, this);

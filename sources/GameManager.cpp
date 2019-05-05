@@ -23,11 +23,36 @@ void GameManager::runGame() {
     mainWindow.setKeyRepeatEnabled(false);
     while (mainWindow.isOpen()) {
 
-        interfaceManager->makeInterface();
+        if (state != GAME_STATE_MATCH_CHOOSE) interfaceManager->makeInterface();
         if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
         mainWindow.display();
 
         switch (state) {
+            case GAME_STATE_WAIT_FOR_OTHER_PLAYERS: {
+
+                break;
+            }
+            case GAME_STATE_MATCH_CHOOSE: {
+                json j = networkManager.getGamesList();
+                if (j.empty()) {
+                    std::cout << "There are no games in server. Do you want to create your own game? [y/n]: ";
+                    char c;
+                    std::cin >> c;
+                    if (c == 'y') {
+
+                    } else {
+                        state = GAME_STATE_MAIN_MENU;
+                    }
+                } else {
+                    std::cout << j << std::endl;
+                    std::cout << "Enter game id: ";
+                    int gameId;
+                    std::cin >> gameId;
+                    networkManager.connectToGame(gameId);
+
+                }
+                break;
+            }
             case GAME_STATE_CREATE_MATCH: {
                 mainWindow.clear();
                 ///@todo прочитать players_info_json, map_json;
@@ -107,7 +132,8 @@ void GameManager::handleEvent() {
                             std::pair<std::string, std::string> loginPass = InterfaceManager::login();
                             if (!loginPass.first.empty()) {
                                 state = GAME_STATE_MAIN_MENU;
-                                networkManager.authorize(loginPass);
+                                if (networkManager.authorize(loginPass))
+                                    state = GAME_STATE_MATCH_CHOOSE;
                             }
                         }
                         break;
