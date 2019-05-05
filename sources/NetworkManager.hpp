@@ -35,6 +35,8 @@ public:
     json jsonRPC(std::string method, json::array_t params);
 
     bool authorize(const std::pair<std::string, std::string>& login_password);
+
+
 };
 
 
