@@ -202,6 +202,7 @@ void Match::processMessage(const std::string& message) {
         case GAMEOBJECT_MESSAGE_SHOOT: {
             GameObject* bullet = objectManager->getGameObjectById(0)->shot();
             if(bullet) objectManager->addGameObject(bullet);
+            break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER: {
             auto tmp = j["params"].get <std::vector <float> >();
@@ -212,7 +213,7 @@ void Match::processMessage(const std::string& message) {
         case GAMEOBJECT_MESSAGE_APPEAR: {
             auto params = j["params"].get <std::vector <unsigned short> >();
             auto iCoordinates = j["initialCoordinates"].get <std::vector <float> >();
-            Tank *tank = new Tank(50, "ChickenKiller");
+            Tank *tank = new Tank(50, "ChickenKiller", "green1");
             tank->setPosition(iCoordinates[0]*WINDOW_WIDTH, iCoordinates[1]*WINDOW_HEIGHT);
             playerId_tankId[params[0]] = objectManager->addGameObject(tank);
             break;

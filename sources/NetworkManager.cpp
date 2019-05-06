@@ -15,21 +15,21 @@ NetworkManager::NetworkManager(sf::IpAddress serverIp, unsigned short defaultPor
     assert(udpSocket.bind(defaultPort) == sf::Socket::Done);
 }
 
-sf::Packet NetworkManager::receivePacketsFromServer() {
-    sf::Packet p;
-    udpSocket.receive(p, serverIpAddress, serverPort);
-    return p;
-}
-
-sf::Socket::Status NetworkManager::sendPacketToServer(sf::Packet packet) {
-    return udpSocket.send(packet, serverIpAddress, serverPort);
-}
-
-sf::Socket::Status NetworkManager::sendStringToServer(std::string string) {
-    sf::Packet p;
-    p << string;
-    return udpSocket.send(p, serverIpAddress, serverPort);
-}
+//sf::Packet NetworkManager::receivePacketsFromServer() {
+//    sf::Packet p;
+//    udpSocket.receive(p, serverIpAddress, serverPort);
+//    return p;
+//}
+//
+//sf::Socket::Status NetworkManager::sendPacketToServer(sf::Packet packet) {
+//    return udpSocket.send(packet, serverIpAddress, serverPort);
+//}
+//
+//sf::Socket::Status NetworkManager::sendStringToServer(std::string string) {
+//    sf::Packet p;
+//    p << string;
+//    return udpSocket.send(p, serverIpAddress, serverPort);
+//}
 
 json NetworkManager::jsonRPC(std::string method, json::array_t params) {
     sf::Http http("http://meowbook.ru");
