@@ -82,8 +82,6 @@ bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_
     } else {
         std::cout << "Incorrect login or password.\n";
     }
-
-
     return isAuthorized;
 }
 
@@ -96,6 +94,9 @@ json NetworkManager::getGamesList() {
 }
 
 bool NetworkManager::connectToGame(int gameId) {
+    std::cout << token << std::endl;
+    std::cout << playerId << std::endl;
+    std::cout << gameId << std::endl;
     json j = jsonRPC("connect_to_game", {token, playerId, gameId});
     std::cout << j << std::endl;
     return true;
