@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include "EventManager.hpp"
 #include "json/json.hpp"
+#include "Tank.hpp"
 #include <vector>
 
 using json = nlohmann::json;
@@ -31,6 +32,7 @@ std::string EventManager::getMessageFromGameObjects() {
     if (pollEvent())
     {
         switch (*state) {
+            case GAME_STATE_MULTIPLAYER_MATCH:
             case GAME_STATE_MATCH: {
                 return returnMessageFromMatchActions();
             }
@@ -54,6 +56,14 @@ std::string EventManager::returnMessageFromMatchActions() {
     }
     char arrows = getPressedArrows(sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Up, sf::Keyboard::Right);
         switch (event.type) {
+            case sf::Event::MouseMoved: {
+                json json_message;
+                json_message["status"] = "OK";
+                json_message["from"] = playerId;
+                json_message["method"] = "rotateTower";
+                json_message["params"] = {sf::Mouse::getPosition(mainWindow).x, sf::Mouse::getPosition(mainWindow).y};
+                return json_message.dump();
+            }
             case sf::Event::KeyReleased: {
                 switch (event.key.code) {
                     case sf::Keyboard::A:

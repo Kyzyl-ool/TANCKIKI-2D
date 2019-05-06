@@ -128,10 +128,6 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
         rep->setPosition((i % amount_of_blocks_x + 0.5)*MAP_WIDTH/amount_of_blocks_x, (i / amount_of_blocks_x + 0.5)*MAP_HEIGHT/amount_of_blocks_y);
         objectManager->addGameObject(rep);
     }
-
-    ///@todo передать все эти танки в objectManager, вызывая у него addGameObject
-
-    ///@todo узнать свой player_id (подумать, кто будет назначать player_id)
 }
 
 void Match::drawMatch() {
@@ -167,48 +163,71 @@ const std::string &Match::getMapName() const {
     return mapName;
 }
 
-void Match::processMessage(std::string message) {
-    ///@todo распарсить message
+void Match::processMessage(const std::string& message) {
     assert(message.size());
     json j = json::parse(message.c_str());
 //    std::cout << j["status"] << std::endl;s
 //    std::cout << j["from"] << std::endl;
-//    std::cout << j["method"] << std::endl;
 //    std::cout << j["params"] << std::endl;
+    unsigned short from = j["from"];
+    auto tankId = (gameObjectMessageId[j["method"]] != GAMEOBJECT_MESSAGE_APPEAR) ? playerId_tankId[from] : -1;
+
 
 
     switch (gameObjectMessageId[j["method"]]) {
         case GAMEOBJECT_MESSAGE_NO_ROTATION: {
-            objectManager->getGameObjectById(0)->stopRotate();
+            objectManager->getTankById(tankId)->stopRotate();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_BRAKE: {
-            objectManager->getGameObjectById(0)->brake();
+            objectManager->getTankById(tankId)->brake();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_LEFT: {
-            objectManager->getGameObjectById(0)->rotateLeft();
+            objectManager->getTankById(tankId)->rotateLeft();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_RIGHT: {
-            objectManager->getGameObjectById(0)->rotateRight();
+            objectManager->getTankById(tankId)->rotateRight();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_FORWARD: {
-            objectManager->getGameObjectById(0)->go();
+            objectManager->getTankById(tankId)->go();
             break;
         }
         case GAMEOBJECT_MESSAGE_NO_ACTION: {
-            objectManager->getGameObjectById(0)->stop();
+            objectManager->getTankById(tankId)->stop();
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
             GameObject* bullet = objectManager->getGameObjectById(0)->shot();
             if(bullet) objectManager->addGameObject(bullet);
+        }
+        case GAMEOBJECT_MESSAGE_ROTATE_TOWER: {
+            auto tmp = j["params"].get <std::vector <float> >();
+            objectManager->getTankById(tankId)->setTowerX(tmp[0]);
+            objectManager->getTankById(tankId)->setTowerY(tmp[1]);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_APPEAR: {
+            auto params = j["params"].get <std::vector <unsigned short> >();
+            auto iCoordinates = j["initialCoordinates"].get <std::vector <float> >();
+            Tank *tank = new Tank(50, "ChickenKiller");
+            tank->setPosition(iCoordinates[0]*WINDOW_WIDTH, iCoordinates[1]*WINDOW_HEIGHT);
+            playerId_tankId[params[0]] = objectManager->addGameObject(tank);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_SET_X: {
+            auto x = j["params"].get <float>();
+            objectManager->getTankById(tankId)->setX(x);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_SET_Y: {
+            auto y = j["params"].get <float>();
+            objectManager->getTankById(tankId)->setY(y);
             break;
         }
     }
-    ///@todo обработать message
 }
 
 void Match::drawMap(sf::RenderWindow &window) {
@@ -273,6 +292,13 @@ float Match::getMyPlayerX() {
 
 float Match::getMyPlayerY() {
     return objectManager->getObjects()[0]->getY();
+}
+void Match::setMyPlayerId(int myPlayerId) {
+    Match::myPlayerId = myPlayerId;
+}
+
+int Match::getMyPlayerId() const {
+    return myPlayerId;
 }
 
 void Match::setPlayerCoordVorView() {

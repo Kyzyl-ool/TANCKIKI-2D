@@ -18,13 +18,29 @@ protected:
     sf::Texture textBoom;
     sf::Sprite sprBoom;
     float recharge;
+    float towerX, towerY;
+public:
+    void setTowerY(float towerY);
+
+public:
+    void setTowerX(float towerX);
+
+public:
+    float getTowerY() const;
+
+public:
+    float getTowerX() const;
+
+public:
+    float getMaxHealth() const;
+
+protected:
     Bullet_t bulType;
     std::string playerName = "Unnamed";
     int ammunition;
     int count_ammun;
 public:
     const std::string &getName() const;
-    float getMaxHealth() const;
     Tank(float health, const std::string &the_player_name, const std::string &color);
     void update(float time) override;
 

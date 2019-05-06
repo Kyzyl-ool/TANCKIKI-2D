@@ -123,6 +123,16 @@ void Tank::update(float time) {
     if(health <= 0) {
         setAlive(false);
     }
+
+    if(health <= 0) setAlive(false);
+
+    int sinus = checkOrient(towerX, towerY);
+    if(sinus>0)
+        setSpeedTower(TANK_TOWER_SPEED);
+    else
+        setSpeedTower(-TANK_TOWER_SPEED);
+    if(sinus == 0)
+        setSpeedTower(0);
 }
 
 int Tank::getAmmun() {
@@ -272,7 +282,21 @@ void Tank::updateRecharge(float time) {
 }
 
 
+float Tank::getTowerX() const {
+    return towerX;
+}
 
+float Tank::getTowerY() const {
+    return towerY;
+}
+
+void Tank::setTowerX(float towerX) {
+    Tank::towerX = towerX;
+}
+
+void Tank::setTowerY(float towerY) {
+    Tank::towerY = towerY;
+}
 
 
 

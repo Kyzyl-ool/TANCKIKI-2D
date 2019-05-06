@@ -9,6 +9,10 @@
 #include <string>
 #include <SFML/Network.hpp>
 #include "json/json.hpp"
+#include "Match.hpp"
+
+#define SERVER_IP "95.163.180.31"
+#define SERVER_PORT 54000
 
 using json = nlohmann::json;
 
@@ -20,16 +24,17 @@ private:
     std::string playerId;
     bool isAuthorized;
     std::string token = "Hello world";
+    Match* match;
+public:
+    void setMatch(Match *match);
+
 
 public:
     bool isAuthorized1() const;
     explicit NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort);
     ~NetworkManager();
 
-    sf::Socket::Status sendPacketToServer(sf::Packet packet);
-    sf::Packet receivePacketsFromServer();
 
-    sf::Socket::Status sendStringToServer(std::string string);
 
     json    jsonRPC(std::string method, json::array_t params);
 
@@ -44,6 +49,11 @@ public:
     bool deleteGame(int gameId);
     bool setReady(bool value);
     bool areAllReady(int gameId);
+    unsigned short establishConnection();
+    void processPakcetsFromServer();
+    void sendMessageToServer(const std::string& message);
+
+    void sendXYs(std::vector<Tank *>& tanks);
 };
 
 
