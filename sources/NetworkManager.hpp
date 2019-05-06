@@ -33,14 +33,15 @@ public:
     explicit NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort);
     ~NetworkManager();
 
-    void processPakcetsFromServer();
-    void sendMessageToServer(const std::string& message);
+
 
     json jsonRPC(std::string method, json::array_t params);
 
     bool authorize(const std::pair<std::string, std::string>& login_password);
 
     unsigned short establishConnection();
+    void processPakcetsFromServer();
+    void sendMessageToServer(const std::string& message);
 
     void sendXYs(std::vector<Tank *>& tanks);
 };
