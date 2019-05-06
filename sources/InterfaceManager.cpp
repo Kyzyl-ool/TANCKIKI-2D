@@ -130,7 +130,6 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 void InterfaceManager::makeInterface() {
     switch (*state) {
         case GAME_STATE_MATCH: {
-
             auto tanks = objectManager->getTanks(); //вектор танков
 
             if (tanksnameloaded) {

@@ -12,7 +12,6 @@ using json = nlohmann::json;
 NetworkManager::NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort)
         : serverIpAddress(serverIp), serverPort(defaultPort), isAuthorized(false) {
 //    std::cout << login_password.first << login_password.second << std::endl;
-
 }
 
 sf::Packet NetworkManager::receivePacketsFromServer() {
@@ -79,6 +78,7 @@ bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_
 
         json r2 = jsonRPC("get_user_data_by_vk_id", {playerId});
         std::cout << "Welcome, " << r2["result"]["first_name"].get<std::string>() << " " << r2["result"]["last_name"].get<std::string>() << std::endl;
+        setReady(false);
     } else {
         std::cout << "Incorrect login or password.\n";
     }
@@ -94,12 +94,27 @@ json NetworkManager::getGamesList() {
 }
 
 bool NetworkManager::connectToGame(int gameId) {
-    std::cout << token << std::endl;
-    std::cout << playerId << std::endl;
-    std::cout << gameId << std::endl;
+//    std::cout << token << std::endl;
+//    std::cout << playerId << std::endl;
+//    std::cout << gameId << std::endl;
     json j = jsonRPC("connect_to_game", {token, playerId, gameId});
-    std::cout << j << std::endl;
+//    std::cout << j << std::endl;
     return true;
+}
+
+json NetworkManager::getPlayersInGame(int gameId) {
+    return jsonRPC("get_players_in_game", {token, gameId});;
+}
+
+bool NetworkManager::setReady(bool value) {
+    json j = jsonRPC("set_ready", {token, playerId, value});
+//    std::cout << j << std::endl;
+    return true;
+}
+
+bool NetworkManager::areAllReady(int gameId) {
+    json j = jsonRPC("are_all_ready", {token, gameId});
+    return j["result"]["count"] == 0;
 }
 
 NetworkManager::~NetworkManager() = default;

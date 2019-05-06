@@ -36,14 +36,14 @@ public:
     bool authorize(const std::pair<std::string, std::string>& login_password);
 
     json getGamesList();
+    json getPlayersInGame(int gameId);
 
     bool connectToGame (int gameId);
-
     bool disconnectFromGame(int gameId);
-
     bool createGame(std::string name, int creator);
-
     bool deleteGame(int gameId);
+    bool setReady(bool value);
+    bool areAllReady(int gameId);
 };
 
 
