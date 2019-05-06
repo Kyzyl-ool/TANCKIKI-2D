@@ -15,31 +15,6 @@ NetworkManager::NetworkManager(sf::IpAddress serverIp, unsigned short defaultPor
     assert(udpSocket.bind(defaultPort) == sf::Socket::Done);
 }
 
-void NetworkManager::processPakcetsFromServer() {
-    sf::Packet p;
-    udpSocket.receive(p, serverIpAddress, serverPort);
-    std::string content;
-    p >> content;
-    if (!content.empty()) {
-//        std::cout << "Received from server: " << content << std::endl;
-        if (content == "REQUEST") {
-            std::string requestContent;
-            p >> requestContent;
-            if (requestContent == "PLAYERS_INFO") {
-                sf::Packet packet;
-                auto tankID = match->playerId_tankId[match->getMyPlayerId()];
-                auto tanks = match->getObjectManager()->getTanks();
-                packet << "RESPONSE" << "PLAYERS_INFO" << match->getMyPlayerId() << tanks[tankID]->getX() << tanks[tankID]->getY();
-                udpSocket.send(packet, SERVER_IP, SERVER_PORT);
-            }
-//            json j = json::parse(requestContent);
-//            std::cout << requestContent << std::endl;
-        } else {
-            match->processMessage(content);
-        }
-    }
-}
-
 json NetworkManager::jsonRPC(std::string method, json::array_t params) {
     sf::Http http("http://meowbook.ru");
     sf::Http::Request request;
@@ -120,6 +95,31 @@ unsigned short NetworkManager::establishConnection() {
         std::cout << "Your player Id: " << match->getMyPlayerId() << std::endl;
     } else {
         assert(!"Not OK");
+    }
+}
+
+void NetworkManager::processPakcetsFromServer() {
+    sf::Packet p;
+    udpSocket.receive(p, serverIpAddress, serverPort);
+    std::string content;
+    p >> content;
+    if (!content.empty()) {
+//        std::cout << "Received from server: " << content << std::endl;
+        if (content == "REQUEST") {
+            std::string requestContent;
+            p >> requestContent;
+            if (requestContent == "PLAYERS_INFO") {
+                sf::Packet packet;
+                auto tankID = match->playerId_tankId[match->getMyPlayerId()];
+                auto tanks = match->getObjectManager()->getTanks();
+                packet << "RESPONSE" << "PLAYERS_INFO" << match->getMyPlayerId() << tanks[tankID]->getX() << tanks[tankID]->getY();
+                udpSocket.send(packet, SERVER_IP, SERVER_PORT);
+            }
+//            json j = json::parse(requestContent);
+//            std::cout << requestContent << std::endl;
+        } else {
+            match->processMessage(content);
+        }
     }
 }
 
