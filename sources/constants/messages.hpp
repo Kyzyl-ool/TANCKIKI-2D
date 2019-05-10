@@ -6,7 +6,7 @@
 #include <map>
 
 typedef enum gameObject_messages{
-    GAMEOBJECT_MESSAGE_APPEAR = 0,
+//    GAMEOBJECT_MESSAGE_APPEAR = 0,
     GAMEOBJECT_MESSAGE_MOVE_RIGHT,
     GAMEOBJECT_MESSAGE_MOVE_LEFT,
     GAMEOBJECT_MESSAGE_MOVE_BRAKE,
@@ -28,7 +28,7 @@ std::map <std::string, gameObject_message_t> gameObjectMessageId = {
         {"stop", GAMEOBJECT_MESSAGE_NO_ACTION},
         {"shoot", GAMEOBJECT_MESSAGE_SHOOT},
         {"destroy", GAMEOBJECT_MESSAGE_DESTROY},
-        {"appear", GAMEOBJECT_MESSAGE_APPEAR},
+//        {"appear", GAMEOBJECT_MESSAGE_APPEAR},
         {"noRotation", GAMEOBJECT_MESSAGE_NO_ROTATION},
         {"rotateTower", GAMEOBJECT_MESSAGE_ROTATE_TOWER},
         {"setX", GAMEOBJECT_MESSAGE_SET_X},

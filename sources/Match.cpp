@@ -170,9 +170,8 @@ void Match::processMessage(const std::string& message) {
 //    std::cout << j["from"] << std::endl;
 //    std::cout << j["params"] << std::endl;
     unsigned short from = j["from"];
-    auto tankId = (gameObjectMessageId[j["method"]] != GAMEOBJECT_MESSAGE_APPEAR) ? playerId_tankId[from] : -1;
-
-
+//    auto tankId = (gameObjectMessageId[j["method"]] != GAMEOBJECT_MESSAGE_APPEAR) ? playerId_tankId[from] : -1;
+    int tankId = playerId_tankId[from];
 
     switch (gameObjectMessageId[j["method"]]) {
         case GAMEOBJECT_MESSAGE_NO_ROTATION: {
@@ -200,7 +199,7 @@ void Match::processMessage(const std::string& message) {
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
-            GameObject* bullet = objectManager->getGameObjectById(0)->shot();
+            GameObject* bullet = objectManager->getGameObjectById(tankId)->shot();
             if(bullet) objectManager->addGameObject(bullet);
             break;
         }
@@ -210,14 +209,14 @@ void Match::processMessage(const std::string& message) {
             objectManager->getTankById(tankId)->setTowerY(tmp[1]);
             break;
         }
-        case GAMEOBJECT_MESSAGE_APPEAR: {
-            auto params = j["params"].get <std::vector <unsigned short> >();
-            auto iCoordinates = j["initialCoordinates"].get <std::vector <float> >();
-            Tank *tank = new Tank(50, "ChickenKiller", "green1");
-            tank->setPosition(iCoordinates[0]*WINDOW_WIDTH, iCoordinates[1]*WINDOW_HEIGHT);
-            playerId_tankId[params[0]] = objectManager->addGameObject(tank);
-            break;
-        }
+//        case GAMEOBJECT_MESSAGE_APPEAR: {
+//            auto params = j["params"].get <std::vector <unsigned short> >();
+//            auto iCoordinates = j["initialCoordinates"].get <std::vector <float> >();
+//            Tank *tank = new Tank(50, "ChickenKiller", "green1");
+//            tank->setPosition(iCoordinates[0]*WINDOW_WIDTH, iCoordinates[1]*WINDOW_HEIGHT);
+//            playerId_tankId[params[0]] = objectManager->addGameObject(tank);
+//            break;
+//        }
         case GAMEOBJECT_MESSAGE_SET_X: {
             auto x = j["params"].get <float>();
             objectManager->getTankById(tankId)->setX(x);
@@ -294,6 +293,7 @@ float Match::getMyPlayerX() {
 float Match::getMyPlayerY() {
     return objectManager->getObjects()[0]->getY();
 }
+
 void Match::setMyPlayerId(int myPlayerId) {
     Match::myPlayerId = myPlayerId;
 }
