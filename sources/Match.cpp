@@ -91,12 +91,13 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     amount_of_players = players_info_j["amount_of_players"];
     players_names = players_info_j["players_names"].get< std::vector <std::string> >();
     ///@todo заполнить players_names
-
+    srand(time(NULL));
     ///@todo решить, с какими начальными координатами ставить игроков на карту
-    std::vector<int> playersInitialCoordin = map_j["blocks"].get< std::vector <int> >();
-    for(int i = 0; i < amount_of_players; ++i) {
-        playersInitialCoord[i].first = 2*i;
-        playersInitialCoord[i].second = 2*i+1;
+
+    std::vector<int> playersInitialCoordin = players_info_j["playersInitialCoord"].get< std::vector <int> >();
+    for(int i = 0; i < playersInitialCoordin.size()/2; ++i) {
+        playersInitialCoord[i].first = playersInitialCoordin[2*i];
+        playersInitialCoord[i].second = playersInitialCoordin[2*i+1];
     }
     ///@todo заполнить playersInitialCoordinates
 
@@ -110,7 +111,6 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
         objectManager->addGameObject(tank);
     }
 
-    srand(time(NULL));
     for(int l =0; l < 10; ++l) {
         Ammunition *amm = new Ammunition(2);
         int i = rand() % (amount_of_blocks_x * amount_of_blocks_y);

@@ -1,4 +1,5 @@
 {
     "amount_of_players": 2,
-    "players_names": ["Player1", "Player2"]
+    "players_names": ["Player1", "Player2"],
+    "playersInitialCoord": [250, 260]
 }
