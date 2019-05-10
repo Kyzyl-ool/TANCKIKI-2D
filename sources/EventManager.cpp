@@ -255,7 +255,7 @@ void EventManager::setObjectManager(ObjectManager *iobjectManager) {
     EventManager::objectManager = iobjectManager;
 }
 
-#define MILLISECONDS_TO_SEND_SYNC_MESSAGE 200
+#define MILLISECONDS_TO_SEND_SYNC_MESSAGE 500
 std::string EventManager::getSyncMessage() {
     if (syncClock.getElapsedTime().asMilliseconds() > MILLISECONDS_TO_SEND_SYNC_MESSAGE) {
         syncClock.restart();
@@ -266,7 +266,7 @@ std::string EventManager::getSyncMessage() {
         json_message["status"] = "OK";
         json_message["from"] = playerId;
         json_message["method"] = "sync";
-        json_message["params"] = { (int)(myTank->getX() * 100)/100., (int)(myTank->getY() * 100)/100., (int)(myTank->getHealth() * 100)/100., (int)(myTank->getSpeedTower() * 100)/100., (int)(myTank->getRecharge() * 100)/100., (int)(myTank->getTowerX() * 100)/100., (int)(myTank->getTowerY() * 100)/100., myTank->getAmmun()};
+        json_message["params"] = { (int)(myTank->getX() * 100)/100., (int)(myTank->getY() * 100)/100., (int)(myTank->getHealth() * 100)/100., (int)(myTank->getSpeedTower() * 100)/100., (int)(myTank->getRecharge() * 100)/100., (int)(myTank->getTowerX() * 100)/100., (int)(myTank->getTowerY() * 100)/100., myTank->getAmmun(), myTank->getRotation()};
         return json_message.dump();
     }
     else

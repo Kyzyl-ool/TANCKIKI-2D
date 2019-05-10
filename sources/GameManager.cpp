@@ -31,15 +31,15 @@ void GameManager::runGame() {
         switch (state) {
             case GAME_STATE_MULTIPLAYER_MATCH: {
                 mainWindow.clear();
+                networkManager.processPakcetsFromServer();
                 std::string message = eventManager->getMessageFromGameObjects();
                 networkManager.sendMessageToServer(message);
-                std::string syncMessage = eventManager->getSyncMessage();
-                networkManager.sendMessageToServer(syncMessage);
-                networkManager.processPakcetsFromServer();
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
                 match->updateMatch(time);
                 match->drawMatch();
+                std::string syncMessage = eventManager->getSyncMessage();
+                networkManager.sendMessageToServer(syncMessage);
                 break;
             }
             case GAME_STATE_CREATE_MULTIPLAYER_MATCH: {
