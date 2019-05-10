@@ -18,6 +18,10 @@ private:
     gameState_t* state;
     sf::Event& event;
     int playerId;
+public:
+    void setPlayerId(int playerId);
+
+private:
     InterfaceManager& interfaceManager;
 
 public:

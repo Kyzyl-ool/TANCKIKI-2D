@@ -58,12 +58,13 @@ void GameManager::runGame() {
                     playerInfofile.close();
                 }
 
-                match = new Match(mainWindow, players_info_json, map_json, view);
+                match = new Match(mainWindow, players_info_json, map_json, view, -1);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
                 match->setDeathLine(0);
                 networkManager.setMatch(match);
                 networkManager.establishConnection();
+                eventManager->setPlayerId(match->getMyPlayerId());
                 state = GAME_STATE_MULTIPLAYER_MATCH;
                 break;
             }

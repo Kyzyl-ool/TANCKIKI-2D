@@ -240,3 +240,7 @@ std::string EventManager::goMessage(char direction) {
         }
     }
 }
+
+void EventManager::setPlayerId(int playerId) {
+    EventManager::playerId = playerId;
+}
