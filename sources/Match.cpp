@@ -173,7 +173,7 @@ void Match::processMessage(const std::string& message) {
 //    std::cout << j["params"] << std::endl;
     unsigned short from = j["from"];
 //    auto tankId = (gameObjectMessageId[j["method"]] != GAMEOBJECT_MESSAGE_APPEAR) ? playerId_tankId[from] : -1;
-    int tankId = playerId_tankId[from];
+    int tankId = from;
 
     switch (gameObjectMessageId[j["method"]]) {
         case GAMEOBJECT_MESSAGE_NO_ROTATION: {
