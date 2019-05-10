@@ -219,16 +219,6 @@ void Match::processMessage(const std::string& message) {
 //            playerId_tankId[params[0]] = objectManager->addGameObject(tank);
 //            break;
 //        }
-        case GAMEOBJECT_MESSAGE_SET_X: {
-            auto x = j["params"].get <float>();
-            objectManager->getTankById(tankId)->setX(x);
-            break;
-        }
-        case GAMEOBJECT_MESSAGE_SET_Y: {
-            auto y = j["params"].get <float>();
-            objectManager->getTankById(tankId)->setY(y);
-            break;
-        }
     }
 }
 

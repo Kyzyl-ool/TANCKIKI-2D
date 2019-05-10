@@ -68,6 +68,8 @@ public:
     void setHealth(float healthScore);
     int checkOrient(float X, float Y);
     void setTypeBullet(Bullet_t);
+    void setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
+                          float itowerY, int iammunition);
 };
 
 

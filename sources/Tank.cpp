@@ -298,5 +298,19 @@ void Tank::setTowerY(float towerY) {
     Tank::towerY = towerY;
 }
 
+void
+Tank::setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
+                       float itowerY,
+                       int iammunition) {
+    x = iX;
+    y = iY;
+    health = ihealth;
+    speedTower = itowerSpeed;
+    recharge = irecharge;
+    towerX = itowerX;
+    towerY = itowerY;
+    ammunition = iammunition;
+}
+
 
 
