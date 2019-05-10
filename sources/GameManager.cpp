@@ -17,7 +17,7 @@ view(the_view)
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_MAIN_MENU;
     interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager);
-    eventManager = new EventManager(mainWindow, event, -1, &state, gui, *interfaceManager);
+    eventManager = new EventManager(mainWindow, event, 0, &state, gui, *interfaceManager);
 }
 
 void GameManager::runGame() {
@@ -33,6 +33,8 @@ void GameManager::runGame() {
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
                 networkManager.sendMessageToServer(message);
+                std::string syncMessage = eventManager->getSyncMessage();
+                networkManager.sendMessageToServer(syncMessage);
                 networkManager.processPakcetsFromServer();
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
@@ -58,13 +60,14 @@ void GameManager::runGame() {
                     playerInfofile.close();
                 }
 
-                match = new Match(mainWindow, players_info_json, map_json, view, -1);
+                match = new Match(mainWindow, players_info_json, map_json, view, 0);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
                 match->setDeathLine(0);
                 networkManager.setMatch(match);
                 networkManager.establishConnection();
                 eventManager->setPlayerId(match->getMyPlayerId());
+                eventManager->setObjectManager(match->getObjectManager());
                 state = GAME_STATE_MULTIPLAYER_MATCH;
                 break;
             }

@@ -298,12 +298,16 @@ void Tank::setTowerY(float towerY) {
     Tank::towerY = towerY;
 }
 
+#define EPSILON 7
 void
 Tank::setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
                        float itowerY,
                        int iammunition) {
-    x = iX;
-    y = iY;
+    std::cout << x - iX << std::endl;
+    if (abs(x - iX) > EPSILON)
+        x = iX;
+    if (abs(y - iY) > EPSILON)
+        y = iY;
     health = ihealth;
     speedTower = itowerSpeed;
     recharge = irecharge;

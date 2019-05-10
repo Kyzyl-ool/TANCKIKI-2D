@@ -29,6 +29,7 @@ interfaceManager(interfaceManager)
 
 std::string EventManager::getMessageFromGameObjects() {
     ///@todo реализовать согласно ТЗ
+
     if (pollEvent())
     {
         switch (*state) {
@@ -54,6 +55,7 @@ std::string EventManager::returnMessageFromMatchActions() {
     } else {
         interfaceManager.cancelShow();
     }
+
     char arrows = getPressedArrows(sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Up, sf::Keyboard::Right);
         switch (event.type) {
             case sf::Event::MouseMoved: {
@@ -243,4 +245,30 @@ std::string EventManager::goMessage(char direction) {
 
 void EventManager::setPlayerId(int playerId) {
     EventManager::playerId = playerId;
+}
+
+ObjectManager *EventManager::getObjectManager() const {
+    return objectManager;
+}
+
+void EventManager::setObjectManager(ObjectManager *iobjectManager) {
+    EventManager::objectManager = iobjectManager;
+}
+
+#define MILLISECONDS_TO_SEND_SYNC_MESSAGE 200
+std::string EventManager::getSyncMessage() {
+    if (syncClock.getElapsedTime().asMilliseconds() > MILLISECONDS_TO_SEND_SYNC_MESSAGE) {
+        syncClock.restart();
+
+        Tank* myTank = objectManager->getTankById(playerId);
+
+        json json_message;
+        json_message["status"] = "OK";
+        json_message["from"] = playerId;
+        json_message["method"] = "sync";
+        json_message["params"] = { (int)(myTank->getX() * 100)/100., (int)(myTank->getY() * 100)/100., (int)(myTank->getHealth() * 100)/100., (int)(myTank->getSpeedTower() * 100)/100., (int)(myTank->getRecharge() * 100)/100., (int)(myTank->getTowerX() * 100)/100., (int)(myTank->getTowerY() * 100)/100., myTank->getAmmun()};
+        return json_message.dump();
+    }
+    else
+        return "";
 }

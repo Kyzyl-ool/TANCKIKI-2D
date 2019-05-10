@@ -31,4 +31,5 @@ const float TANK_ANGLE_SPEED = 0.09;
 const float DAMAGE_OF_COLLISION = 0.04;
 const float DAMAGE_OF_DEATHTIME = 2;
 
+
 #endif //TANCHIKI_CONFIG_HPP

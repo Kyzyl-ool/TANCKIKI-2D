@@ -205,12 +205,34 @@ void Match::processMessage(const std::string& message) {
             if(bullet) objectManager->addGameObject(bullet);
             break;
         }
+        case GAMEOBJECT_MESSAGE_SYNC: {
+            std::vector <float> params = j["params"].get <std::vector <float> >();
+            objectManager->getTankById(tankId)->setConfiguration(
+                    params[0],
+                    params[1],
+                    params[2],
+                    params[3],
+                    params[4],
+                    params[5],
+                    params[6],
+                    (int)params[7]);
+            break;
+        }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER: {
             auto tmp = j["params"].get <std::vector <float> >();
             objectManager->getTankById(tankId)->setTowerX(tmp[0]);
             objectManager->getTankById(tankId)->setTowerY(tmp[1]);
             break;
         }
+        case GAMEOBJECT_MESSAGE_ROTATE_TOWER_LEFT: {
+//            objectManager->getTankById(tankId)->setSpeedTower()
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_ROTATE_TOWER_RIGHT: {
+
+            break;
+        }
+
 //        case GAMEOBJECT_MESSAGE_APPEAR: {
 //            auto params = j["params"].get <std::vector <unsigned short> >();
 //            auto iCoordinates = j["initialCoordinates"].get <std::vector <float> >();
