@@ -19,6 +19,7 @@ using json = nlohmann::json;
 Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
              int iMyPlayerId) {
     deathTime = 0;
+    deathLine = 0;
     json map_j = json::parse(map_json);
     mapName = map_j["mapName"];
     amount_of_blocks_x = map_j["amount_of_blocks_x"];
@@ -50,25 +51,25 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     imagesForMap.loadFromFile(IMAGE_FOR_MAP);
 
     sf::Texture texture0;
-    texture0.loadFromImage(imagesForMap,sf::IntRect(256,16,16,16));
+    texture0.loadFromImage(imagesForMap,sf::IntRect(64,0,64,64));
 
     sf::Texture texture1;
-    texture1.loadFromImage(imagesForMap,sf::IntRect(272,32,16,16));
+    texture1.loadFromImage(imagesForMap,sf::IntRect(0,0,64,64));
 
-    textureMap.create(16*amount_of_blocks_x,16*amount_of_blocks_y);
+    textureMap.create(64*amount_of_blocks_x,64*amount_of_blocks_y);
 
     for(int i =0;i< amount_of_blocks_y; ++i) {
         for(int j=0;j<amount_of_blocks_x; ++j) {
             if(blocks[amount_of_blocks_x*i+j]==BL_0) {
-                textureMap.update(texture0, 16*j, 16*i);
+                textureMap.update(texture0, 64*j, 64*i);
             }
             if(blocks[amount_of_blocks_x*i+j]==BL_1) {
-                textureMap.update(texture1, 16*j, 16*i);
+                textureMap.update(texture1, 64*j, 64*i);
             }
         }
     }
     spriteMap.setTexture(textureMap);
-    spriteMap.setScale(((float)MAP_WIDTH)/amount_of_blocks_x/16, ((float)MAP_HEIGHT)/amount_of_blocks_y/16);
+    spriteMap.setScale(((float)MAP_WIDTH)/amount_of_blocks_x/64, ((float)MAP_HEIGHT)/amount_of_blocks_y/64);
 
 
     objectManager = new ObjectManager(mainWindow);
@@ -144,25 +145,51 @@ void Match::drawMatch() {
 }
 
 void Match::updateMatch(float time) {
-    setDeathTime(getDeathTime()+time);
-    if(getDeathTime() > DEATH_TIME) {
-        setDeathLine(getDeathTLine() + 1);
-        setDeathTime(getDeathTime() - DEATH_TIME);
+    setDeathTime(deathTime+time);
+    if(deathTime > DEATH_TIME) {
+        setDeathLine(deathLine + 1);
+        setDeathTime(deathTime - DEATH_TIME);
 
-        sf::Texture texture;
-        sf::Image image;
-        image.create(16,16,sf::Color::Red);
-        texture.loadFromImage(image,sf::IntRect(0,0,16,16));
-        textureMap.create(16*amount_of_blocks_x,16*amount_of_blocks_y);
-        for(int i =0;i< amount_of_blocks_y; ++i) {
+        sf::Texture texture1, texture2;
+        texture1.loadFromImage(imagesForMap,sf::IntRect(192,0,64,64));
+        texture2.loadFromImage(imagesForMap,sf::IntRect(448,0,64,64));
+        if(deathLine==1){
+            for(int i =0;i< amount_of_blocks_y; ++i) {
+                if(blocks[amount_of_blocks_x*i+0]== BL_1)
+                    textureMap.update(texture1, 0, 64*i);
+                if(blocks[amount_of_blocks_x*i+0]== BL_0)
+                    textureMap.update(texture2, 0, 64*i);
+                if(blocks[amount_of_blocks_x*i+amount_of_blocks_x-1]== BL_1)
+                    textureMap.update(texture1, 64*(amount_of_blocks_x-1), 64*i);
+                if(blocks[amount_of_blocks_x*i+amount_of_blocks_x-1]== BL_0)
+                    textureMap.update(texture2, 64*(amount_of_blocks_x-1), 64*i);
+            }
             for(int j=0;j<amount_of_blocks_x; ++j) {
-                if(i<=deathLine || i >= amount_of_blocks_y - deathLine || j<=deathLine || j >= amount_of_blocks_x - deathLine) {
-                    textureMap.update(texture, 16*j, 16*i);
-                }
+                if(blocks[0+j]== BL_1)
+                    textureMap.update(texture1, 64*j, 0);
+                if(blocks[0+j]== BL_0)
+                    textureMap.update(texture2, 64*j, 0);
+                if(blocks[amount_of_blocks_x*(amount_of_blocks_y-1)+j]== BL_1)
+                    textureMap.update(texture1, 64*j, 64*(amount_of_blocks_y-1));
+                if(blocks[amount_of_blocks_x*(amount_of_blocks_y-1)+j]== BL_0)
+                    textureMap.update(texture2, 64*j, 64*(amount_of_blocks_y-1));
             }
         }
-        spriteMap.setTexture(textureMap);
-        spriteMap.setScale(((float)MAP_WIDTH)/amount_of_blocks_x/16, ((float)MAP_HEIGHT)/amount_of_blocks_y/16);
+        if(deathLine<amount_of_blocks_y/3) {
+            for (int i = 0; i < amount_of_blocks_y; ++i) {
+                for (int j = 0; j < amount_of_blocks_x; ++j) {
+                    if (i == deathLine || i == amount_of_blocks_y - deathLine-1 || j == deathLine || j == amount_of_blocks_x - deathLine-1) {
+                        if (blocks[amount_of_blocks_x * i + j] == BL_1)
+                            textureMap.update(texture1, 64 * j, 64 * i);
+                        if (blocks[amount_of_blocks_x * i + j] == BL_0)
+                            textureMap.update(texture2, 64 * j, 64 * i);
+                    }
+                }
+            }
+            spriteMap.setTexture(textureMap);
+            spriteMap.setScale(((float) MAP_WIDTH) / amount_of_blocks_x / 64,
+                               ((float) MAP_HEIGHT) / amount_of_blocks_y / 64);
+        }
     }
     physicsManager->updateGameObjects(this, time);
 }

@@ -19,10 +19,10 @@ void PhysicsManager::updateGameObjects(Match *match, float time) {
         if (object1 != nullptr && object1->isAlive()) {
             object1->update(time);
 
-            if(object1->getType() == TANK && (object1->getX() < MAP_WIDTH/(match->getAmountBlocksX())*match->getDeathTLine()
-            || object1->getX() > MAP_WIDTH/match->getAmountBlocksX()*(match->getAmountBlocksX()-match->getDeathTLine())
-            || object1->getY() < MAP_HEIGHT/match->getAmountBlocksY()*match->getDeathTLine()
-            || object1->getY() > MAP_HEIGHT/match->getAmountBlocksY()*(match->getAmountBlocksY()-match->getDeathTLine()))) {
+            if(object1->getType() == TANK && (object1->getX() < MAP_WIDTH/(match->getAmountBlocksX())*(match->getDeathTLine()+2)
+            || object1->getX() > MAP_WIDTH/match->getAmountBlocksX()*(match->getAmountBlocksX()-match->getDeathTLine()-2)
+            || object1->getY() < MAP_HEIGHT/match->getAmountBlocksY()*(match->getDeathTLine()+2)
+            || object1->getY() > MAP_HEIGHT/match->getAmountBlocksY()*(match->getAmountBlocksY()-match->getDeathTLine()-2))) {
                 ((Tank*)object1)->setHealth(((Tank*)object1)->getHealth()-DAMAGE_OF_DEATHTIME);
             }
 
