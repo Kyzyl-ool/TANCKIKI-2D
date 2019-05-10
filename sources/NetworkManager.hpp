@@ -54,6 +54,7 @@ public:
     void sendMessageToServer(const std::string& message);
 
     void sendXYs(std::vector<Tank *>& tanks);
+    void waitForOthers();
 };
 
 

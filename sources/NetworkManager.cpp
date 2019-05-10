@@ -183,4 +183,11 @@ bool NetworkManager::areAllReady(int gameId) {
     return j["result"]["count"] == 0;
 }
 
+void NetworkManager::waitForOthers() {
+    auto tmp = udpSocket.isBlocking();
+
+    udpSocket.setBlocking(true);
+    udpSocket.setBlocking(tmp);
+}
+
 NetworkManager::~NetworkManager() = default;
