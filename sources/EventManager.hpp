@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/Gui.hpp>
 #include "constants/gameStates.hpp"
+#include "InterfaceManager.hpp"
 
 class EventManager {
 private:
@@ -17,10 +18,11 @@ private:
     gameState_t* state;
     sf::Event& event;
     int playerId;
+    InterfaceManager& interfaceManager;
 
 public:
-    EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId,
-                 gameState_t *the_state, tgui::Gui &the_gui);
+    EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId, gameState_t *the_state,
+                 tgui::Gui &the_gui, InterfaceManager &interfaceManager);
     bool pollEvent();
     std::string getMessageFromGameObjects();
 

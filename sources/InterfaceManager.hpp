@@ -36,9 +36,10 @@ public:
 private:
     sf::Event event{};
     bool heathbarloaded = false;
+    bool tanksnameloaded = false;
 
     std::vector <tgui::ProgressBar::Ptr> healthTanks;
-
+    std::vector <tgui::Label::Ptr> nameTanks;
 
 public:
     void setMapName(const std::string &the_mapName);
@@ -55,6 +56,10 @@ public:
     static void signalHandler3(InterfaceManager *manager);
 
     static void signalHandler4(InterfaceManager *manager);
+
+    void showHealth();
+
+    void cancelShow();
 
     static std::pair<std::string, std::string> login();
 };
