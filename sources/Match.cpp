@@ -95,7 +95,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     ///@todo решить, с какими начальными координатами ставить игроков на карту
 
     std::vector<int> playersInitialCoordin = players_info_j["playersInitialCoord"].get< std::vector <int> >();
-    for(int i = 0; i < playersInitialCoordin.size()/2; ++i) {
+    for(int i = 0; i < amount_of_players; ++i) {
         playersInitialCoord[i].first = playersInitialCoordin[2*i];
         playersInitialCoord[i].second = playersInitialCoordin[2*i+1];
     }
