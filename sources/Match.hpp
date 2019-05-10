@@ -26,6 +26,7 @@ private:
     sf::Image imagesForMap;
 
     unsigned int amount_of_players;
+    std::vector<std::pair <int, int> > playersInitialCoord;
     std::vector <std::string> players_names;
 
 public:

@@ -91,10 +91,10 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     ///@todo заполнить players_names
 
     ///@todo решить, с какими начальными координатами ставить игроков на карту
-    std::pair <int, int> playersInitialCoordinates[amount_of_players];
+    std::vector<int> playersInitialCoordin = map_j["blocks"].get< std::vector <int> >();
     for(int i = 0; i < amount_of_players; ++i) {
-        playersInitialCoordinates[i].first = 250*(i+1);
-        playersInitialCoordinates[i].second = 260*(i+1);
+        playersInitialCoord[i].first = 2*i;
+        playersInitialCoord[i].second = 2*i+1;
     }
     ///@todo заполнить playersInitialCoordinates
 
@@ -102,7 +102,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
 
     for(int i = 0; i < amount_of_players; ++i) {
         Tank *tank = new Tank(1000, players_names[i], "blue1");
-        tank->setPosition(playersInitialCoordinates[i].first, playersInitialCoordinates[i].second);
+        tank->setPosition(playersInitialCoord[i].first, playersInitialCoord[i].second);
         tank->setObjectId(i);
         tank->setTypeBullet(MIDDLESHOT);
         objectManager->addGameObject(tank);
@@ -268,11 +268,11 @@ Match::~Match() {
 }
 
 float Match::getMyPlayerX() {
-    return objectManager->getObjects()[0]->getX();
+    return objectManager->getObjects()[myPlayerId]->getX();
 }
 
 float Match::getMyPlayerY() {
-    return objectManager->getObjects()[0]->getY();
+    return objectManager->getObjects()[myPlayerId]->getY();
 }
 
 void Match::setPlayerCoordVorView() {
