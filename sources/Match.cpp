@@ -96,8 +96,10 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
 
     std::vector<int> playersInitialCoordin = players_info_j["playersInitialCoord"].get< std::vector <int> >();
     for(int i = 0; i < amount_of_players; ++i) {
-        playersInitialCoord[i].first = playersInitialCoordin[2*i];
-        playersInitialCoord[i].second = playersInitialCoordin[2*i+1];
+        std::pair <int, int> p;
+        p.first = playersInitialCoordin[2*i];
+        p.second = playersInitialCoordin[2*i+1];
+        playersInitialCoord.push_back(p);
     }
     ///@todo заполнить playersInitialCoordinates
 
