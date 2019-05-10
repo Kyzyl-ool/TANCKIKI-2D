@@ -151,7 +151,7 @@ void GameManager::runGame() {
                     playerInfofile.close();
                 }
 
-                match = new Match(mainWindow, players_info_json, map_json, view);
+                match = new Match(mainWindow, players_info_json, map_json, view, 0);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
                 state = GAME_STATE_MATCH;

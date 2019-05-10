@@ -37,7 +37,8 @@ private:
     std::vector <std::string> players_names;
 public:
     ObjectManager *getObjectManager() const;
-    Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view);
+    Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
+          int iMyPlayerId);
     ~Match();
 
     void drawMatch();

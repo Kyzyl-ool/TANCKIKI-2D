@@ -16,12 +16,14 @@ using json = nlohmann::json;
 
 
 
-Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view) {
+Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
+             int iMyPlayerId) {
     deathTime = 0;
     json map_j = json::parse(map_json);
     mapName = map_j["mapName"];
     amount_of_blocks_x = map_j["amount_of_blocks_x"];
     amount_of_blocks_y = map_j["amount_of_blocks_y"];
+    myPlayerId = iMyPlayerId;
     /*
      * {
      * "mapName": "Ugaagga",
