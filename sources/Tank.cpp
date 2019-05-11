@@ -123,16 +123,6 @@ void Tank::update(float time) {
     if(health <= 0) {
         setAlive(false);
     }
-
-    if(health <= 0) setAlive(false);
-
-    int sinus = checkOrient(towerX, towerY);
-    if(sinus>0)
-        setSpeedTower(TANK_TOWER_SPEED);
-    else
-        setSpeedTower(-TANK_TOWER_SPEED);
-    if(sinus == 0)
-        setSpeedTower(0);
 }
 
 int Tank::getAmmun() {
@@ -227,14 +217,14 @@ void Tank::setTextureTower(const char* address) {
     textureTower.loadFromImage(image);
 }
 
-int Tank::checkOrient(float X, float Y) {
+float Tank::checkOrient(float X, float Y) {
     float vx = (float)(WINDOW_WIDTH)/2;
     float vy = (float)(WINDOW_HEIGHT)/2;
     if(x < (float)(WINDOW_WIDTH)/2) vx = x;
     if(x > MAP_WIDTH - (float)(WINDOW_WIDTH)/2) vx = WINDOW_WIDTH - (MAP_WIDTH - x);
     if(y < (float)(WINDOW_HEIGHT)/2) vy = y;
     if(y > MAP_HEIGHT - (float)(WINDOW_HEIGHT)/2) vy = WINDOW_HEIGHT - (MAP_HEIGHT - y);
-    return lround((Y-vy)*cosf(spriteTower.getRotation()/180*M_PI) - (X-vx)*sinf(spriteTower.getRotation()/180*M_PI)+0.5);
+    return ((Y-vy)*cosf(spriteTower.getRotation()/180*M_PI) - (X-vx)*sinf(spriteTower.getRotation()/180*M_PI));
 }
 
 float Tank::getMaxHealth() const {
@@ -298,16 +288,11 @@ void Tank::setTowerY(float towerY) {
     Tank::towerY = towerY;
 }
 
-#define EPSILON 7
 void
 Tank::setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
-                       float itowerY,
-                       int iammunition, float iRotaton) {
-    std::cout << x - iX << std::endl;
-//    if (abs(x - iX) > EPSILON)
-        x = iX;
-//    if (abs(y - iY) > EPSILON)
-        y = iY;
+                       float itowerY, int iammunition, float iRotaton, float iTowerRotation) {
+    x = iX;
+    y = iY;
     health = ihealth;
     speedTower = itowerSpeed;
     recharge = irecharge;
@@ -315,6 +300,11 @@ Tank::setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, flo
     towerY = itowerY;
     ammunition = iammunition;
     setRotation(iRotaton);
+//    spriteTower.setRotation(iTowerRotation);
+}
+
+float Tank::getTowerRotation() {
+    return spriteTower.getRotation();
 }
 
 

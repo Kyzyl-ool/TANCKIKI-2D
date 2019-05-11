@@ -215,22 +215,31 @@ void Match::processMessage(const std::string& message) {
                     params[4],
                     params[5],
                     params[6],
-                    (int)params[7],
-                    params[8]);
+                    (int) params[7],
+                    params[8], 0);
             break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER: {
             auto tmp = j["params"].get <std::vector <float> >();
             objectManager->getTankById(tankId)->setTowerX(tmp[0]);
             objectManager->getTankById(tankId)->setTowerY(tmp[1]);
+//            objectManager->getTankById(tankId)->setTow;
+
             break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER_LEFT: {
-//            objectManager->getTankById(tankId)->setSpeedTower()
+            if (myPlayerId != tankId)
+                objectManager->getTankById(tankId)->setSpeedTower(TANK_TOWER_SPEED);
             break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER_RIGHT: {
-
+            if (myPlayerId != tankId)
+                objectManager->getTankById(tankId)->setSpeedTower(-TANK_TOWER_SPEED);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_ROTATE_TOWER_STOP: {
+            if (myPlayerId != tankId)
+                objectManager->getTankById(tankId)->setSpeedTower(0);
             break;
         }
 

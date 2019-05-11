@@ -17,7 +17,7 @@ private:
     tgui::Gui& gui;
     gameState_t* state;
     sf::Event& event;
-    int playerId;
+    int playerId = -1;
     sf::Clock syncClock;
     ObjectManager* objectManager;
 public:
@@ -43,6 +43,7 @@ public:
                               sf::Keyboard::Key right);
     std::string goMessage(char direction);
     std::string getSyncMessage();
+    std::string getMouseMessage();
 };
 
 

@@ -58,14 +58,6 @@ std::string EventManager::returnMessageFromMatchActions() {
 
     char arrows = getPressedArrows(sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Up, sf::Keyboard::Right);
         switch (event.type) {
-            case sf::Event::MouseMoved: {
-                json json_message;
-                json_message["status"] = "OK";
-                json_message["from"] = playerId;
-                json_message["method"] = "rotateTower";
-                json_message["params"] = {sf::Mouse::getPosition(mainWindow).x, sf::Mouse::getPosition(mainWindow).y};
-                return json_message.dump();
-            }
             case sf::Event::KeyReleased: {
                 switch (event.key.code) {
                     case sf::Keyboard::A:
@@ -255,7 +247,7 @@ void EventManager::setObjectManager(ObjectManager *iobjectManager) {
     EventManager::objectManager = iobjectManager;
 }
 
-#define MILLISECONDS_TO_SEND_SYNC_MESSAGE 500
+#define MILLISECONDS_TO_SEND_SYNC_MESSAGE 250
 std::string EventManager::getSyncMessage() {
     if (syncClock.getElapsedTime().asMilliseconds() > MILLISECONDS_TO_SEND_SYNC_MESSAGE) {
         syncClock.restart();
@@ -266,9 +258,66 @@ std::string EventManager::getSyncMessage() {
         json_message["status"] = "OK";
         json_message["from"] = playerId;
         json_message["method"] = "sync";
-        json_message["params"] = { (int)(myTank->getX() * 100)/100., (int)(myTank->getY() * 100)/100., (int)(myTank->getHealth() * 100)/100., (int)(myTank->getSpeedTower() * 100)/100., (int)(myTank->getRecharge() * 100)/100., (int)(myTank->getTowerX() * 100)/100., (int)(myTank->getTowerY() * 100)/100., myTank->getAmmun(), myTank->getRotation()};
+        json_message["params"] = { (int)(myTank->getX() * 100)/100., (int)(myTank->getY() * 100)/100., (int)(myTank->getHealth() * 100)/100., (int)(myTank->getSpeedTower() * 100)/100., (int)(myTank->getRecharge() * 100)/100., (int)(myTank->getTowerX() * 100)/100., (int)(myTank->getTowerY() * 100)/100., myTank->getAmmun(), myTank->getRotation(), myTank->getTowerRotation()};
         return json_message.dump();
     }
     else
         return "";
+}
+
+std::string EventManager::getMouseMessage() {
+//                    auto tmp = sf::Mouse::getPosition(mainWindow);
+//                int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+//                if(sinus>0)
+//                    tmp->setSpeedTower(TANK_TOWER_SPEED);
+//                else
+//                    tmp->setSpeedTower(-TANK_TOWER_SPEED);
+//                if(sinus < 10 && sinus > -10)
+//                    tmp->setSpeedTower(0);
+
+
+    Tank* myTank = objectManager->getTankById(playerId);
+    auto tmp = sf::Mouse::getPosition(mainWindow);
+    float sinus = myTank->checkOrient(tmp.x, tmp.y);
+
+//    std::cout << sinus << std::endl;
+
+    if (sinus < 10 && sinus > -10) {
+        if (myTank->getSpeedTower() != 0) {
+            json json_message;
+            json_message["status"] = "OK";
+            json_message["from"] = playerId;
+            json_message["method"] = "rotateTowerStop";
+            json_message["params"] = json::array();
+            return json_message.dump();
+        }
+        else
+            return std::string();
+    }
+
+    if(sinus>0) {
+        if (myTank->getSpeedTower() <= 0) {
+            json json_message;
+            json_message["status"] = "OK";
+            json_message["from"] = playerId;
+            json_message["method"] = "rotateTowerLeft";
+            json_message["params"] = json::array();
+            return json_message.dump();
+        }
+        else
+            return std::string();
+    }
+    else {
+        if (myTank->getSpeedTower() >= 0) {
+            json json_message;
+            json_message["status"] = "OK";
+            json_message["from"] = playerId;
+            json_message["method"] = "rotateTowerRight";
+            json_message["params"] = json::array();
+            return json_message.dump();
+        }
+        else
+            return std::string();
+    }
+    return std::string();
 }

@@ -32,14 +32,28 @@ void GameManager::runGame() {
             case GAME_STATE_MULTIPLAYER_MATCH: {
                 mainWindow.clear();
                 networkManager.processPakcetsFromServer();
-                std::string message = eventManager->getMessageFromGameObjects();
-                networkManager.sendMessageToServer(message);
+                networkManager.sendMessageToServer(eventManager->getMessageFromGameObjects());
+//                auto mouseMessage = eventManager->getMouseMessage();
+//                if (!mouseMessage.empty()) match->processMessage(mouseMessage);
+                networkManager.sendMessageToServer(eventManager->getMouseMessage());
+
+                Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
+                auto tmp1 = sf::Mouse::getPosition(mainWindow);
+                int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+                if(sinus>0)
+                    tmp->setSpeedTower(TANK_TOWER_SPEED);
+                else
+                    tmp->setSpeedTower(-TANK_TOWER_SPEED);
+                if(sinus < 10 && sinus > -10)
+                    tmp->setSpeedTower(0);
+
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
                 match->updateMatch(time);
                 match->drawMatch();
-                std::string syncMessage = eventManager->getSyncMessage();
-                networkManager.sendMessageToServer(syncMessage);
+
+
+                networkManager.sendMessageToServer(eventManager->getSyncMessage());
                 break;
             }
             case GAME_STATE_CREATE_MULTIPLAYER_MATCH: {
@@ -158,6 +172,7 @@ void GameManager::runGame() {
                 match = new Match(mainWindow, players_info_json, map_json, view, 0);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
+                eventManager->setObjectManager(match->getObjectManager());
                 state = GAME_STATE_MATCH;
                 match->setDeathLine(0);
                 break;
@@ -169,14 +184,7 @@ void GameManager::runGame() {
                 if (!message.empty()) match->processMessage(message);
                 Tank* tmp = (Tank* )match->getObjectManager()->getGameObjectById(0);
 
-                auto tmp1 = sf::Mouse::getPosition(mainWindow);
-                int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
-                if(sinus>0)
-                    tmp->setSpeedTower(TANK_TOWER_SPEED);
-                else
-                    tmp->setSpeedTower(-TANK_TOWER_SPEED);
-                if(sinus < 10 && sinus > -10)
-                    tmp->setSpeedTower(0);
+
 
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
