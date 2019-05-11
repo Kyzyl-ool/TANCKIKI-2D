@@ -19,6 +19,7 @@ protected:
     sf::Sprite sprBoom;
     float recharge;
     float towerX, towerY;
+    int owner = -1;
 public:
     void setTowerY(float towerY);
 

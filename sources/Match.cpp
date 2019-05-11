@@ -107,6 +107,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
         tank->setPosition(playersInitialCoordinates[i].first, playersInitialCoordinates[i].second);
         tank->setObjectId(i);
         tank->setTypeBullet(MIDDLESHOT);
+        tank->setOwnerId(i);
         objectManager->addGameObject(tank);
     }
 
@@ -165,7 +166,7 @@ const std::string &Match::getMapName() const {
     return mapName;
 }
 
-void Match::processMessage(const std::string& message) {
+void Match::processMessage(const std::string &message, int iMyPlayerId = -1) {
     assert(message.size());
     json j = json::parse(message.c_str());
 //    std::cout << j["status"] << std::endl;s
@@ -175,29 +176,30 @@ void Match::processMessage(const std::string& message) {
 //    auto tankId = (gameObjectMessageId[j["method"]] != GAMEOBJECT_MESSAGE_APPEAR) ? playerId_tankId[from] : -1;
     int tankId = from;
 
+    if (iMyPlayerId != tankId)
     switch (gameObjectMessageId[j["method"]]) {
         case GAMEOBJECT_MESSAGE_NO_ROTATION: {
-            objectManager->getTankById(tankId)->stopRotate();
+                objectManager->getTankById(tankId)->stopRotate();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_BRAKE: {
-            objectManager->getTankById(tankId)->brake();
+                objectManager->getTankById(tankId)->brake();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_LEFT: {
-            objectManager->getTankById(tankId)->rotateLeft();
+                objectManager->getTankById(tankId)->rotateLeft();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_RIGHT: {
-            objectManager->getTankById(tankId)->rotateRight();
+                objectManager->getTankById(tankId)->rotateRight();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_FORWARD: {
-            objectManager->getTankById(tankId)->go();
+                objectManager->getTankById(tankId)->go();
             break;
         }
         case GAMEOBJECT_MESSAGE_NO_ACTION: {
-            objectManager->getTankById(tankId)->stop();
+                objectManager->getTankById(tankId)->stop();
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
@@ -206,17 +208,19 @@ void Match::processMessage(const std::string& message) {
             break;
         }
         case GAMEOBJECT_MESSAGE_SYNC: {
-            std::vector <float> params = j["params"].get <std::vector <float> >();
-            objectManager->getTankById(tankId)->setConfiguration(
-                    params[0],
-                    params[1],
-                    params[2],
-                    params[3],
-                    params[4],
-                    params[5],
-                    params[6],
-                    (int) params[7],
-                    params[8], 0);
+            if (myPlayerId != tankId) {
+                std::vector<float> params = j["params"].get<std::vector<float> >();
+                objectManager->getTankById(tankId)->setConfiguration(
+                        params[0],
+                        params[1],
+                        params[2],
+                        params[3],
+                        params[4],
+                        params[5],
+                        params[6],
+                        (int) params[7],
+                        params[8], 0);
+            }
             break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER: {
@@ -228,17 +232,17 @@ void Match::processMessage(const std::string& message) {
             break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER_LEFT: {
-            if (myPlayerId != tankId)
+//            if (myPlayerId != tankId)
                 objectManager->getTankById(tankId)->setSpeedTower(TANK_TOWER_SPEED);
             break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER_RIGHT: {
-            if (myPlayerId != tankId)
+//            if (myPlayerId != tankId)
                 objectManager->getTankById(tankId)->setSpeedTower(-TANK_TOWER_SPEED);
             break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER_STOP: {
-            if (myPlayerId != tankId)
+//            if (myPlayerId != tankId)
                 objectManager->getTankById(tankId)->setSpeedTower(0);
             break;
         }

@@ -22,6 +22,11 @@ private:
     sf::UdpSocket udpSocket;
     unsigned short serverPort;
     std::string playerId;
+    int myPlayerId = -1;
+public:
+    void setMyPlayerId(int myPlayerId);
+
+private:
     bool isAuthorized;
     std::string token = "Hello world";
     Match* match;

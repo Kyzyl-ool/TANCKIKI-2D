@@ -135,7 +135,8 @@ void NetworkManager::processPakcetsFromServer() {
 //            json j = json::parse(requestContent);
 //            std::cout << requestContent << std::endl;
         } else {
-            match->processMessage(content);
+
+            match->processMessage(content, myPlayerId);
         }
     }
 }
@@ -188,6 +189,10 @@ void NetworkManager::waitForOthers() {
 
     udpSocket.setBlocking(true);
     udpSocket.setBlocking(tmp);
+}
+
+void NetworkManager::setMyPlayerId(int myPlayerId) {
+    NetworkManager::myPlayerId = myPlayerId;
 }
 
 NetworkManager::~NetworkManager() = default;

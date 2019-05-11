@@ -300,7 +300,7 @@ Tank::setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, flo
     towerY = itowerY;
     ammunition = iammunition;
     setRotation(iRotaton);
-//    spriteTower.setRotation(iTowerRotation);
+    spriteTower.setRotation(iTowerRotation);
 }
 
 float Tank::getTowerRotation() {

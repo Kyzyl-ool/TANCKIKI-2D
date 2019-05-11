@@ -32,10 +32,16 @@ void GameManager::runGame() {
             case GAME_STATE_MULTIPLAYER_MATCH: {
                 mainWindow.clear();
                 networkManager.processPakcetsFromServer();
-                networkManager.sendMessageToServer(eventManager->getMessageFromGameObjects());
+
+                auto action = eventManager->getMessageFromGameObjects();
+
+                networkManager.sendMessageToServer(action);
+                if (!action.empty())
+                    match->processMessage(action, -1);
 //                auto mouseMessage = eventManager->getMouseMessage();
 //                if (!mouseMessage.empty()) match->processMessage(mouseMessage);
                 networkManager.sendMessageToServer(eventManager->getMouseMessage());
+
 
                 Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
                 auto tmp1 = sf::Mouse::getPosition(mainWindow);
@@ -82,6 +88,7 @@ void GameManager::runGame() {
                 networkManager.establishConnection();
                 eventManager->setPlayerId(match->getMyPlayerId());
                 eventManager->setObjectManager(match->getObjectManager());
+                networkManager.setMyPlayerId(match->getMyPlayerId());
                 state = GAME_STATE_MULTIPLAYER_MATCH;
                 break;
             }
@@ -181,7 +188,7 @@ void GameManager::runGame() {
             case GAME_STATE_MATCH: {
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
-                if (!message.empty()) match->processMessage(message);
+                if (!message.empty()) match->processMessage(message, 0);
                 Tank* tmp = (Tank* )match->getObjectManager()->getGameObjectById(0);
 
 

@@ -43,7 +43,7 @@ public:
 
     void drawMatch();
     void updateMatch(float time);
-    void processMessage(const std::string& message);
+    void processMessage(const std::string &message, int iMyPlayerId);
     const std::string &getMapName() const;
     void drawMap(sf::RenderWindow &window);
 
