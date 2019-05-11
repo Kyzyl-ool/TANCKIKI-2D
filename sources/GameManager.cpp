@@ -56,6 +56,8 @@ void GameManager::runGame() {
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
                 match->updateMatch(time);
+                match->setPlayerCoordVorView();
+                mainWindow.setView(view);
                 match->drawMatch();
 
 
@@ -187,10 +189,17 @@ void GameManager::runGame() {
             case GAME_STATE_MATCH: {
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
-                if (!message.empty()) match->processMessage(message, 0);
-                Tank* tmp = (Tank* )match->getObjectManager()->getGameObjectById(0);
+                if (!message.empty()) match->processMessage(message, -1);
 
-
+                Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
+                auto tmp1 = sf::Mouse::getPosition(mainWindow);
+                int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+                if(sinus>0)
+                    tmp->setSpeedTower(TANK_TOWER_SPEED);
+                else
+                    tmp->setSpeedTower(-TANK_TOWER_SPEED);
+                if(sinus < 10 && sinus > -10)
+                    tmp->setSpeedTower(0);
 
                 float time = clock.getElapsedTime().asMilliseconds();
                 clock.restart();
