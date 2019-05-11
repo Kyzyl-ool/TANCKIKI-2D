@@ -181,7 +181,6 @@ void GameManager::runGame() {
                 interfaceManager->setObjectManager(match->getObjectManager());
                 eventManager->setObjectManager(match->getObjectManager());
                 state = GAME_STATE_MATCH;
-                match->setDeathLine(0);
                 break;
             }
             case GAME_STATE_MATCH_PAUSE:
