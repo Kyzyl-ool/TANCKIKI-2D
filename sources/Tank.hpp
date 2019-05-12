@@ -52,6 +52,8 @@ public:
     void setHealth(float healthScore);
     int checkOrient(float X, float Y);
     void setTypeBullet(Bullet_t);
+    float getViewCoordX();
+    float getViewCoordY();
 };
 
 
