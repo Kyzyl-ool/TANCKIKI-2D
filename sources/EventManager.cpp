@@ -55,13 +55,14 @@ std::string EventManager::returnMessageFromMatchActions() {
     } else {
         interfaceManager.cancelShow();
     }
+    
 
     char arrows = getPressedArrows(sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Up, sf::Keyboard::Right);
+
+
         switch (event.type) {
             case sf::Event::KeyReleased: {
                 switch (event.key.code) {
-                    case sf::Keyboard::A:
-                    case sf::Keyboard::D:
                     case sf::Keyboard::Left:
                     case sf::Keyboard::Right: {
                         if (arrows & 0b1000 || arrows & 0b0001) {
@@ -78,8 +79,6 @@ std::string EventManager::returnMessageFromMatchActions() {
                     }
                     case sf::Keyboard::Up:
                     case sf::Keyboard::Down:
-                    case sf::Keyboard::S:
-                    case sf::Keyboard::W:
                     {
                         json json_message;
                         json_message["status"] = "OK";
@@ -95,6 +94,9 @@ std::string EventManager::returnMessageFromMatchActions() {
                 break;
             }
             case sf::Event::KeyPressed: {
+//                if ((arrows & 0b1000) && (arrows & 0b0010) && (arrows & 0b0001))
+//                    return goMessage(0b0010);
+
                 switch (event.key.code) {
                     case sf::Keyboard::Space: {
                         json json_message;
@@ -105,20 +107,16 @@ std::string EventManager::returnMessageFromMatchActions() {
 //                        std::cout << json_message.dump() << std::endl;
                         return json_message.dump();
                     }
-                    case sf::Keyboard::Left:
-                    case sf::Keyboard::A: {
+                    case sf::Keyboard::Left: {
                         return goMessage(0b1000);
                     }
-                    case sf::Keyboard::Right:
-                    case sf::Keyboard::D: {
+                    case sf::Keyboard::Right: {
                         return goMessage(0b0001);
                     }
-                    case sf::Keyboard::Up:
-                    case sf::Keyboard::W: {
+                    case sf::Keyboard::Up: {
                         return goMessage(0b0010);
                     }
-                    case sf::Keyboard::Down:
-                    case sf::Keyboard::S: {
+                    case sf::Keyboard::Down: {
                         return goMessage(0b0100);
                     }
                     case sf::Keyboard::Escape: {
