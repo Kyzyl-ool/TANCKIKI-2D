@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "GameObject.hpp"
+#include "Tank.hpp"
 
 
 /*!
@@ -17,25 +18,22 @@ class ObjectManager
 private:
     /// \todo Нужно придумать свойство, в котором будут храниться все игровые объекты.
     std::vector<GameObject*> objects;
-    std::vector <GameObject*> tanks;
+    sf::RenderWindow& mainWindow;
+    std::vector <Tank*> tanks;
 public:
-    const std::vector<GameObject *> &getTanks() const;
+    const std::vector<Tank *> & getTanks() const;
 
-public:
     const std::vector<GameObject *> &getObjects() const;
 
-
-private:
-    sf::RenderWindow& mainWindow;
-
-public:
     ObjectManager(sf::RenderWindow &window);
 
-    void addGameObject(GameObject* obj);
+    unsigned long addGameObject(GameObject *obj);
     void removeGameObjectById(int gameObjectId);
     GameObject* getGameObjectById(int gameObjectId);
-    const sf::RenderWindow &getMainWindow() const;
+    Tank* getTankById(int tankId);
 
+    const sf::RenderWindow &getMainWindow() const;
+    ~ObjectManager();
 };
 
 #endif //TANCHIKI_OBJECTMANAGER_HPP

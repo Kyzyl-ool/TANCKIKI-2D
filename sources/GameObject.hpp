@@ -16,6 +16,8 @@ enum gameObject_t {
     ABYSS = 0,
     TANK,
     BULLET,
+    AMMUN,
+    REPAIR,
     GROUND
 };
 
@@ -39,15 +41,24 @@ enum Tank_t {
 class GameObject
 {
 protected:
-    bool alive;             /// жив ли ещё объект
-    float x, y;            /// координаты объекта на экране (центр)
+    bool alive;            /// жив ли ещё объект
+    float x, y;
+public:
+    void setX(float x);
+
+    void setY(float y);
+
+protected:
+    /// координаты объекта на экране (центр)
     float sizeX, sizeY;    /// размеры
-    float speedX, speedY;  /// cкорость движения
+    float speed;           /// cкорость движения
+    float speedAngle;      /// угловая скорость в градусах
     sf::Sprite sprite;
     sf::Texture texture;
     int gameObjectId;       ///айди объекта
     int ownerId;            ///айди владельца
     gameObject_t type;
+    float scale;
 public:
     gameObject_t getType() const;
     /// тип
@@ -94,15 +105,13 @@ public:
 
     virtual void collideResponse(Match *match, float time);
 
-    virtual GameObject * shot(Bullet_t BULLET);
+    virtual GameObject *shot();
 
     float getX() const;
 
     float getY() const;
 
-    float getSpeedX() const;
-
-    float getSpeedY() const;
+    float getSpeed() const;
 
     float getSizeX() const;
 
@@ -110,11 +119,15 @@ public:
 
     float getRotation() const;
 
+    float getScale();
+
     bool isAlive() const;
 
     int getOwnerId() const;
 
     int getObjectId() const;
+
+    float getSpeedAngle() const;
 
     virtual const sf::Sprite &getSprite() const;
 
@@ -124,9 +137,7 @@ public:
 
     void setPosition(float x, float y);
 
-    void setSpeed(float spX, float spY);
-
-    void setSizeObj(float sizeX, float sizeY);
+    void setSpeed(float sp);
 
     void setSizeSprite(float sizeX, float sizeY); ///задает размеры спрайта, если размеры спрайта и объекта совпадают!!!
 
@@ -143,6 +154,19 @@ public:
     void setOwnerId(int pid);
 
     void setObjectId(int id);
+
+    void setSpeedAngle(float apAngle);
+
+    void setScale(float sc);
+
+//    float checkOrient(float X, float Y); ///определяет синус угла направления минус угол объекта, если положительный, то объект крутить по часовой стрелки
+
+    void rotateLeft();      // задаёт движение в левую сторону, срабатывает при нажатии влево
+    void rotateRight();     // задаёт движение в правую сторону, срабатывает при нажатии вправо
+    void stopRotate();      // задаёт прекращение поворота, срабатывает при отпускании клавиш влево/вправо
+    void go();              // задаёт движение вперёд, срабатывает при нажатии вперёд
+    void stop();            // задаёт прекращение движения, срабатывает при отпускании клавиш вперед/назад
+    void brake();           // задаёт торможение, срабатывает при нажатии назад
 };
 
 #endif //TANCHIKI_GAMEOBJECT_HPP

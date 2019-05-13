@@ -1,0 +1,5 @@
+{
+    "amount_of_players": 1,
+    "players_names": ["Player1"],
+    "playersInitialCoord": [250, 260]
+}

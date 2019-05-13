@@ -8,18 +8,19 @@ ObjectManager::ObjectManager(sf::RenderWindow &window):
 mainWindow(window)
 {
     objects = std::vector <GameObject* > ();
-    tanks = std::vector <GameObject* > ();
+    tanks = std::vector <Tank* > ();
 }
 
 const sf::RenderWindow &ObjectManager::getMainWindow() const {
     return mainWindow;
 }
 
-void ObjectManager::addGameObject(GameObject *obj) {
+unsigned long ObjectManager::addGameObject(GameObject *obj) {
     objects.push_back(obj);
     if (obj->getType() == TANK) {
-        tanks.push_back(obj);
+        tanks.push_back((Tank* )obj);
     }
+    return tanks.size()-1;
 }
 
 void ObjectManager::removeGameObjectById(int gameObjectId) {
@@ -27,7 +28,6 @@ void ObjectManager::removeGameObjectById(int gameObjectId) {
 }
 
 GameObject* ObjectManager::getGameObjectById(int gameObjectId) {
-    ///@todo реализовать
     return objects[gameObjectId];
 }
 
@@ -35,6 +35,16 @@ const std::vector<GameObject *> &ObjectManager::getObjects() const {
     return objects;
 }
 
-const std::vector<GameObject *> &ObjectManager::getTanks() const {
+const std::vector<Tank *> & ObjectManager::getTanks() const {
     return tanks;
+}
+
+ObjectManager::~ObjectManager() {
+    for (const auto &item : objects) {
+        delete(item);
+    }
+}
+
+Tank *ObjectManager::getTankById(int tankId) {
+    return tanks[tankId];
 }

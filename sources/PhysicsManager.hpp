@@ -28,7 +28,7 @@ public:
      *
      * \details Реализация довольно проста: необходимо вызвать у каждого игрового объекты метод update.
      */
-    void updateGameObjects(Match *match);
+    void updateGameObjects(Match *match, float time);
 };
 
 #endif //TANCHIKI_PHYSICSMANAGER_HPP

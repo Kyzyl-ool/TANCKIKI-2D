@@ -11,9 +11,9 @@
 #include <cmath>
 
 GameObject::GameObject() {
-    GameObject::speedX=0;
-    GameObject::speedY=0;
-//    std::cout << "GameObject created.\n";
+    GameObject::speed = 0;
+    speedAngle = 0;
+    alive = true;
 }
 
 void GameObject::update(float time) {
@@ -22,11 +22,11 @@ void GameObject::update(float time) {
 
 
 void GameObject::setRotation(float angle){
-    GameObject::sprite.setRotation(-angle);
+    GameObject::sprite.setRotation(angle);
 }
 
 float GameObject::getRotation() const{
-    return -sprite.getRotation();
+    return sprite.getRotation();
 }
 
 float GameObject::getSizeX() const {
@@ -37,13 +37,11 @@ float GameObject::getSizeY() const {
     return sizeY;
 }
 
-void GameObject::setSizeObj(float sizeX_, float sizeY_) {
-    GameObject::sizeX=sizeX_;
-    GameObject::sizeY=sizeY_;
-}
 
 void GameObject::setSizeSprite(float sizeX_, float sizeY_) {
-    GameObject::sprite.setScale(sizeX_/GameObject::sizeX, sizeY_/GameObject::sizeY);
+    sprite.setScale(sizeX_/sizeX, sizeY_/sizeY);
+    sizeX=sizeX_;
+    sizeY=sizeY_;
 }
 
 GameObject::~GameObject() {
@@ -51,29 +49,28 @@ GameObject::~GameObject() {
 }
 
 bool GameObject::collideCheck(GameObject *obj) {
-        sf::Sprite spr1 = sprite;                               /// ХОРОШИЙ РАБОЧИЙ КОСТЫЛЬ
-        sf::Sprite spr2 = obj->getSprite();
-        spr1.setTextureRect(sf::IntRect(0, 0, (int) sizeX, (int) sizeY));
-        spr2.setTextureRect(sf::IntRect(0, 0, (int) obj->getSizeX(), (int) obj->getSizeY()));
-
-        if (Collision::CircleTest(spr1, spr2)) {
-            return Collision::BoundingBoxTest(spr1, spr2);
-        }
-    return false;
+    return Collision::CircleTest(sprite, obj->getSprite()) && Collision::BoundingBoxTest(sprite, obj->getSprite());
 }
 
 bool GameObject::collideCheck(Match *match) {
     block_t *blocks = match->getBlocks();
-    int jj = (int) (x - sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int ii = (int) (y - sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-    int n = (int) (x + sizeX/2)*match->getAmountBlocksX()/WINDOW_WIDTH;
-    int m = (int) (y + sizeY/2)*match->getAmountBlocksY()/WINDOW_HEIGHT;
-    std::vector<int> vec;
+    float sizeBlx = ((float)MAP_WIDTH)/match->getAmountBlocksX();
+    float sizeBly = ((float)MAP_HEIGHT)/match->getAmountBlocksY();
+
+    int jj =  (int)(x - (sizeX+sizeY)/2)/sizeBlx;
+    int ii = (int)(y - (sizeX+sizeY)/2)/sizeBly;
+    int n = (int)(x + (sizeX+sizeY)/2)/sizeBlx;
+    int m = (int)(y + (sizeX+sizeY)/2)/sizeBly;
 
     for (int i = ii; i < m+1; ++i) {
         for (int j = jj; j < n+1; ++j) {
-            if (blocks[i * match->getAmountBlocksX() + j] == BL_0) {
-                return true;
+            if (i * match->getAmountBlocksX() + j < match->getAmountBlocksX()*match->getAmountBlocksY() &&
+            blocks[i * match->getAmountBlocksX() + j] == BL_0) {
+                sf::Sprite spr;
+                spr.setTextureRect(sf::IntRect(0, 0, sizeBlx, sizeBly));
+                spr.setPosition((j+0.5)*sizeBlx, (i+0.5)*sizeBly);
+                if(Collision::BoundingBoxTest(spr, sprite))
+                    return true;
                 }
             }
         }
@@ -110,8 +107,8 @@ const sf::Texture &GameObject::getTexture() const {
 }
 
 
-void GameObject::setAlive(bool alive) {
-    GameObject::alive = alive;
+void GameObject::setAlive(bool alive_) {
+    GameObject::alive = alive_;
 }
 
 void GameObject::setPosition(float X, float Y){
@@ -130,7 +127,10 @@ void GameObject::setSprite(int X, int Y, int sizeX_, int sizeY_){
     GameObject::sizeY=sizeY_;
     GameObject::sprite.setTexture(GameObject::texture);
     GameObject::sprite.setTextureRect(sf::IntRect(X,Y,sizeX_,sizeY_));
-    GameObject::sprite.setOrigin(sizeX_/2,sizeY_/2);
+    if(type == TANK) {
+        GameObject::sprite.setOrigin(sizeX_ *1/2, sizeY_ / 2);
+    }
+    else sprite.setOrigin(sizeX_ *1/2, sizeY_ / 2);
 }
 
 void GameObject::setTexture(sf::Texture texture_){
@@ -140,26 +140,28 @@ void GameObject::setTexture(sf::Texture texture_){
 void GameObject::setTexture(const char* address) {
     sf::Image image;
     image.loadFromFile(address);
+    if(type == TANK) {
+        image.createMaskFromColor(sf::Color::White);
+    }
+    if(type == BULLET) {
+        image.createMaskFromColor(sf::Color::Black);
+    }
     GameObject::texture.loadFromImage(image);
 }
 
 
-void GameObject::setSpeed(float spX, float spY) {
-    GameObject::speedX = spX;
-    GameObject::speedY = spY;
+void GameObject::setSpeed(float sp) {
+    GameObject::speed = sp;
 }
 
 void GameObject::draw(sf::RenderWindow &window) {
 
 }
 
-float GameObject::getSpeedX() const {
-    return speedX;
+float GameObject::getSpeed() const {
+    return speed;
 }
 
-float GameObject::getSpeedY() const {
-    return speedY;
-}
 
 void GameObject::multSize(float k){
     GameObject::sizeX=k*sizeX;
@@ -187,6 +189,62 @@ void GameObject::setOwnerId(int pid) {
     ownerId=pid;
 }
 
-GameObject * GameObject::shot(Bullet_t BULLET) {
+GameObject * GameObject::shot() {
 
+}
+
+float GameObject::getSpeedAngle() const {
+    return speedAngle;
+}
+
+void GameObject::setSpeedAngle(float spAngle) {
+    speedAngle = spAngle;
+}
+
+
+
+void GameObject::rotateLeft() {
+    if(type == TANK) {
+        setSpeedAngle(-TANK_ANGLE_SPEED);
+    }
+}
+
+void GameObject::rotateRight() {
+    if(type == TANK) {
+        setSpeedAngle(TANK_ANGLE_SPEED);
+    }
+}
+
+void GameObject::stopRotate() {
+    setSpeedAngle(0);
+}
+
+void GameObject::go() {
+    if(type == TANK) {
+        setSpeed(TANK_VELOCITY);
+    }
+}
+
+void GameObject::stop() {
+    setSpeed(0);
+}
+
+void GameObject::brake() {
+    setSpeed(-TANK_VELOCITY);
+}
+
+float GameObject::getScale() {
+    return scale;
+}
+
+void GameObject::setScale(float sc) {
+    scale = sc;
+}
+
+void GameObject::setX(float x) {
+    GameObject::x = x;
+}
+
+void GameObject::setY(float y) {
+    GameObject::y = y;
 }

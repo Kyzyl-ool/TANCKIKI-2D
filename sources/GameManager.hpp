@@ -14,6 +14,7 @@
 #include "Match.hpp"
 #include "constants/gameStates.hpp"
 #include "EventManager.hpp"
+#include "NetworkManager.hpp"
 
 
 /*!
@@ -23,17 +24,23 @@ class GameManager
 {
 private:
     sf::RenderWindow& mainWindow;
+    sf::View& view;
     tgui::Gui& gui;
     Match* match;
     InterfaceManager* interfaceManager;
     EventManager* eventManager;
+    NetworkManager& networkManager;
+    int gameId = -1;
 
     gameState_t state;
     sf::Event& event;
     std::string playerName;
+    sf::Clock clock;
 
 public:
-    GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event);
+    GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event,
+                NetworkManager &the_networkmanager, sf::View &view);
+    ~GameManager();
 
     /*!
      * \brief запуск игры

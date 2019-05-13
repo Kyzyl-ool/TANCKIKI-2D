@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include "ObjectManager.hpp"
 #include "constants/gameStates.hpp"
+#include "NetworkManager.hpp"
 #include <TGUI/TGUI.hpp>
 
 /*!
@@ -21,21 +22,26 @@ private:
     sf::RenderWindow& mainWindow;
     tgui::Gui& gui;
     gameState_t* state;
-public:
-    void setState(gameState_t gameState);
+    NetworkManager& networkManager;
 
-private:
     std::string errString;
     ObjectManager* objectManager;
     std::string mapName;
-    sf::Event event{};
+
     bool heathbarloaded = false;
+    bool tanksnameloaded = false;
+
+    std::vector <tgui::ProgressBar::Ptr> healthTanks;
+    std::vector <tgui::Label::Ptr> nameTanks;
 
 public:
+    void setState(gameState_t gameState);
+    void setObjectManager(ObjectManager *objectManager);
+
     void setMapName(const std::string &the_mapName);
 
     InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager, gameState_t *the_state,
-                     tgui::Gui &the_gui);
+                     tgui::Gui &the_gui, NetworkManager &the_networkmanager);
 
     void makeInterface();
 
@@ -47,8 +53,11 @@ public:
 
     static void signalHandler4(InterfaceManager *manager);
 
-    static void login(const tgui::EditBox::Ptr& username, const tgui::EditBox::Ptr& password);
+    void showHealth();
 
+    void cancelShow();
+
+    static std::pair<std::string, std::string> login();
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP

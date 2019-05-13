@@ -9,6 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/Gui.hpp>
 #include "constants/gameStates.hpp"
+#include "InterfaceManager.hpp"
 
 class EventManager {
 private:
@@ -16,11 +17,23 @@ private:
     tgui::Gui& gui;
     gameState_t* state;
     sf::Event& event;
-    int playerId;
+    int playerId = -1;
+    sf::Clock syncClock;
+    ObjectManager* objectManager;
+public:
+    ObjectManager *getObjectManager() const;
+
+    void setObjectManager(ObjectManager *iobjectManager);
 
 public:
-    EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId,
-                 gameState_t *the_state, tgui::Gui &the_gui);
+    void setPlayerId(int playerId);
+
+private:
+    InterfaceManager& interfaceManager;
+
+public:
+    EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId, gameState_t *the_state,
+                 tgui::Gui &the_gui, InterfaceManager &interfaceManager);
     bool pollEvent();
     std::string getMessageFromGameObjects();
 
@@ -29,7 +42,8 @@ public:
     char getPressedArrows(sf::Keyboard::Key left, sf::Keyboard::Key down, sf::Keyboard::Key up,
                               sf::Keyboard::Key right);
     std::string goMessage(char direction);
-
+    std::string getSyncMessage();
+    std::string getMouseMessage();
 };
 
 

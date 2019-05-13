@@ -3,9 +3,35 @@
 //
 
 #include "Bullet.hpp"
+#include <cmath>
 
 Bullet::Bullet() : GameObject::GameObject() {
     type=BULLET;
+}
+
+Bullet::Bullet(Bullet_t typeBullet) : GameObject::GameObject() {
+    type=BULLET;
+    if(typeBullet==LOWSHOT) {
+        setSpeed(SPEED_OF_LOW_BULLET);
+        setTexture("images/bullet_1.png");
+        setSprite(20,13,10,8);
+        setSizeSprite(13, 10);
+        setPower(DAMAGE_OF_LOWSHOT);
+    }
+    if(typeBullet==MIDDLESHOT) {
+        setSpeed(SPEED_OF_MIDDLE_BULLET);
+        setTexture("images/bullet_1.png");
+        setSprite(39,222,20,11);
+        setSizeSprite(18, 10);
+        setPower(DAMAGE_OF_MIDDLESHOT);
+    }
+    if(typeBullet==POWERFULLSHOT) {
+        setSpeed(SPEED_OF_POWERFULLSHOT);
+        setTexture("images/bullet_1.png");
+        setSprite(279,214,15,12);
+        setSizeSprite(25, 20);
+        setPower(DAMAGE_OF_POWERFULLSHOT);
+    }
 }
 
 void Bullet::draw(sf::RenderWindow &window) {
@@ -21,7 +47,7 @@ void Bullet::collideResponse(GameObject *obj, float time) {
 }
 
 void Bullet::update(float time) {
-    setPosition(x+speedX*time,y+speedY*time);
+    setPosition(x+speed*cosf(getRotation()/180*M_PI)*time,y+speed*sinf(getRotation()/180*M_PI)*time);
 }
 
 int Bullet::getPower() {

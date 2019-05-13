@@ -18,8 +18,10 @@ class GraphicsManager
 private:
     ObjectManager* objectManager;           /// указатель на менедера по объектам
     sf::RenderWindow& window;
+    sf::View& view;
 public:
     sf::RenderWindow &getWindow() const;
+    sf::View &getView() const;
 
 public:
     /*!
@@ -28,7 +30,7 @@ public:
      * игровые объекты для прорисовки
      */
     GraphicsManager(ObjectManager *theObjectManager, block_t *blocks, unsigned int amount_of_blocks_y,
-                    unsigned int amount_of_blocks_x, sf::RenderWindow &the_window);
+                    unsigned int amount_of_blocks_x, sf::RenderWindow &the_window, sf::View &the_view);
 
 
     /*!
