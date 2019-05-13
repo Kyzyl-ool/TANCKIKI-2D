@@ -26,18 +26,11 @@ private:
     tgui::Gui& gui;
     gameState_t* state;
     NetworkManager& networkManager;
-public:
-    void setState(gameState_t gameState);
 
-private:
     std::string errString;
     ObjectManager* objectManager;
     std::string mapName;
-public:
-    void setObjectManager(ObjectManager *objectManager);
 
-private:
-    sf::Event event{};
     bool heathbarloaded = false;
     bool tanksnameloaded = false;
 
@@ -45,6 +38,9 @@ private:
     std::vector <tgui::Label::Ptr> nameTanks;
 
 public:
+    void setState(gameState_t gameState);
+    void setObjectManager(ObjectManager *objectManager);
+
     void setMapName(const std::string &the_mapName);
 
     InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager, gameState_t *the_state,

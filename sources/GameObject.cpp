@@ -39,9 +39,9 @@ float GameObject::getSizeY() const {
 
 
 void GameObject::setSizeSprite(float sizeX_, float sizeY_) {
-    GameObject::sprite.setScale(sizeX_/GameObject::sizeX, sizeY_/GameObject::sizeY);
-    GameObject::sizeX=sizeX_;
-    GameObject::sizeY=sizeY_;
+    sprite.setScale(sizeX_/sizeX, sizeY_/sizeY);
+    sizeX=sizeX_;
+    sizeY=sizeY_;
 }
 
 GameObject::~GameObject() {
@@ -239,4 +239,12 @@ float GameObject::getScale() {
 
 void GameObject::setScale(float sc) {
     scale = sc;
+}
+
+void GameObject::setX(float x) {
+    GameObject::x = x;
+}
+
+void GameObject::setY(float y) {
+    GameObject::y = y;
 }

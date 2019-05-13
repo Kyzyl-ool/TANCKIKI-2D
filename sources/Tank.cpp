@@ -114,6 +114,19 @@ void Tank::setHealth(float health_) {
     Tank::health=health_;
 }
 
+float Tank::getViewCoordX() {
+    if(x<WINDOW_WIDTH/2) return x;
+    if(x>MAP_WIDTH-WINDOW_WIDTH/2) return WINDOW_WIDTH - (MAP_WIDTH - x);
+    return WINDOW_WIDTH/2;
+}
+
+
+float Tank::getViewCoordY() {
+    if(y<WINDOW_HEIGHT/2) return y;
+    if(y>MAP_HEIGHT-WINDOW_HEIGHT/2) return WINDOW_HEIGHT - (MAP_HEIGHT - y);
+    return WINDOW_HEIGHT/2;
+}
+
 void Tank::update(float time) {
     setPosition(x+speed*cosf(getRotation()/180*M_PI)*time,y+speed*sinf(getRotation()/180*M_PI)*time);
     setRotation(getRotation()+speedAngle*time);
@@ -217,14 +230,14 @@ void Tank::setTextureTower(const char* address) {
     textureTower.loadFromImage(image);
 }
 
-int Tank::checkOrient(float X, float Y) {
+float Tank::checkOrient(float X, float Y) {
     float vx = (float)(WINDOW_WIDTH)/2;
     float vy = (float)(WINDOW_HEIGHT)/2;
     if(x < (float)(WINDOW_WIDTH)/2) vx = x;
     if(x > MAP_WIDTH - (float)(WINDOW_WIDTH)/2) vx = WINDOW_WIDTH - (MAP_WIDTH - x);
     if(y < (float)(WINDOW_HEIGHT)/2) vy = y;
     if(y > MAP_HEIGHT - (float)(WINDOW_HEIGHT)/2) vy = WINDOW_HEIGHT - (MAP_HEIGHT - y);
-    return lround((Y-vy)*cosf(spriteTower.getRotation()/180*M_PI) - (X-vx)*sinf(spriteTower.getRotation()/180*M_PI)+0.5);
+    return ((Y-vy)*cosf(spriteTower.getRotation()/180*M_PI) - (X-vx)*sinf(spriteTower.getRotation()/180*M_PI));
 }
 
 float Tank::getMaxHealth() const {
@@ -272,7 +285,40 @@ void Tank::updateRecharge(float time) {
 }
 
 
+float Tank::getTowerX() const {
+    return towerX;
+}
 
+float Tank::getTowerY() const {
+    return towerY;
+}
+
+void Tank::setTowerX(float towerX) {
+    Tank::towerX = towerX;
+}
+
+void Tank::setTowerY(float towerY) {
+    Tank::towerY = towerY;
+}
+
+void
+Tank::setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
+                       float itowerY, int iammunition, float iRotaton, float iTowerRotation) {
+    x = iX;
+    y = iY;
+    health = ihealth;
+    speedTower = itowerSpeed;
+    recharge = irecharge;
+    towerX = itowerX;
+    towerY = itowerY;
+    ammunition = iammunition;
+    setRotation(iRotaton);
+    spriteTower.setRotation(iTowerRotation);
+}
+
+float Tank::getTowerRotation() {
+    return spriteTower.getRotation();
+}
 
 
 

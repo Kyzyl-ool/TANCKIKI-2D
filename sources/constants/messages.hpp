@@ -6,7 +6,7 @@
 #include <map>
 
 typedef enum gameObject_messages{
-    GAMEOBJECT_MESSAGE_APPEAR = 0,
+//    GAMEOBJECT_MESSAGE_APPEAR = 0,
     GAMEOBJECT_MESSAGE_MOVE_RIGHT,
     GAMEOBJECT_MESSAGE_MOVE_LEFT,
     GAMEOBJECT_MESSAGE_MOVE_BRAKE,
@@ -14,7 +14,12 @@ typedef enum gameObject_messages{
     GAMEOBJECT_MESSAGE_NO_ACTION,
     GAMEOBJECT_MESSAGE_NO_ROTATION,
     GAMEOBJECT_MESSAGE_SHOOT,
-    GAMEOBJECT_MESSAGE_DESTROY
+    GAMEOBJECT_MESSAGE_DESTROY,
+    GAMEOBJECT_MESSAGE_ROTATE_TOWER,
+    GAMEOBJECT_MESSAGE_SYNC,
+    GAMEOBJECT_MESSAGE_ROTATE_TOWER_LEFT,
+    GAMEOBJECT_MESSAGE_ROTATE_TOWER_RIGHT,
+    GAMEOBJECT_MESSAGE_ROTATE_TOWER_STOP,
 }gameObject_message_t;
 
 std::map <std::string, gameObject_message_t> gameObjectMessageId = {
@@ -25,6 +30,11 @@ std::map <std::string, gameObject_message_t> gameObjectMessageId = {
         {"stop", GAMEOBJECT_MESSAGE_NO_ACTION},
         {"shoot", GAMEOBJECT_MESSAGE_SHOOT},
         {"destroy", GAMEOBJECT_MESSAGE_DESTROY},
-        {"appear", GAMEOBJECT_MESSAGE_APPEAR},
-        {"noRotation", GAMEOBJECT_MESSAGE_NO_ROTATION}
+//        {"appear", GAMEOBJECT_MESSAGE_APPEAR},
+        {"noRotation", GAMEOBJECT_MESSAGE_NO_ROTATION},
+        {"rotateTower", GAMEOBJECT_MESSAGE_ROTATE_TOWER},
+        {"sync", GAMEOBJECT_MESSAGE_SYNC},
+        {"rotateTowerLeft", GAMEOBJECT_MESSAGE_ROTATE_TOWER_LEFT},
+        {"rotateTowerRight", GAMEOBJECT_MESSAGE_ROTATE_TOWER_RIGHT},
+        {"rotateTowerStop", GAMEOBJECT_MESSAGE_ROTATE_TOWER_STOP},
 };

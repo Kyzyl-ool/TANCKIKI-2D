@@ -30,6 +30,7 @@ private:
     InterfaceManager* interfaceManager;
     EventManager* eventManager;
     NetworkManager& networkManager;
+    int gameId = -1;
 
     gameState_t state;
     sf::Event& event;
