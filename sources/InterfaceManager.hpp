@@ -33,9 +33,11 @@ private:
 
     bool heathbarloaded = false;
     bool tanksnameloaded = false;
+    bool ammuncount = false;
 
     std::vector <tgui::ProgressBar::Ptr> healthTanks;
     std::vector <tgui::Label::Ptr> nameTanks;
+    tgui::Label::Ptr ammun_count;
 
 public:
     void setState(gameState_t gameState);

@@ -6,6 +6,7 @@
 #include "InterfaceManager.hpp"
 #include "WidgetsMenu.hpp"
 #include "Tank.hpp"
+#include "Match.hpp"
 
 
 InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
@@ -132,6 +133,41 @@ void InterfaceManager::makeInterface() {
         case GAME_STATE_MULTIPLAYER_MATCH:
         case GAME_STATE_MATCH: {
             auto tanks = objectManager->getTanks(); //вектор танков
+
+            int id = 0;
+
+            if (ammuncount) {
+                auto s = std::to_string(tanks[id]->getAmmun());
+                try {
+                    ammun_count->setText(s);
+                    if(!tanks[id]->isAlive()) {
+                        ammun_count->setVisible(false);
+                    }
+                }
+                catch (const tgui::Exception& e) {
+                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                    assert(0);
+                }
+            }
+
+            else {
+                auto s = std::to_string(tanks[id]->getAmmun());
+                try {
+                    ammun_count = tgui::Label::create(s);
+                    ammun_count->getRenderer()->setTextColor(sf::Color::White);
+                    ammun_count->getRenderer()->setTextStyle(sf::Text::Bold);
+                    ammun_count->setTextSize(20);
+                    ammun_count->getRenderer()->setBackgroundColor(sf::Color::Black);
+                    ammun_count->setAutoSize(true);
+                    ammun_count->setPosition(50, WINDOW_HEIGHT - 100);
+                    gui.add(ammun_count);
+                }
+                catch (const tgui::Exception& e) {
+                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                    assert(0);
+                }
+                ammuncount = true;
+            }
 
             if (tanksnameloaded) {
 
