@@ -13,6 +13,7 @@
 Tank::Tank(float health, const std::string &the_player_name, const std::string &color)
         : GameObject::GameObject(), health(health), maxHealth(health) {
     Tank::type=TANK;
+    lastEnemy = -1;
     speedTower =0;
     playerName="ChickenKiller";
     setTexture("images/Htanks.png");
@@ -101,9 +102,6 @@ void Tank::setTextBoom(const char* address) {
     textBoom.loadFromImage(image);
 }
 
-void setSprBoom(int X, int Y, int sizeX, int sizeY) {
-
-}
 
 
 float Tank::getHealth() {

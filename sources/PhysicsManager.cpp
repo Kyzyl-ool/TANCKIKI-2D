@@ -17,7 +17,7 @@ PhysicsManager::PhysicsManager(ObjectManager *theObjectManager) {
 void PhysicsManager::updateGameObjects(Match *match, float time) {
     std::vector <int> kill(match->getKilled().size(),0);
     for (const auto &object1 : objectManager->getObjects()) {
-        if (object1->isAlive()) {
+        if (object1 != nullptr && object1->isAlive()) {
             object1->update(time);
 
             if(object1->getType() == TANK && (object1->getX() < MAP_WIDTH/(match->getAmountBlocksX())*(match->getDeathTLine()+2)
@@ -45,7 +45,7 @@ void PhysicsManager::updateGameObjects(Match *match, float time) {
             }
         }
         else {
-            if(object1->getType() == TANK)
+            if(object1 != nullptr && object1->getType() == TANK)
                 kill[((Tank*)object1)->getLastEnemy()] += 1;
         }
     }
