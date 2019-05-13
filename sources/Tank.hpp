@@ -72,6 +72,8 @@ public:
     void setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
                           float itowerY, int iammunition, float iRotaton, float iTowerRotation);
     float getTowerRotation();
+    float getViewCoordX();
+    float getViewCoordY();
 };
 
 

@@ -114,6 +114,19 @@ void Tank::setHealth(float health_) {
     Tank::health=health_;
 }
 
+float Tank::getViewCoordX() {
+    if(x<WINDOW_WIDTH/2) return x;
+    if(x>MAP_WIDTH-WINDOW_WIDTH/2) return WINDOW_WIDTH - (MAP_WIDTH - x);
+    return WINDOW_WIDTH/2;
+}
+
+
+float Tank::getViewCoordY() {
+    if(y<WINDOW_HEIGHT/2) return y;
+    if(y>MAP_HEIGHT-WINDOW_HEIGHT/2) return WINDOW_HEIGHT - (MAP_HEIGHT - y);
+    return WINDOW_HEIGHT/2;
+}
+
 void Tank::update(float time) {
     setPosition(x+speed*cosf(getRotation()/180*M_PI)*time,y+speed*sinf(getRotation()/180*M_PI)*time);
     setRotation(getRotation()+speedAngle*time);
