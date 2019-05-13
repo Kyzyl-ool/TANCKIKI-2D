@@ -179,6 +179,10 @@ void Tank::collideResponse(GameObject *obj, float time) {
     }
 }
 
+int Tank::getLastEnemy() {
+    return lastEnemy;
+}
+
 void Tank::collideResponse(Match *match, float time) {
     health = health-DAMAGE_OF_COLLISION*time;
     setRotation(getRotation()-speedAngle*time);

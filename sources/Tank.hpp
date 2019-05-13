@@ -40,7 +40,6 @@ protected:
     std::string playerName = "Unnamed";
     int ammunition;
     int count_ammun;
-    int killed;
     int lastEnemy;
 public:
     const std::string &getName() const;
@@ -53,7 +52,7 @@ public:
     void collideResponse(Match *match, float time) override;
 
     GameObject *shot() override;
-
+    int getLastEnemy();
     float getRecharge();
     float getHealth();
     float getSpeedTower();

@@ -30,6 +30,7 @@ const float TANK_VELOCITY = 0.12;
 const float TANK_ANGLE_SPEED = 0.09;
 const float DAMAGE_OF_COLLISION = 0.04;
 const float DAMAGE_OF_DEATHTIME = 2;
+const char MAP_FILE[] = "./sources/json/map2.txt";
 
 
 #endif //TANCHIKI_CONFIG_HPP

@@ -67,7 +67,7 @@ void GameManager::runGame() {
             case GAME_STATE_CREATE_MULTIPLAYER_MATCH: {
                 ///@todo прочитать players_info_json, map_json;
                 std::string line, players_info_json, map_json;
-                std::ifstream mapfile ("./sources/json/map2.txt");
+                std::ifstream mapfile (MAP_FILE);
                 std::ifstream playerInfofile ("./sources/json/players_info.txt");
                 if (mapfile.is_open()) {
                     while (getline(mapfile,line))  {
@@ -163,7 +163,7 @@ void GameManager::runGame() {
                 mainWindow.clear();
                 ///@todo прочитать players_info_json, map_json;
                 std::string line, players_info_json, map_json;
-                std::ifstream mapfile ("./sources/json/map2.txt");
+                std::ifstream mapfile (MAP_FILE);
                 std::ifstream playerInfofile ("./sources/json/players_info.txt");
                 if (mapfile.is_open())  {
                     while (getline(mapfile,line))  {
