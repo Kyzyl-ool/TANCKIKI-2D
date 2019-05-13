@@ -137,13 +137,13 @@ void InterfaceManager::makeInterface() {
 
                 for (auto i = 0; i < tanks.size(); i++) {
 
-                    auto x  = tanks[i]->getX();
-                    auto y  = tanks[i]->getY();
+                    auto x  = tanks[i]->getViewCoordX();
+                    auto y  = tanks[i]->getViewCoordY();
                     auto sx = tanks[i]->getSizeX();
                     auto sy = tanks[i]->getSizeY();
 
                     try {
-                        nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.8);
+                        nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.4);
 //                        nameTanks[i]->setSize(5 * sx, 5 * sy * 0.3); //it's large size
 
                         if(!tanks[i]->isAlive()) {
@@ -186,15 +186,15 @@ void InterfaceManager::makeInterface() {
 
                     auto h  = tanks[i]->getHealth();
                     auto mh = tanks[i]->getMaxHealth();
-                    auto x  = tanks[i]->getX();
-                    auto y  = tanks[i]->getY();
+                    auto x  = tanks[i]->getViewCoordX();
+                    auto y  = tanks[i]->getViewCoordY();
                     auto sx = tanks[i]->getSizeX();
                     auto sy = tanks[i]->getSizeY();
 
                     auto name = tanks[i]->getName();
 
                     try {
-                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy);
+                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy*1.6);
                         healthTanks[i]->setSize(sx, sy * 0.3);
                         healthTanks[i]->setValue((unsigned int) (100 * h / mh));
 //                        progressBar->setInheritedOpacity(0.5);
