@@ -16,7 +16,7 @@ view(the_view)
 {
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_MAIN_MENU;
-    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager);
+    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager, match);
     eventManager = new EventManager(mainWindow, event, 0, &state, gui, *interfaceManager);
 }
 
