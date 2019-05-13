@@ -15,11 +15,12 @@ const sf::RenderWindow &ObjectManager::getMainWindow() const {
     return mainWindow;
 }
 
-void ObjectManager::addGameObject(GameObject *obj) {
+unsigned long ObjectManager::addGameObject(GameObject *obj) {
     objects.push_back(obj);
     if (obj->getType() == TANK) {
         tanks.push_back((Tank* )obj);
     }
+    return tanks.size()-1;
 }
 
 void ObjectManager::removeGameObjectById(int gameObjectId) {
@@ -27,7 +28,6 @@ void ObjectManager::removeGameObjectById(int gameObjectId) {
 }
 
 GameObject* ObjectManager::getGameObjectById(int gameObjectId) {
-    ///@todo реализовать
     return objects[gameObjectId];
 }
 
@@ -43,4 +43,8 @@ ObjectManager::~ObjectManager() {
     for (const auto &item : objects) {
         delete(item);
     }
+}
+
+Tank *ObjectManager::getTankById(int tankId) {
+    return tanks[tankId];
 }

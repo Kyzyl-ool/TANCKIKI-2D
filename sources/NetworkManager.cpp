@@ -10,26 +10,26 @@
 using json = nlohmann::json;
 
 NetworkManager::NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort)
-        : serverIpAddress(serverIp), serverPort(defaultPort), isAuthorized(false) {
+        : serverIpAddress(serverIp), serverPort(defaultPort), isAuthorized(false), match(match) {
 //    std::cout << login_password.first << login_password.second << std::endl;
-
+    assert(udpSocket.bind(defaultPort) == sf::Socket::Done);
 }
 
-sf::Packet NetworkManager::receivePacketsFromServer() {
-    sf::Packet p;
-    udpSocket.receive(p, serverIpAddress, serverPort);
-    return p;
-}
-
-sf::Socket::Status NetworkManager::sendPacketToServer(sf::Packet packet) {
-    return udpSocket.send(packet, serverIpAddress, serverPort);
-}
-
-sf::Socket::Status NetworkManager::sendStringToServer(std::string string) {
-    sf::Packet p;
-    p << string;
-    return udpSocket.send(p, serverIpAddress, serverPort);
-}
+//sf::Packet NetworkManager::receivePacketsFromServer() {
+//    sf::Packet p;
+//    udpSocket.receive(p, serverIpAddress, serverPort);
+//    return p;
+//}
+//
+//sf::Socket::Status NetworkManager::sendPacketToServer(sf::Packet packet) {
+//    return udpSocket.send(packet, serverIpAddress, serverPort);
+//}
+//
+//sf::Socket::Status NetworkManager::sendStringToServer(std::string string) {
+//    sf::Packet p;
+//    p << string;
+//    return udpSocket.send(p, serverIpAddress, serverPort);
+//}
 
 json NetworkManager::jsonRPC(std::string method, json::array_t params) {
     sf::Http http("http://meowbook.ru");
@@ -75,18 +75,124 @@ bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_
     if (isAuthorized) {
         json r1 = jsonRPC("get_vk_id", {login_password.first});
 //        std::cout << r1["result"];
-        playerId = std::stoi( std::string( r1["result"]["vk_user_id"] ) );
+        playerId = std::string( r1["result"]["vk_user_id"] );
 
-        json r2 = jsonRPC("get_user_data_by_vk_id", {std::to_string(playerId)});
-        std::cout << "Authorization successful, " << r2["result"]["first_name"].get<std::string>() << " " << r2["result"]["last_name"].get<std::string>() << std::endl;
+        json r2 = jsonRPC("get_user_data_by_vk_id", {playerId});
+        std::cout << "Welcome, " << r2["result"]["first_name"].get<std::string>() << " " << r2["result"]["last_name"].get<std::string>() << std::endl;
+        setReady(false);
     } else {
         std::cout << "Incorrect login or password.\n";
     }
     return isAuthorized;
 }
 
-bool NetworkManager::isAuthorized1() const {
-    return isAuthorized;
+void NetworkManager::sendMessageToServer(const std::string& message) {
+    if (message.empty())
+        return;
+    sf::Packet packet;
+    packet << message;
+    udpSocket.send(packet, SERVER_IP, SERVER_PORT);
+}
+
+unsigned short NetworkManager::establishConnection() {
+    sf::Packet packet;
+    packet << "CONN";
+    udpSocket.send(packet, serverIpAddress, serverPort);
+    packet.clear();
+    std::cout << "Connecting to server...\n";
+    udpSocket.receive(packet, serverIpAddress, serverPort);
+    std::string response;
+    packet >> response;
+    json j;
+    j = json::parse(response);
+    if (j["status"] == "OK") {
+        std::cout << "OK.\n";
+        udpSocket.setBlocking(false);
+        match->setMyPlayerId(j["playerId"].get <unsigned short>());
+        std::cout << "Your player Id: " << match->getMyPlayerId() << std::endl;
+    } else {
+        assert(!"Not OK");
+    }
+}
+
+void NetworkManager::processPakcetsFromServer() {
+    sf::Packet p;
+    udpSocket.receive(p, serverIpAddress, serverPort);
+    std::string content;
+    p >> content;
+    if (!content.empty()) {
+//        std::cout << "Received from server: " << content << std::endl;
+        if (content == "REQUEST") {
+            std::string requestContent;
+            p >> requestContent;
+            if (requestContent == "PLAYERS_INFO") {
+                sf::Packet packet;
+                auto tankID = match->playerId_tankId[match->getMyPlayerId()];
+                auto tanks = match->getObjectManager()->getTanks();
+                packet << "RESPONSE" << "PLAYERS_INFO" << match->getMyPlayerId() << tanks[tankID]->getX() << tanks[tankID]->getY();
+                udpSocket.send(packet, SERVER_IP, SERVER_PORT);
+            }
+//            json j = json::parse(requestContent);
+//            std::cout << requestContent << std::endl;
+        } else {
+
+            match->processMessage(content, myPlayerId);
+        }
+    }
+}
+
+void NetworkManager::setMatch(Match *match) {
+    NetworkManager::match = match;
+}
+
+void NetworkManager::sendXYs(std::vector<Tank *> &tanks) {
+    for (int i = 0; i < tanks.size(); ++i) {
+        sf::Packet packet;
+        packet << "CHECK_XY";
+        packet << i;
+        packet << tanks[i]->getX();
+        packet << tanks[i]->getY();
+        udpSocket.send(packet, SERVER_IP, SERVER_PORT);
+    }
+}
+
+json NetworkManager::getGamesList() {
+    return jsonRPC("get_games_list", {token})["result"];
+}
+
+bool NetworkManager::connectToGame(int gameId) {
+//    std::cout << token << std::endl;
+//    std::cout << playerId << std::endl;
+//    std::cout << gameId << std::endl;
+    json j = jsonRPC("connect_to_game", {token, playerId, gameId});
+//    std::cout << j << std::endl;
+    return true;
+}
+
+json NetworkManager::getPlayersInGame(int gameId) {
+    return jsonRPC("get_players_in_game", {token, gameId});;
+}
+
+bool NetworkManager::setReady(bool value) {
+    json j = jsonRPC("set_ready", {token, playerId, value});
+//    std::cout << j << std::endl;
+    return true;
+}
+
+bool NetworkManager::areAllReady(int gameId) {
+    json j = jsonRPC("are_all_ready", {token, gameId});
+    return j["result"]["count"] == 0;
+}
+
+void NetworkManager::waitForOthers() {
+    auto tmp = udpSocket.isBlocking();
+
+    udpSocket.setBlocking(true);
+    udpSocket.setBlocking(tmp);
+}
+
+void NetworkManager::setMyPlayerId(int myPlayerId) {
+    NetworkManager::myPlayerId = myPlayerId;
 }
 
 NetworkManager::~NetworkManager() = default;

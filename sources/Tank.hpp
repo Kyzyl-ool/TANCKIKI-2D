@@ -18,6 +18,24 @@ protected:
     sf::Texture textBoom;
     sf::Sprite sprBoom;
     float recharge;
+    float towerX, towerY;
+    int owner = -1;
+public:
+    void setTowerY(float towerY);
+
+public:
+    void setTowerX(float towerX);
+
+public:
+    float getTowerY() const;
+
+public:
+    float getTowerX() const;
+
+public:
+    float getMaxHealth() const;
+
+protected:
     Bullet_t bulType;
     std::string playerName = "Unnamed";
     int ammunition;
@@ -26,7 +44,6 @@ protected:
     int lastEnemy;
 public:
     const std::string &getName() const;
-    float getMaxHealth() const;
     Tank(float health, const std::string &the_player_name, const std::string &color);
     void update(float time) override;
 
@@ -52,8 +69,11 @@ public:
     void setSpriteTower(int X, int Y, int sizeX_, int sizeY_);
     void setSpeedTower(float angleSpeed);
     void setHealth(float healthScore);
-    int checkOrient(float X, float Y);
+    float checkOrient(float X, float Y);
     void setTypeBullet(Bullet_t);
+    void setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
+                          float itowerY, int iammunition, float iRotaton, float iTowerRotation);
+    float getTowerRotation();
     float getViewCoordX();
     float getViewCoordY();
 };

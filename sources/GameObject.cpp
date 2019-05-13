@@ -240,3 +240,11 @@ float GameObject::getScale() {
 void GameObject::setScale(float sc) {
     scale = sc;
 }
+
+void GameObject::setX(float x) {
+    GameObject::x = x;
+}
+
+void GameObject::setY(float y) {
+    GameObject::y = y;
+}

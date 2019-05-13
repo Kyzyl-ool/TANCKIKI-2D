@@ -17,6 +17,14 @@ private:
     PhysicsManager* physicsManager;
     std::string mapName;
     int myPlayerId;
+public:
+    int getMyPlayerId() const;
+
+public:
+    void setMyPlayerId(int myPlayerId);
+
+private:
+
     unsigned int amount_of_blocks_x, amount_of_blocks_y;
     block_t* blocks;
     float deathTime;
@@ -28,7 +36,6 @@ private:
     unsigned int amount_of_players;
     std::vector<std::pair <int, int> > playersInitialCoord;
     std::vector <std::string> players_names;
-
 public:
     ObjectManager *getObjectManager() const;
     Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
@@ -37,7 +44,7 @@ public:
 
     void drawMatch();
     void updateMatch(float time);
-    void processMessage(std::string message);
+    void processMessage(const std::string &message, int iMyPlayerId);
     const std::string &getMapName() const;
     void drawMap(sf::RenderWindow &window);
 
@@ -56,6 +63,7 @@ public:
     float getMyPlayerX();
     float getMyPlayerY();
     void viewmap(float time);
+    std::map <unsigned short, unsigned long> playerId_tankId;
 };
 
 

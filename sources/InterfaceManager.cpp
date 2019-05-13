@@ -101,6 +101,8 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
         multiButton->connect("pressed", &InterfaceManager::signalHandler2, this);
         multiButton->connect("pressed", [&](){
             WidgetsMenu::change_ava(1);
+            editBoxUsername->setText("kyzyloolk");
+            editBoxPassword->setText("akTPLWGd");
         });
 
         quitButton->connect("pressed", &InterfaceManager::signalHandler3, this);
@@ -127,8 +129,8 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 
 void InterfaceManager::makeInterface() {
     switch (*state) {
+        case GAME_STATE_MULTIPLAYER_MATCH:
         case GAME_STATE_MATCH: {
-
             auto tanks = objectManager->getTanks(); //вектор танков
 
             if (tanksnameloaded) {
@@ -176,6 +178,7 @@ void InterfaceManager::makeInterface() {
                 }
                 tanksnameloaded = true;
             }
+
 
             if(heathbarloaded) {
 

@@ -111,6 +111,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
         tank->setPosition(playersInitialCoord[i].first, playersInitialCoord[i].second);
         tank->setObjectId(i);
         tank->setTypeBullet(MIDDLESHOT);
+        tank->setOwnerId(i);
         objectManager->addGameObject(tank);
     }
 
@@ -133,10 +134,6 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
         rep->setPosition((i % amount_of_blocks_x + 0.5)*MAP_WIDTH/amount_of_blocks_x, (i / amount_of_blocks_x + 0.5)*MAP_HEIGHT/amount_of_blocks_y);
         objectManager->addGameObject(rep);
     }
-
-    ///@todo передать все эти танки в objectManager, вызывая у него addGameObject
-
-    ///@todo узнать свой player_id (подумать, кто будет назначать player_id)
 }
 
 void Match::drawMatch() {
@@ -198,48 +195,94 @@ const std::string &Match::getMapName() const {
     return mapName;
 }
 
-void Match::processMessage(std::string message) {
-    ///@todo распарсить message
+void Match::processMessage(const std::string &message, int iMyPlayerId = -1) {
     assert(message.size());
     json j = json::parse(message.c_str());
 //    std::cout << j["status"] << std::endl;s
 //    std::cout << j["from"] << std::endl;
-//    std::cout << j["method"] << std::endl;
 //    std::cout << j["params"] << std::endl;
+    unsigned short from = j["from"];
+//    auto tankId = (gameObjectMessageId[j["method"]] != GAMEOBJECT_MESSAGE_APPEAR) ? playerId_tankId[from] : -1;
+    int tankId = from;
 
-
+    if (iMyPlayerId != tankId)
     switch (gameObjectMessageId[j["method"]]) {
         case GAMEOBJECT_MESSAGE_NO_ROTATION: {
-            objectManager->getGameObjectById(0)->stopRotate();
+                objectManager->getTankById(tankId)->stopRotate();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_BRAKE: {
-            objectManager->getGameObjectById(0)->brake();
+                objectManager->getTankById(tankId)->brake();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_LEFT: {
-            objectManager->getGameObjectById(0)->rotateLeft();
+                objectManager->getTankById(tankId)->rotateLeft();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_RIGHT: {
-            objectManager->getGameObjectById(0)->rotateRight();
+                objectManager->getTankById(tankId)->rotateRight();
             break;
         }
         case GAMEOBJECT_MESSAGE_MOVE_FORWARD: {
-            objectManager->getGameObjectById(0)->go();
+                objectManager->getTankById(tankId)->go();
             break;
         }
         case GAMEOBJECT_MESSAGE_NO_ACTION: {
-            objectManager->getGameObjectById(0)->stop();
+                objectManager->getTankById(tankId)->stop();
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
-            GameObject* bullet = objectManager->getGameObjectById(0)->shot();
+            GameObject* bullet = objectManager->getGameObjectById(tankId)->shot();
             if(bullet) objectManager->addGameObject(bullet);
             break;
         }
+        case GAMEOBJECT_MESSAGE_SYNC: {
+                std::vector<float> params = j["params"].get<std::vector<float> >();
+                objectManager->getTankById(tankId)->setConfiguration(
+                        params[0],
+                        params[1],
+                        params[2],
+                        params[3],
+                        params[4],
+                        params[5],
+                        params[6],
+                        (int) params[7],
+                        params[8], params[9]);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_ROTATE_TOWER: {
+            auto tmp = j["params"].get <std::vector <float> >();
+            objectManager->getTankById(tankId)->setTowerX(tmp[0]);
+            objectManager->getTankById(tankId)->setTowerY(tmp[1]);
+//            objectManager->getTankById(tankId)->setTow;
+
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_ROTATE_TOWER_LEFT: {
+//            if (myPlayerId != tankId)
+                objectManager->getTankById(tankId)->setSpeedTower(TANK_TOWER_SPEED);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_ROTATE_TOWER_RIGHT: {
+//            if (myPlayerId != tankId)
+                objectManager->getTankById(tankId)->setSpeedTower(-TANK_TOWER_SPEED);
+            break;
+        }
+        case GAMEOBJECT_MESSAGE_ROTATE_TOWER_STOP: {
+//            if (myPlayerId != tankId)
+                objectManager->getTankById(tankId)->setSpeedTower(0);
+            break;
+        }
+
+//        case GAMEOBJECT_MESSAGE_APPEAR: {
+//            auto params = j["params"].get <std::vector <unsigned short> >();
+//            auto iCoordinates = j["initialCoordinates"].get <std::vector <float> >();
+//            Tank *tank = new Tank(50, "ChickenKiller", "green1");
+//            tank->setPosition(iCoordinates[0]*WINDOW_WIDTH, iCoordinates[1]*WINDOW_HEIGHT);
+//            playerId_tankId[params[0]] = objectManager->addGameObject(tank);
+//            break;
+//        }
     }
-    ///@todo обработать message
 }
 
 void Match::drawMap(sf::RenderWindow &window) {
@@ -304,6 +347,14 @@ float Match::getMyPlayerX() {
 
 float Match::getMyPlayerY() {
     return objectManager->getObjects()[myPlayerId]->getY();
+}
+
+void Match::setMyPlayerId(int myPlayerId) {
+    Match::myPlayerId = myPlayerId;
+}
+
+int Match::getMyPlayerId() const {
+    return myPlayerId;
 }
 
 void Match::setPlayerCoordVorView() {

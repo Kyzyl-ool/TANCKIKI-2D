@@ -9,6 +9,10 @@
 #include <string>
 #include <SFML/Network.hpp>
 #include "json/json.hpp"
+#include "Match.hpp"
+
+#define SERVER_IP "95.163.180.31"
+#define SERVER_PORT 54000
 
 using json = nlohmann::json;
 
@@ -17,24 +21,45 @@ private:
     sf::IpAddress serverIpAddress;
     sf::UdpSocket udpSocket;
     unsigned short serverPort;
-    int playerId;
+    std::string playerId;
+    int myPlayerId = -1;
+public:
+    void setMyPlayerId(int myPlayerId);
+
 private:
     bool isAuthorized;
+    std::string token = "Hello world";
+    Match* match;
 public:
-    bool isAuthorized1() const;
+    void setMatch(Match *match);
+
 
 public:
+    bool isAuthorized1() const;
     explicit NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort);
     ~NetworkManager();
 
-    sf::Socket::Status sendPacketToServer(sf::Packet packet);
-    sf::Packet receivePacketsFromServer();
 
-    sf::Socket::Status sendStringToServer(std::string string);
 
-    json jsonRPC(std::string method, json::array_t params);
+    json    jsonRPC(std::string method, json::array_t params);
 
     bool authorize(const std::pair<std::string, std::string>& login_password);
+
+    json getGamesList();
+    json getPlayersInGame(int gameId);
+
+    bool connectToGame (int gameId);
+    bool disconnectFromGame(int gameId);
+    bool createGame(std::string name, int creator);
+    bool deleteGame(int gameId);
+    bool setReady(bool value);
+    bool areAllReady(int gameId);
+    unsigned short establishConnection();
+    void processPakcetsFromServer();
+    void sendMessageToServer(const std::string& message);
+
+    void sendXYs(std::vector<Tank *>& tanks);
+    void waitForOthers();
 };
 
 

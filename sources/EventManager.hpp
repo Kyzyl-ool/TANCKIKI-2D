@@ -17,7 +17,18 @@ private:
     tgui::Gui& gui;
     gameState_t* state;
     sf::Event& event;
-    int playerId;
+    int playerId = -1;
+    sf::Clock syncClock;
+    ObjectManager* objectManager;
+public:
+    ObjectManager *getObjectManager() const;
+
+    void setObjectManager(ObjectManager *iobjectManager);
+
+public:
+    void setPlayerId(int playerId);
+
+private:
     InterfaceManager& interfaceManager;
 
 public:
@@ -31,6 +42,8 @@ public:
     char getPressedArrows(sf::Keyboard::Key left, sf::Keyboard::Key down, sf::Keyboard::Key up,
                               sf::Keyboard::Key right);
     std::string goMessage(char direction);
+    std::string getSyncMessage();
+    std::string getMouseMessage();
 };
 
 
