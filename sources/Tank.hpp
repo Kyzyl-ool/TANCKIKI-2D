@@ -22,6 +22,8 @@ protected:
     std::string playerName = "Unnamed";
     int ammunition;
     int count_ammun;
+    int killed;
+    int lastEnemy;
 public:
     const std::string &getName() const;
     float getMaxHealth() const;
