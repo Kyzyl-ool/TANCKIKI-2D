@@ -6,6 +6,7 @@
 #include "InterfaceManager.hpp"
 #include "WidgetsMenu.hpp"
 #include "Tank.hpp"
+#include "Match.hpp"
 
 
 InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
@@ -131,6 +132,12 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 
 void InterfaceManager::makeInterface() {
     switch (*state) {
+        case GAME_STATE_CREATE_MATCH:
+        case GAME_STATE_CREATE_MULTIPLAYER_MATCH:
+        {
+            gui.removeAllWidgets();
+            break;
+        }
         case GAME_STATE_MATCH_CHOOSE: {
             renderMatches();
             break;
@@ -139,17 +146,51 @@ void InterfaceManager::makeInterface() {
         case GAME_STATE_MATCH: {
             auto tanks = objectManager->getTanks(); //вектор танков
 
-            if (tanksnameloaded) {
+            int id = match->getMyPlayerId();
 
+            if (ammuncount) {
+                auto s = std::to_string(tanks[id]->getAmmun());
+                try {
+                    ammun_count->setText("Bullets: " + s);
+                    if(!tanks[id]->isAlive()) {
+                        ammun_count->setVisible(false);
+                    }
+                }
+                catch (const tgui::Exception& e) {
+                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                    assert(0);
+                }
+            }
+
+            else {
+                auto s = std::to_string(tanks[id]->getAmmun());
+                try {
+                    ammun_count = tgui::Label::create("Bullets: " + s);
+                    ammun_count->getRenderer()->setTextColor(sf::Color::White);
+                    ammun_count->getRenderer()->setTextStyle(sf::Text::Bold);
+                    ammun_count->setTextSize(20);
+                    ammun_count->getRenderer()->setBackgroundColor(sf::Color::Black);
+                    ammun_count->setAutoSize(true);
+                    ammun_count->setPosition(50, WINDOW_HEIGHT - 100);
+                    gui.add(ammun_count);
+                }
+                catch (const tgui::Exception& e) {
+                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                    assert(0);
+                }
+                ammuncount = true;
+            }
+
+            if (tanksnameloaded) {
                 for (auto i = 0; i < tanks.size(); i++) {
 
-                    auto x  = tanks[i]->getX();
-                    auto y  = tanks[i]->getY();
+                    auto x  = tanks[i]->getViewCoordX();
+                    auto y  = tanks[i]->getViewCoordY();
                     auto sx = tanks[i]->getSizeX();
                     auto sy = tanks[i]->getSizeY();
 
                     try {
-                        nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.8);
+                        nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.4);
 //                        nameTanks[i]->setSize(5 * sx, 5 * sy * 0.3); //it's large size
 
                         if(!tanks[i]->isAlive()) {
@@ -192,15 +233,15 @@ void InterfaceManager::makeInterface() {
 
                     auto h  = tanks[i]->getHealth();
                     auto mh = tanks[i]->getMaxHealth();
-                    auto x  = tanks[i]->getX();
-                    auto y  = tanks[i]->getY();
+                    auto x  = tanks[i]->getViewCoordX();
+                    auto y  = tanks[i]->getViewCoordY();
                     auto sx = tanks[i]->getSizeX();
                     auto sy = tanks[i]->getSizeY();
 
                     auto name = tanks[i]->getName();
 
                     try {
-                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy);
+                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy*1.6);
                         healthTanks[i]->setSize(sx, sy * 0.3);
                         healthTanks[i]->setValue((unsigned int) (100 * h / mh));
 //                        progressBar->setInheritedOpacity(0.5);
@@ -293,11 +334,9 @@ void InterfaceManager::setMatches(const std::vector<json> &matches) {
 void InterfaceManager::renderMatches() {
     if (matchesLoaded) {
 
-    }
-    else {
+    } else {
         gui.removeAllWidgets();
-        try
-        {
+        try {
 //            static auto picture = tgui::Picture::create({"images/forest.svg", {0, 0, 1000, 700}}); //Failed to create texture, invalid size (0x0)
 //            picture->setSize({"100%", "100%"});
 //            gui.add(picture);
@@ -326,10 +365,9 @@ void InterfaceManager::renderMatches() {
             listBox->setPosition(10, 340);
 
 
-
             for (int i = 0; i < matches.size(); ++i) {
 //                std::cout << matches[i] << std::endl;
-                listBox->addItem(matches[i]["name"].get <std::string>());
+                listBox->addItem(matches[i]["name"].get<std::string>());
 
             }
             ///@todo add items
@@ -341,10 +379,26 @@ void InterfaceManager::renderMatches() {
 
             matchesLoaded = true;
         }
-        catch (const tgui::Exception& e)
-        {
+        catch (const tgui::Exception &e) {
             std::cerr << "TGUI Exception: " << e.what() << std::endl;
         }
     }
+}
+
+void InterfaceManager::ShowMatchesDialog(json j) {
+    json tmp;
+    tmp["amount_of_players_in_match"] = {1, 0, 4}; // кол-во игроков в матче
+    tmp["names"] = {"Join us", "Test match", "Hello everyone"}; // название матча
+    tmp["who"] = {"Kezhik", "Maxim", "Artem"}; // кто создал матч
+    tmp["id"] = {67, 33, 108};
+
+    std::vector <int> amount_of_players_in_match = tmp["amount_of_players_in_match"].get < std::vector <int> >();
+    std::vector <std::string> names = tmp["names"].get <std::vector <std::string> >();
+    std::vector <std::string> who = tmp["who"].get <std::vector <std::string> >();
+    std::vector <int> id = tmp["id"].get < std::vector <int> >();
+}
+
+void InterfaceManager::setMatch(Match *match) {
+    InterfaceManager::match = match;
 }
 
