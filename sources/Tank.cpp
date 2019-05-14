@@ -244,7 +244,6 @@ float Tank::checkOrient(float X, float Y, sf::RenderWindow *window) {
     if(x>MAP_WIDTH-WINDOW_WIDTH/2) vx = WINDOW_WIDTH - (MAP_WIDTH-x);
     if(y<WINDOW_HEIGHT/2) vy = y;
     if(y>MAP_HEIGHT-WINDOW_HEIGHT/2) vy = WINDOW_HEIGHT - (MAP_HEIGHT-y);
-    std::cout << vx << " " << vy << "\n";
     float phi = spriteTower.getRotation()/180*M_PI;
     float deltaPhi = asinf(((Y-vy)*cosf(phi) - (X-vx)*sinf(phi))/sqrtf((Y-vy)*(Y-vy)+(X-vx)*(X-vx)));
     return deltaPhi;
