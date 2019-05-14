@@ -10,14 +10,15 @@
 
 InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
                                    gameState_t *the_state, tgui::Gui &the_gui, NetworkManager &the_networkmanager,
-                                   Match *iMatch) :
+                                   Match *iMatch, std::vector<json> &iMatches) :
 
         mainWindow(the_mainWindow),
         objectManager(the_objectManager),
         state(the_state),
         gui(the_gui),
         networkManager(the_networkmanager),
-        match(iMatch)
+        match(iMatch),
+        matches(iMatches)
 {
     try {
         static auto picture = tgui::Picture::create({"images/forest.svg", {0, 0, 1000, 700}}); //Failed to create texture, invalid size (0x0)
@@ -130,6 +131,10 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 
 void InterfaceManager::makeInterface() {
     switch (*state) {
+        case GAME_STATE_MATCH_CHOOSE: {
+            renderMatches();
+            break;
+        }
         case GAME_STATE_MULTIPLAYER_MATCH:
         case GAME_STATE_MATCH: {
             auto tanks = objectManager->getTanks(); //вектор танков
@@ -277,6 +282,68 @@ void InterfaceManager::cancelShow() {
     for (auto i = 0; i < nameTanks.size(); i++) {
         if(tanks[i]->isAlive()) {
             nameTanks[i]->setVisible(false);
+        }
+    }
+}
+
+void InterfaceManager::setMatches(const std::vector<json> &matches) {
+    InterfaceManager::matches = matches;
+}
+
+void InterfaceManager::renderMatches() {
+    if (matchesLoaded) {
+
+    }
+    else {
+        gui.removeAllWidgets();
+        try
+        {
+//            static auto picture = tgui::Picture::create({"images/forest.svg", {0, 0, 1000, 700}}); //Failed to create texture, invalid size (0x0)
+//            picture->setSize({"100%", "100%"});
+//            gui.add(picture);
+
+            tgui::Theme theme{"./sources/themes/Black.txt"};
+
+            auto label = tgui::Label::create();
+            label->setRenderer(theme.getRenderer("Label"));
+            label->setText("Matches list:");
+            label->setPosition(10, 90);
+            label->setTextSize(18);
+            gui.add(label);
+
+
+            label = tgui::Label::create();
+            label->setRenderer(theme.getRenderer("Label"));
+            label->setText("Choose a match from the list");
+            label->setPosition(10, 240);
+            label->setTextSize(18);
+            gui.add(label);
+
+            auto listBox = tgui::ListBox::create();
+            listBox->setRenderer(theme.getRenderer("ListBox"));
+            listBox->setSize(250, 120);
+            listBox->setItemHeight(24);
+            listBox->setPosition(10, 340);
+
+
+
+            for (int i = 0; i < matches.size(); ++i) {
+//                std::cout << matches[i] << std::endl;
+                listBox->addItem(matches[i]["name"].get <std::string>());
+
+            }
+            ///@todo add items
+
+//            listBox->addItem("Item 2");
+//            listBox->addItem("Item 3");
+            gui.add(listBox);
+
+
+            matchesLoaded = true;
+        }
+        catch (const tgui::Exception& e)
+        {
+            std::cerr << "TGUI Exception: " << e.what() << std::endl;
         }
     }
 }

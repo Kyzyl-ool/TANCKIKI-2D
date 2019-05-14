@@ -31,9 +31,14 @@ private:
 
     bool heathbarloaded = false;
     bool tanksnameloaded = false;
+    bool matchesLoaded = false;
 
     std::vector <tgui::ProgressBar::Ptr> healthTanks;
     std::vector <tgui::Label::Ptr> nameTanks;
+
+    std::vector <json>& matches;
+public:
+    void setMatches(const std::vector<json> &matches);
 
 public:
     void setState(gameState_t gameState);
@@ -43,7 +48,7 @@ public:
 
     InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
                      gameState_t *the_state, tgui::Gui &the_gui, NetworkManager &the_networkmanager,
-                     Match *iMatch);
+                     Match *iMatch, std::vector<json> &iMatches);
 
     void makeInterface();
 
@@ -60,6 +65,9 @@ public:
     void cancelShow();
 
     static std::pair<std::string, std::string> login();
+
+    void renderMatches();
+
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP

@@ -16,7 +16,8 @@ view(the_view)
 {
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_MAIN_MENU;
-    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager, match);
+    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager, match,
+                                            matches);
     eventManager = new EventManager(mainWindow, event, 0, &state, gui, *interfaceManager);
 }
 
@@ -24,7 +25,7 @@ void GameManager::runGame() {
     mainWindow.setKeyRepeatEnabled(false);
     while (mainWindow.isOpen()) {
 
-        if (state != GAME_STATE_MATCH_CHOOSE && state != GAME_STATE_MULTIPLAYER_MATCH) interfaceManager->makeInterface();
+        if (state != GAME_STATE_MULTIPLAYER_MATCH) interfaceManager->makeInterface();
         if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
         mainWindow.display();
 
@@ -125,36 +126,36 @@ void GameManager::runGame() {
             }
             case GAME_STATE_MATCH_CHOOSE: {
                 mainWindow.clear();
-                json j = networkManager.getGamesList();
-                if (j.empty()) {
-                    std::cout << "There are no games in server. Do you want to create your own game? [y/n]: ";
-                    char c;
-                    std::cin >> c;
-                    if (c == 'y') {
-
-                    } else {
-                        state = GAME_STATE_MAIN_MENU;
-                    }
-                } else {
-                    int k = 0;
-                    json game = json(j[std::to_string(k)]);
-                    do {
-                        std::cout << "-------------------------------" << std::endl;
-                        std::cout << "Game creator: " << game["creator"] << std::endl;
-                        std::cout << "Id: " << game["game_id"] << std::endl;
-                        std::cout << "Name: " << game["name"] << std::endl;
-                        std::cout << "-------------------------------" << std::endl;
-                        k++;
-                        game = json(j[std::to_string(k)]);
-                    }
-                    while (!game.is_null());
-
-//                    std::cout << j << std::endl;
-                    std::cout << "Enter game id: ";
-                    std::cin >> gameId;
-                    networkManager.connectToGame(gameId);
-                    state = GAME_STATE_WAIT_FOR_OTHER_PLAYERS;
-                }
+//                json j = networkManager.getGamesList();
+//                if (j.empty()) {
+//                    std::cout << "There are no games in server. Do you want to create your own game? [y/n]: ";
+//                    char c;
+//                    std::cin >> c;
+//                    if (c == 'y') {
+//
+//                    } else {
+//                        state = GAME_STATE_MAIN_MENU;
+//                    }
+//                } else {
+//                    int k = 0;
+//                    json game = json(j[std::to_string(k)]);
+//                    do {
+//                        std::cout << "-------------------------------" << std::endl;
+//                        std::cout << "Game creator: " << game["creator"] << std::endl;
+//                        std::cout << "Id: " << game["game_id"] << std::endl;
+//                        std::cout << "Name: " << game["name"] << std::endl;
+//                        std::cout << "-------------------------------" << std::endl;
+//                        k++;
+//                        game = json(j[std::to_string(k)]);
+//                    }
+//                    while (!game.is_null());
+//
+////                    std::cout << j << std::endl;
+//                    std::cout << "Enter game id: ";
+//                    std::cin >> gameId;
+//                    networkManager.connectToGame(gameId);
+//                    state = GAME_STATE_WAIT_FOR_OTHER_PLAYERS;
+//                }
                 break;
             }
             case GAME_STATE_CREATE_MATCH: {
@@ -238,8 +239,43 @@ void GameManager::handleEvent() {
                             std::pair<std::string, std::string> loginPass = InterfaceManager::login();
                             if (!loginPass.first.empty()) {
                                 state = GAME_STATE_MAIN_MENU;
-                                if (networkManager.authorize(loginPass))
+                                if (networkManager.authorize(loginPass)) {
+                                    ///@todo get matches list
+                                    json j = networkManager.getGamesList();
+                                    if (j.empty()) {
+                                        std::cout << "NO GAMES" << std::endl;
+//                                        std::cout << "There are no games in server. Do you want to create your own game? [y/n]: ";
+//                                        char c;
+//                                        std::cin >> c;
+//                                        if (c == 'y') {
+//
+//                                        } else {
+//                                            state = GAME_STATE_MAIN_MENU;
+//                                        }
+                                    } else {
+                                        int k = 0;
+                                        json game = json(j[std::to_string(k)]);
+                                        do {
+//                                            std::cout << "-------------------------------" << std::endl;
+//                                            std::cout << "Game creator: " << game["creator"] << std::endl;
+//                                            std::cout << "Id: " << game["game_id"] << std::endl;
+//                                            std::cout << "Name: " << game["name"] << std::endl;
+//                                            std::cout << "-------------------------------" << std::endl;
+                                            matches.push_back(game);
+                                            k++;
+                                            game = json(j[std::to_string(k)]);
+
+                                        }
+                                        while (!game.is_null());
+
+//                                        std::cout << "Enter game id: ";
+//                                        std::cin >> gameId;
+//                                        networkManager.connectToGame(gameId);
+//                                        state = GAME_STATE_WAIT_FOR_OTHER_PLAYERS;
+                                    }
+                                    interfaceManager->setMatches(matches);
                                     state = GAME_STATE_MATCH_CHOOSE;
+                                }
                             }
                         }
                         break;
