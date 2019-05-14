@@ -91,6 +91,8 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
 
     amount_of_players = players_info_j["amount_of_players"];
     players_names = players_info_j["players_names"].get< std::vector <std::string> >();
+    std::vector<int> vect (players_names.size(), 0);
+    killed = vect;
     ///@todo заполнить players_names
     srand(time(NULL));
     ///@todo решить, с какими начальными координатами ставить игроков на карту
@@ -98,8 +100,8 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     std::vector<int> playersInitialCoordin = players_info_j["playersInitialCoord"].get< std::vector <int> >();
     for(int i = 0; i < amount_of_players; ++i) {
         std::pair <int, int> p;
-        p.first = playersInitialCoordin[2*i];
-        p.second = playersInitialCoordin[2*i+1];
+        p.first = (MAP_WIDTH/amount_of_blocks_x)*playersInitialCoordin[2*i];
+        p.second = (MAP_HEIGHT/amount_of_blocks_y)*playersInitialCoordin[2*i+1];
         playersInitialCoord.push_back(p);
     }
     ///@todo заполнить playersInitialCoordinates
@@ -135,6 +137,15 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
         objectManager->addGameObject(rep);
     }
 }
+
+std::vector <int> Match::getKilled() {
+    return  killed;
+}
+
+void Match::setKilled(std::vector <int> killed_) {
+    killed = killed_;
+}
+
 
 void Match::drawMatch() {
     drawMap(graphicsManager->getWindow());
@@ -197,6 +208,7 @@ const std::string &Match::getMapName() const {
 
 void Match::processMessage(const std::string &message, int iMyPlayerId = -1) {
     assert(message.size());
+//    std::cout << message << std::endl;
     json j = json::parse(message.c_str());
 //    std::cout << j["status"] << std::endl;s
 //    std::cout << j["from"] << std::endl;
