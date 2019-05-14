@@ -7,6 +7,7 @@
 
 #include "GameObject.hpp"
 #include "Bullet.hpp"
+//#include "Match.hpp"
 
 class Tank : public GameObject {
 protected:
@@ -73,8 +74,8 @@ public:
     void setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
                           float itowerY, int iammunition, float iRotaton, float iTowerRotation);
     float getTowerRotation();
-    float getViewCoordX();
-    float getViewCoordY();
+    float getViewCoordX(Match match);
+    float getViewCoordY(Match match);
 };
 
 

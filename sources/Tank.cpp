@@ -112,16 +112,15 @@ void Tank::setHealth(float health_) {
     Tank::health=health_;
 }
 
-float Tank::getViewCoordX() {
+float Tank::getViewCoordX(Match match) {
+
     if(x<WINDOW_WIDTH/2) return x;
     if(x>MAP_WIDTH-WINDOW_WIDTH/2) return WINDOW_WIDTH - (MAP_WIDTH - x);
     return WINDOW_WIDTH/2;
 }
 
 
-float Tank::getViewCoordY() {
-    if(y<WINDOW_HEIGHT/2) return y;
-    if(y>MAP_HEIGHT-WINDOW_HEIGHT/2) return WINDOW_HEIGHT - (MAP_HEIGHT - y);
+float Tank::getViewCoordY(Match match) {
     return WINDOW_HEIGHT/2;
 }
 
@@ -237,8 +236,12 @@ void Tank::setTextureTower(const char* address) {
 }
 
 float Tank::checkOrient(float X, float Y) {
-    float vx = getViewCoordX();
-    float vy = getViewCoordY();
+    float vx = WINDOW_WIDTH/2;
+    float vy = WINDOW_HEIGHT/2;
+    if(x<WINDOW_WIDTH/2) vx = x;
+    if(x>MAP_WIDTH-WINDOW_WIDTH/2) vx = WINDOW_WIDTH/2 + (MAP_WIDTH-x);
+    if(y<WINDOW_WIDTH/2) vy = y;
+    if(y>MAP_HEIGHT-WINDOW_HEIGHT/2) vy = WINDOW_HEIGHT/2 + (MAP_HEIGHT-y);
     float phi = spriteTower.getRotation()/180*M_PI;
     float deltaPhi = asinf(((Y-vy)*cosf(phi) - (X-vx)*sinf(phi))/sqrtf((Y-vy)*(Y-vy)+(X-vx)*(X-vx)));
     return deltaPhi;

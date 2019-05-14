@@ -174,8 +174,8 @@ void InterfaceManager::makeInterface() {
 
                 for (auto i = 0; i < tanks.size(); i++) {
 
-                    auto x  = tanks[i]->getViewCoordX();
-                    auto y  = tanks[i]->getViewCoordY();
+                    auto x  = tanks[i]->getViewCoordX(match);
+                    auto y  = tanks[i]->getViewCoordY(match);
                     auto sx = tanks[i]->getSizeX();
                     auto sy = tanks[i]->getSizeY();
 
