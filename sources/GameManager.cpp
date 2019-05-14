@@ -88,6 +88,7 @@ void GameManager::runGame() {
                 networkManager.establishConnection();
                 eventManager->setPlayerId(match->getMyPlayerId());
                 eventManager->setObjectManager(match->getObjectManager());
+                eventManager->setMatch(match);
                 networkManager.setMyPlayerId(match->getMyPlayerId());
                 state = GAME_STATE_MULTIPLAYER_MATCH;
                 break;
@@ -182,6 +183,7 @@ void GameManager::runGame() {
                 interfaceManager->setMatch(match);
                 eventManager->setObjectManager(match->getObjectManager());
                 eventManager->setPlayerId(match->getMyPlayerId());
+                eventManager->setMatch(match);
                 state = GAME_STATE_MATCH;
                 break;
             }

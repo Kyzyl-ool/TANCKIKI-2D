@@ -96,6 +96,11 @@ std::string EventManager::returnMessageFromMatchActions() {
 //                    return goMessage(0b0010);
 
                 switch (event.key.code) {
+                    case sf::Keyboard::O: {
+                        std::cout << playerViewId % 10 << std::endl;
+                        match->setPlayerView(playerViewId++ % 10);
+                        break;
+                    }
                     case sf::Keyboard::Space: {
                         json json_message;
                         json_message["status"] = "OK";
@@ -317,4 +322,8 @@ std::string EventManager::getMouseMessage() {
             return std::string();
     }
     return std::string();
+}
+
+void EventManager::setMatch(Match *match) {
+    EventManager::match = match;
 }

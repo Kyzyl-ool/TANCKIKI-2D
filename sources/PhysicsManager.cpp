@@ -46,7 +46,8 @@ void PhysicsManager::updateGameObjects(Match *match, float time) {
         }
         else {
             if(object1 != nullptr && object1->getType() == TANK)
-                kill[((Tank*)object1)->getLastEnemy()] += 1;
+                if (((Tank*)object1)->getLastEnemy() != -1)
+                    kill[((Tank*)object1)->getLastEnemy()] += 1;
         }
     }
     match->setKilled(kill);
