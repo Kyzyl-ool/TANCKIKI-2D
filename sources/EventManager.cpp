@@ -280,7 +280,7 @@ std::string EventManager::getMouseMessage() {
 
 //    std::cout << sinus << std::endl;
 
-    if (sinus < 10 && sinus > -10) {
+    if (sinus < 0.03 && sinus > -0.03) {
         if (myTank->getSpeedTower() != 0) {
             json json_message;
             json_message["status"] = "OK";

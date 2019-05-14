@@ -237,13 +237,11 @@ void Tank::setTextureTower(const char* address) {
 }
 
 float Tank::checkOrient(float X, float Y) {
-    float vx = (float)(WINDOW_WIDTH)/2;
-    float vy = (float)(WINDOW_HEIGHT)/2;
-    if(x < (float)(WINDOW_WIDTH)/2) vx = x;
-    if(x > MAP_WIDTH - (float)(WINDOW_WIDTH)/2) vx = WINDOW_WIDTH - (MAP_WIDTH - x);
-    if(y < (float)(WINDOW_HEIGHT)/2) vy = y;
-    if(y > MAP_HEIGHT - (float)(WINDOW_HEIGHT)/2) vy = WINDOW_HEIGHT - (MAP_HEIGHT - y);
-    return ((Y-vy)*cosf(spriteTower.getRotation()/180*M_PI) - (X-vx)*sinf(spriteTower.getRotation()/180*M_PI));
+    float vx = getViewCoordX();
+    float vy = getViewCoordY();
+    float phi = spriteTower.getRotation()/180*M_PI;
+    float deltaPhi = asinf(((Y-vy)*cosf(phi) - (X-vx)*sinf(phi))/sqrtf((Y-vy)*(Y-vy)+(X-vx)*(X-vx)));
+    return deltaPhi;
 }
 
 float Tank::getMaxHealth() const {
