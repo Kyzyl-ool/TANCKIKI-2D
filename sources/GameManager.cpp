@@ -25,7 +25,7 @@ void GameManager::runGame() {
     mainWindow.setKeyRepeatEnabled(false);
     while (mainWindow.isOpen()) {
 
-        if (state != GAME_STATE_MULTIPLAYER_MATCH) interfaceManager->makeInterface();
+        interfaceManager->makeInterface();
         if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
         mainWindow.display();
 

@@ -132,6 +132,12 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 
 void InterfaceManager::makeInterface() {
     switch (*state) {
+        case GAME_STATE_CREATE_MATCH:
+        case GAME_STATE_CREATE_MULTIPLAYER_MATCH:
+        {
+            gui.removeAllWidgets();
+            break;
+        }
         case GAME_STATE_MATCH_CHOOSE: {
             renderMatches();
             break;
@@ -176,7 +182,6 @@ void InterfaceManager::makeInterface() {
             }
 
             if (tanksnameloaded) {
-
                 for (auto i = 0; i < tanks.size(); i++) {
 
                     auto x  = tanks[i]->getViewCoordX();
@@ -329,11 +334,9 @@ void InterfaceManager::setMatches(const std::vector<json> &matches) {
 void InterfaceManager::renderMatches() {
     if (matchesLoaded) {
 
-    }
-    else {
+    } else {
         gui.removeAllWidgets();
-        try
-        {
+        try {
 //            static auto picture = tgui::Picture::create({"images/forest.svg", {0, 0, 1000, 700}}); //Failed to create texture, invalid size (0x0)
 //            picture->setSize({"100%", "100%"});
 //            gui.add(picture);
@@ -362,10 +365,9 @@ void InterfaceManager::renderMatches() {
             listBox->setPosition(10, 340);
 
 
-
             for (int i = 0; i < matches.size(); ++i) {
 //                std::cout << matches[i] << std::endl;
-                listBox->addItem(matches[i]["name"].get <std::string>());
+                listBox->addItem(matches[i]["name"].get<std::string>());
 
             }
             ///@todo add items
@@ -377,11 +379,12 @@ void InterfaceManager::renderMatches() {
 
             matchesLoaded = true;
         }
-        catch (const tgui::Exception& e)
-        {
+        catch (const tgui::Exception &e) {
             std::cerr << "TGUI Exception: " << e.what() << std::endl;
         }
     }
+}
+
 void InterfaceManager::ShowMatchesDialog(json j) {
     json tmp;
     tmp["amount_of_players_in_match"] = {1, 0, 4}; // кол-во игроков в матче
