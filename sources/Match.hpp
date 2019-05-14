@@ -36,6 +36,8 @@ private:
     unsigned int amount_of_players;
     std::vector<std::pair <int, int> > playersInitialCoord;
     std::vector <std::string> players_names;
+    std::vector <int> killed;
+
 public:
     ObjectManager *getObjectManager() const;
     Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
@@ -49,6 +51,8 @@ public:
     void drawMap(sf::RenderWindow &window);
 
     block_t * getBlocks();
+    std::vector <int> getKilled();
+    void setKilled(std::vector <int> killed_);
 
     unsigned int getAmountBlocksX();
     unsigned int getAmountBlocksY();

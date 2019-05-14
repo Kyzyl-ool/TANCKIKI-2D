@@ -15,6 +15,7 @@ PhysicsManager::PhysicsManager(ObjectManager *theObjectManager) {
 }
 
 void PhysicsManager::updateGameObjects(Match *match, float time) {
+    std::vector <int> kill(match->getKilled().size(),0);
     for (const auto &object1 : objectManager->getObjects()) {
         if (object1 != nullptr && object1->isAlive()) {
             object1->update(time);
@@ -43,6 +44,11 @@ void PhysicsManager::updateGameObjects(Match *match, float time) {
                 object1->collideResponse(match, time);
             }
         }
+        else {
+            if(object1 != nullptr && object1->getType() == TANK)
+                kill[((Tank*)object1)->getLastEnemy()] += 1;
+        }
     }
+    match->setKilled(kill);
 }
 

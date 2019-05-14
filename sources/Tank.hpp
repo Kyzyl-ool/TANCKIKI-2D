@@ -40,6 +40,7 @@ protected:
     std::string playerName = "Unnamed";
     int ammunition;
     int count_ammun;
+    int lastEnemy;
 public:
     const std::string &getName() const;
     Tank(float health, const std::string &the_player_name, const std::string &color);
@@ -51,7 +52,7 @@ public:
     void collideResponse(Match *match, float time) override;
 
     GameObject *shot() override;
-
+    int getLastEnemy();
     float getRecharge();
     float getHealth();
     float getSpeedTower();
