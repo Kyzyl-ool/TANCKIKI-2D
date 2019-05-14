@@ -40,6 +40,9 @@ private:
 
 public:
     ObjectManager *getObjectManager() const;
+
+    GraphicsManager *getGraphicsManager() const;
+
     Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
           int iMyPlayerId);
     ~Match();

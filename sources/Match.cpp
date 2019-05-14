@@ -152,6 +152,10 @@ void Match::drawMatch() {
     graphicsManager->drawGameObjects();
 }
 
+GraphicsManager* Match::getGraphicsManager() const {
+    return graphicsManager;
+}
+
 void Match::updateMatch(float time) {
     setDeathTime(deathTime+time);
     if(deathTime > DEATH_TIME) {

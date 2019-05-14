@@ -45,7 +45,7 @@ void GameManager::runGame() {
 
                 Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
                 auto tmp1 = sf::Mouse::getPosition(mainWindow);
-                float sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+                float sinus = tmp->checkOrient(tmp1.x, tmp1.y, &mainWindow);
                 if(sinus>0)
                     tmp->setSpeedTower(TANK_TOWER_SPEED);
                 else
@@ -194,7 +194,7 @@ void GameManager::runGame() {
 
                 Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
                 auto tmp1 = sf::Mouse::getPosition(mainWindow);
-                float sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+                float sinus = tmp->checkOrient(tmp1.x, tmp1.y, &mainWindow);
                 if(sinus>0)
                     tmp->setSpeedTower(TANK_TOWER_SPEED);
                 else

@@ -275,7 +275,7 @@ std::string EventManager::getMouseMessage() {
 
     Tank* myTank = objectManager->getTankById(playerId);
     auto tmp = sf::Mouse::getPosition(mainWindow);
-    float sinus = myTank->checkOrient(tmp.x, tmp.y);
+    float sinus = myTank->checkOrient(tmp.x, tmp.y, &mainWindow);
 
 //    std::cout << sinus << std::endl;
 
