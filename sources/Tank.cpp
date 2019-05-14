@@ -13,6 +13,7 @@
 Tank::Tank(float health, const std::string &the_player_name, const std::string &color)
         : GameObject::GameObject(), health(health), maxHealth(health) {
     Tank::type=TANK;
+    lastEnemy = -1;
     speedTower =0;
     playerName="ChickenKiller";
     setTexture("images/Htanks.png");
@@ -101,9 +102,6 @@ void Tank::setTextBoom(const char* address) {
     textBoom.loadFromImage(image);
 }
 
-void setSprBoom(int X, int Y, int sizeX, int sizeY) {
-
-}
 
 
 float Tank::getHealth() {
@@ -172,7 +170,15 @@ void Tank::collideResponse(GameObject *obj, float time) {
     }
     if(obj->getType()==BULLET && obj->getOwnerId() != gameObjectId) {
         health = health - ((Bullet*)obj)->getPower();
+        lastEnemy = obj->getOwnerId();
+        if(health <= 0) {
+            setAlive(false);
+        }
     }
+}
+
+int Tank::getLastEnemy() {
+    return lastEnemy;
 }
 
 void Tank::collideResponse(Match *match, float time) {
