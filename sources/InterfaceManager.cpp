@@ -10,14 +10,15 @@
 
 
 InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
-                                   gameState_t *the_state,
-                                   tgui::Gui &the_gui, NetworkManager &the_networkmanager) :
+                                   gameState_t *the_state, tgui::Gui &the_gui, NetworkManager &the_networkmanager,
+                                   Match *iMatch) :
 
         mainWindow(the_mainWindow),
         objectManager(the_objectManager),
         state(the_state),
         gui(the_gui),
-        networkManager(the_networkmanager)
+        networkManager(the_networkmanager),
+        match(iMatch)
 {
     try {
         static auto picture = tgui::Picture::create({"images/forest.svg", {0, 0, 1000, 700}}); //Failed to create texture, invalid size (0x0)

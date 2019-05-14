@@ -26,6 +26,7 @@ private:
     tgui::Gui& gui;
     gameState_t* state;
     NetworkManager& networkManager;
+    Match* match;
 
     std::string errString;
     ObjectManager* objectManager;
@@ -45,8 +46,9 @@ public:
 
     void setMapName(const std::string &the_mapName);
 
-    InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager, gameState_t *the_state,
-                     tgui::Gui &the_gui, NetworkManager &the_networkmanager);
+    InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
+                     gameState_t *the_state, tgui::Gui &the_gui, NetworkManager &the_networkmanager,
+                     Match *iMatch);
 
     void makeInterface();
 
