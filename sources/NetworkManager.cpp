@@ -32,7 +32,7 @@ NetworkManager::NetworkManager(sf::IpAddress serverIp, unsigned short defaultPor
 //}
 
 json NetworkManager::jsonRPC(std::string method, json::array_t params) {
-    sf::Http http("http://www.meowbook.ru");
+    sf::Http http("http://meowbook.ru");
     sf::Http::Request request;
 
     request.setMethod(sf::Http::Request::Post);

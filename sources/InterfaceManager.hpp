@@ -11,9 +11,6 @@
 #include "constants/gameStates.hpp"
 #include "NetworkManager.hpp"
 #include <TGUI/TGUI.hpp>
-#include "json/json.hpp"
-
-using json = nlohmann::json;
 
 /*!
  * Этот класс отвечает за весь игровой интерфейс.
@@ -27,10 +24,6 @@ private:
     gameState_t* state;
     NetworkManager& networkManager;
     Match* match;
-public:
-    void setMatch(Match *match);
-
-private:
 
     std::string errString;
     ObjectManager* objectManager;
@@ -38,11 +31,9 @@ private:
 
     bool heathbarloaded = false;
     bool tanksnameloaded = false;
-    bool ammuncount = false;
 
     std::vector <tgui::ProgressBar::Ptr> healthTanks;
     std::vector <tgui::Label::Ptr> nameTanks;
-    tgui::Label::Ptr ammun_count;
 
 public:
     void setState(gameState_t gameState);
@@ -69,17 +60,6 @@ public:
     void cancelShow();
 
     static std::pair<std::string, std::string> login();
-
-    ///@todo показать окно с доступными матчами
-    void ShowMatchesDialog(json j);
-    ///@todo закрыть окно с матчами
-    void closeMatchesDialog();
-
-    ///@todo срабатывает при старте матча
-    void onMatchClick(int match_id);
-
-    ///@todo срабатывает, если нажать на создание матча
-    void onCreateMatchClick();
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP
