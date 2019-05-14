@@ -26,3 +26,5 @@ sf::RenderWindow &GraphicsManager::getWindow() const {
 sf::View  &GraphicsManager::getView() const {
     return view;
 }
+
+

@@ -46,12 +46,12 @@ void GameManager::runGame() {
 
                 Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
                 auto tmp1 = sf::Mouse::getPosition(mainWindow);
-                int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+                float sinus = tmp->checkOrient(tmp1.x, tmp1.y, &mainWindow);
                 if(sinus>0)
                     tmp->setSpeedTower(TANK_TOWER_SPEED);
                 else
                     tmp->setSpeedTower(-TANK_TOWER_SPEED);
-                if(sinus < 10 && sinus > -10)
+                if(sinus < 0.03 && sinus > -0.03)
                     tmp->setSpeedTower(0);
 
                 float time = clock.getElapsedTime().asMilliseconds();
@@ -89,6 +89,7 @@ void GameManager::runGame() {
                 networkManager.establishConnection();
                 eventManager->setPlayerId(match->getMyPlayerId());
                 eventManager->setObjectManager(match->getObjectManager());
+                eventManager->setMatch(match);
                 networkManager.setMyPlayerId(match->getMyPlayerId());
                 state = GAME_STATE_MULTIPLAYER_MATCH;
                 break;
@@ -183,6 +184,7 @@ void GameManager::runGame() {
                 interfaceManager->setMatch(match);
                 eventManager->setObjectManager(match->getObjectManager());
                 eventManager->setPlayerId(match->getMyPlayerId());
+                eventManager->setMatch(match);
                 state = GAME_STATE_MATCH;
                 break;
             }
@@ -195,12 +197,12 @@ void GameManager::runGame() {
 
                 Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
                 auto tmp1 = sf::Mouse::getPosition(mainWindow);
-                int sinus = tmp->checkOrient(tmp1.x, tmp1.y);
+                float sinus = tmp->checkOrient(tmp1.x, tmp1.y, &mainWindow);
                 if(sinus>0)
                     tmp->setSpeedTower(TANK_TOWER_SPEED);
                 else
                     tmp->setSpeedTower(-TANK_TOWER_SPEED);
-                if(sinus < 10 && sinus > -10)
+                if(sinus < 0.03 && sinus > -0.03)
                     tmp->setSpeedTower(0);
 
                 float time = clock.getElapsedTime().asMilliseconds();

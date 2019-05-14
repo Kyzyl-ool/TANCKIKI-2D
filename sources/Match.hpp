@@ -37,9 +37,17 @@ private:
     std::vector<std::pair <int, int> > playersInitialCoord;
     std::vector <std::string> players_names;
     std::vector <int> killed;
+    int playerView;
 
 public:
+
+    int getPlayerView();
+    void setPlayerView(int id);
+
     ObjectManager *getObjectManager() const;
+
+    GraphicsManager *getGraphicsManager() const;
+
     Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
           int iMyPlayerId);
     ~Match();

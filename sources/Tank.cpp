@@ -5,9 +5,11 @@
 #include "Tank.hpp"
 #include "Ammunition.hpp"
 #include "Repair.hpp"
+#include "Match.hpp"
 #include <cmath>
 
 #include <iostream>
+
 
 
 Tank::Tank(float health, const std::string &the_player_name, const std::string &color)
@@ -65,7 +67,7 @@ Tank::Tank(float health, const std::string &the_player_name, const std::string &
 
     if(color == "blue1") {
         setSprite(398,109,95,53);
-        setSpriteTower(401,69,86,40);
+        setSpriteTower(401,68,86,40);
     }
     if(color == "blue2") {
         setSprite(397,214,95,53);
@@ -112,17 +114,13 @@ void Tank::setHealth(float health_) {
     Tank::health=health_;
 }
 
-float Tank::getViewCoordX() {
-    if(x<WINDOW_WIDTH/2) return x;
-    if(x>MAP_WIDTH-WINDOW_WIDTH/2) return WINDOW_WIDTH - (MAP_WIDTH - x);
-    return WINDOW_WIDTH/2;
+float Tank::getViewCoordX(Match *match) {
+    return x - (match->getGraphicsManager()->getView().getCenter().x-WINDOW_WIDTH/2);
 }
 
 
-float Tank::getViewCoordY() {
-    if(y<WINDOW_HEIGHT/2) return y;
-    if(y>MAP_HEIGHT-WINDOW_HEIGHT/2) return WINDOW_HEIGHT - (MAP_HEIGHT - y);
-    return WINDOW_HEIGHT/2;
+float Tank::getViewCoordY(Match *match) {
+    return y - (match->getGraphicsManager()->getView().getCenter().y-WINDOW_HEIGHT/2);
 }
 
 void Tank::update(float time) {
@@ -236,14 +234,19 @@ void Tank::setTextureTower(const char* address) {
     textureTower.loadFromImage(image);
 }
 
-float Tank::checkOrient(float X, float Y) {
-    float vx = (float)(WINDOW_WIDTH)/2;
-    float vy = (float)(WINDOW_HEIGHT)/2;
-    if(x < (float)(WINDOW_WIDTH)/2) vx = x;
-    if(x > MAP_WIDTH - (float)(WINDOW_WIDTH)/2) vx = WINDOW_WIDTH - (MAP_WIDTH - x);
-    if(y < (float)(WINDOW_HEIGHT)/2) vy = y;
-    if(y > MAP_HEIGHT - (float)(WINDOW_HEIGHT)/2) vy = WINDOW_HEIGHT - (MAP_HEIGHT - y);
-    return ((Y-vy)*cosf(spriteTower.getRotation()/180*M_PI) - (X-vx)*sinf(spriteTower.getRotation()/180*M_PI));
+float Tank::checkOrient(float X, float Y, sf::RenderWindow *window) {
+    X=X*WINDOW_WIDTH/window->getSize().x;
+    Y=Y*WINDOW_HEIGHT/window->getSize().y;
+
+    float vx = WINDOW_WIDTH/2;
+    float vy = WINDOW_HEIGHT/2;
+    if(x<WINDOW_WIDTH/2) vx = x;
+    if(x>MAP_WIDTH-WINDOW_WIDTH/2) vx = WINDOW_WIDTH - (MAP_WIDTH-x);
+    if(y<WINDOW_HEIGHT/2) vy = y;
+    if(y>MAP_HEIGHT-WINDOW_HEIGHT/2) vy = WINDOW_HEIGHT - (MAP_HEIGHT-y);
+    float phi = spriteTower.getRotation()/180*M_PI;
+    float deltaPhi = asinf(((Y-vy)*cosf(phi) - (X-vx)*sinf(phi))/sqrtf((Y-vy)*(Y-vy)+(X-vx)*(X-vx)));
+    return deltaPhi;
 }
 
 float Tank::getMaxHealth() const {
