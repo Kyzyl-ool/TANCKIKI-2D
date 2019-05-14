@@ -188,7 +188,8 @@ void GameManager::runGame() {
             case GAME_STATE_MATCH: {
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
-                if (!message.empty()) match->processMessage(message, match->getMyPlayerId());
+
+                if (!message.empty()) match->processMessage(message, -1);
 
                 Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
                 auto tmp1 = sf::Mouse::getPosition(mainWindow);

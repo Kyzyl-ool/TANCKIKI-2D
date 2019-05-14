@@ -46,5 +46,6 @@ ObjectManager::~ObjectManager() {
 }
 
 Tank *ObjectManager::getTankById(int tankId) {
+
     return tanks[tankId];
 }

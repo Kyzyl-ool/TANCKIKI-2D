@@ -28,8 +28,6 @@ interfaceManager(interfaceManager)
 }
 
 std::string EventManager::getMessageFromGameObjects() {
-    ///@todo реализовать согласно ТЗ
-
     if (pollEvent())
     {
         switch (*state) {
@@ -242,6 +240,7 @@ ObjectManager *EventManager::getObjectManager() const {
 }
 
 void EventManager::setObjectManager(ObjectManager *iobjectManager) {
+    assert(iobjectManager);
     EventManager::objectManager = iobjectManager;
 }
 
