@@ -59,15 +59,13 @@ void GameManager::runGame() {
                 match->setPlayerCoordVorView();
                 mainWindow.setView(view);
                 match->drawMatch();
-
-
                 networkManager.sendMessageToServer(eventManager->getSyncMessage());
                 break;
             }
             case GAME_STATE_CREATE_MULTIPLAYER_MATCH: {
                 ///@todo прочитать players_info_json, map_json;
                 std::string line, players_info_json, map_json;
-                std::ifstream mapfile ("./sources/json/map2.txt");
+                std::ifstream mapfile (MAP_FILE);
                 std::ifstream playerInfofile ("./sources/json/players_info.txt");
                 if (mapfile.is_open()) {
                     while (getline(mapfile,line))  {
@@ -83,9 +81,9 @@ void GameManager::runGame() {
                 }
 
                 match = new Match(mainWindow, players_info_json, map_json, view, 0);
+                match->setDeathLine(0);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
-                match->setDeathLine(0);
                 networkManager.setMatch(match);
                 networkManager.establishConnection();
                 eventManager->setPlayerId(match->getMyPlayerId());
@@ -163,7 +161,7 @@ void GameManager::runGame() {
                 mainWindow.clear();
                 ///@todo прочитать players_info_json, map_json;
                 std::string line, players_info_json, map_json;
-                std::ifstream mapfile ("./sources/json/map2.txt");
+                std::ifstream mapfile (MAP_FILE);
                 std::ifstream playerInfofile ("./sources/json/players_info.txt");
                 if (mapfile.is_open())  {
                     while (getline(mapfile,line))  {
@@ -182,6 +180,7 @@ void GameManager::runGame() {
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
                 eventManager->setObjectManager(match->getObjectManager());
+                eventManager->setPlayerId(match->getMyPlayerId());
                 state = GAME_STATE_MATCH;
                 break;
             }
@@ -189,7 +188,7 @@ void GameManager::runGame() {
             case GAME_STATE_MATCH: {
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
-                if (!message.empty()) match->processMessage(message, -1);
+                if (!message.empty()) match->processMessage(message, match->getMyPlayerId());
 
                 Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
                 auto tmp1 = sf::Mouse::getPosition(mainWindow);
