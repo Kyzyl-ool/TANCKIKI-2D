@@ -6,8 +6,8 @@
 #define TANCHIKI_CONFIG_HPP
 
 
-const unsigned int WINDOW_HEIGHT = 900;
-const unsigned int WINDOW_WIDTH = 1600;
+const unsigned int WINDOW_HEIGHT = 600;
+const unsigned int WINDOW_WIDTH = 800;
 const unsigned int MAP_HEIGHT = 1600;
 const unsigned int MAP_WIDTH = 3000;
 const int DEATH_TIME = 10000;  ///Milliseconds

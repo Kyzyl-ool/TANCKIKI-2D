@@ -4,9 +4,9 @@
 
 #include "WidgetsMenu.hpp"
 #include <iostream>
-//                          widgets:                              |           boxes:            |
-//0: single     1:multi     2: settings     3: quit     4: window |  0: username    1: password |
-//-----------------------------------------------------------------------------------------------
+//                                       widgets:                                             |           boxes:            |
+//0: single     1:multi     2: settings     3: quit     4: loginwindow      5: settingsWindow |  0: username    1: password |
+//---------------------------------------------------------------------------------------------------------------------------
 
 WidgetsMenu widgetsMenu;
 
@@ -24,16 +24,30 @@ void WidgetsMenu::widget_remove() {
 
 void WidgetsMenu::change_ava(int sysok) {
     switch (sysok) {
-        case 1: {
+        case 1: {                                           //pressed multiButton
             for (auto i = 0; i < 4; i++)
                 widgetsMenu.widgets[i]->setEnabled(false);
+            widgetsMenu.widgets[5]->setEnabled(false);
             widgetsMenu.widgets[4]->setVisible(true);
             break;
         }
-        case 0: {
+        case 0: {                                           //pressed buttonCancel
             for (auto i = 0; i < 4; i++)
                 widgetsMenu.widgets[i]->setEnabled(true);
+            widgetsMenu.widgets[5]->setEnabled(true);
             widgetsMenu.widgets[4]->setVisible(false);
+            break;
+        }
+        case 2: {                                           //pressed settingsButton
+            for (auto i = 0; i < 5; i++)
+                widgetsMenu.widgets[i]->setEnabled(false);
+            widgetsMenu.widgets[5]->setVisible(true);
+            break;
+        }
+        case 3: {                                           //pressed settingsCancel or settingsAccept
+            for (auto i = 0; i < 5; i++)
+                widgetsMenu.widgets[i]->setEnabled(true);
+            widgetsMenu.widgets[5]->setVisible(false);
             break;
         }
         default: {

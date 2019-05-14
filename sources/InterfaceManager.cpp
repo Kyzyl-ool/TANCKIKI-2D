@@ -111,8 +111,6 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
         quitButton->connect("pressed", &InterfaceManager::signalHandler3, this);
         quitButton->connect("pressed", [&](){ mainWindow.close(); });
 
-        settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
-
         buttonLogin->connect("pressed", [&](){
             std::pair <std::string, std::string> tmp = WidgetsMenu::login();
             if (!tmp.first.empty()) {
@@ -122,6 +120,138 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 
         buttonCancel->connect("pressed", [&](){
             WidgetsMenu::change_ava(0);
+        });
+
+
+        static auto settingsWindow = tgui::MessageBox::create();
+        settingsWindow->setSize({"80%", "75%"});
+        settingsWindow->setPosition({"10%", "10%"});
+        settingsWindow->setTitle("Settings");
+        settingsWindow->setVisible(false);
+        settingsWindow->setPositionLocked(true);
+        gui.add(settingsWindow);
+        WidgetsMenu::add_widget(settingsWindow);
+
+        static auto settingsAccept = tgui::Button::create("Accept");
+        settingsAccept->setSize({"20%", "12%"});
+        settingsAccept->setPosition({"65%", "80%"});
+        settingsAccept->setTextSize(0);
+        settingsWindow->add(settingsAccept);
+
+        static auto settingsCancel = tgui::Button::create("Cancel");
+        settingsCancel->setSize({"20%", "12%"});
+        settingsCancel->setPosition({"15%", "80%"});
+        settingsCancel->setTextSize(0);
+        settingsWindow->add(settingsCancel);
+
+
+        static auto BUL = tgui::Group::create();
+        BUL->setSize("25%", "90%");
+        BUL->setPosition("0%", "5%");
+        settingsWindow->add(BUL);
+
+        static auto labelBullets = tgui::Label::create();
+        labelBullets->setText("Bullets:");
+        labelBullets->setPosition("10%", "0%");
+        labelBullets->setTextSize(20);
+        BUL->add(labelBullets);
+
+        static auto radioButton1 = tgui::RadioButton::create();
+        radioButton1->setPosition("10%", "15%");
+        radioButton1->setText("1");
+        radioButton1->setSize(20, 20);
+        BUL->add(radioButton1);
+
+        static auto radioButton2 = tgui::RadioButton::create();
+        radioButton2->setPosition("10%", "25%");
+        radioButton2->setText("2");
+        radioButton2->setSize(20, 20);
+        BUL->add(radioButton2);
+
+        static auto radioButton3 = tgui::RadioButton::create();
+        radioButton3->setPosition("10%", "35%");
+        radioButton3->setText("3");
+        radioButton3->setSize(20, 20);
+        BUL->add(radioButton3);
+
+
+        static auto SKIN = tgui::Group::create();
+        SKIN->setSize("25%", "90%");
+        SKIN->setPosition("25%", "5%");
+        settingsWindow->add(SKIN);
+
+        static auto labelSkin = tgui::Label::create();
+        labelSkin->setText("Skin:");
+        labelSkin->setPosition("10%", "0%");
+        labelSkin->setTextSize(20);
+        SKIN->add(labelSkin);
+
+        static auto skinButton1 = tgui::RadioButton::create();
+        skinButton1->setPosition("10%", "15%");
+        skinButton1->setText("1");
+        skinButton1->setSize(20, 20);
+        SKIN->add(skinButton1);
+
+        static auto skinButton2 = tgui::RadioButton::create();
+        skinButton2->setPosition("10%", "25%");
+        skinButton2->setText("2");
+        skinButton2->setSize(20, 20);
+        SKIN->add(skinButton2);
+
+        static auto skinButton3 = tgui::RadioButton::create();
+        skinButton3->setPosition("10%", "35%");
+        skinButton3->setText("3");
+        skinButton3->setSize(20, 20);
+        SKIN->add(skinButton3);
+
+        static auto skinButton4 = tgui::RadioButton::create();
+        skinButton4->setPosition("10%", "45%");
+        skinButton4->setText("3");
+        skinButton4->setSize(20, 20);
+        SKIN->add(skinButton4);
+
+        static auto skinButton5 = tgui::RadioButton::create();
+        skinButton5->setPosition("10%", "55%");
+        skinButton5->setText("3");
+        skinButton5->setSize(20, 20);
+        SKIN->add(skinButton5);
+
+        static auto tankView = tgui::Panel::create();
+        tankView->setSize("40%", "40%");
+        tankView->setPosition("55%", "5%");
+        settingsWindow->add(tankView);
+
+
+        static auto labelColor = tgui::Label::create();
+        labelColor->setText("Color:");
+        labelColor->setPosition("55%", "50%");
+        labelColor->setTextSize(20);
+        settingsWindow->add(labelColor);
+
+        static auto labelBulDam = tgui::Label::create();
+        labelBulDam->setText("Bullet Damage:");
+        labelBulDam->setPosition("55%", "60%");
+        labelBulDam->setTextSize(20);
+        settingsWindow->add(labelBulDam);
+
+        static auto labelRelTime = tgui::Label::create();
+        labelRelTime->setText("Reload time:");
+        labelRelTime->setPosition("55%", "70%");
+        labelRelTime->setTextSize(20);
+        settingsWindow->add(labelRelTime);
+
+
+        settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
+        settingsButton->connect("pressed", [&](){
+            WidgetsMenu::change_ava(2);
+        });
+
+        settingsAccept->connect("pressed", [&](){
+            WidgetsMenu::change_ava(3);
+        });
+
+        settingsCancel->connect("pressed", [&](){
+            WidgetsMenu::change_ava(3);
         });
     }
     catch (const tgui::Exception& e) {
