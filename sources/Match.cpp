@@ -208,6 +208,7 @@ const std::string &Match::getMapName() const {
 
 void Match::processMessage(const std::string &message, int iMyPlayerId = -1) {
     assert(message.size());
+//    std::cout << message << std::endl;
     json j = json::parse(message.c_str());
 //    std::cout << j["status"] << std::endl;s
 //    std::cout << j["from"] << std::endl;
