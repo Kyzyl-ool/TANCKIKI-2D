@@ -27,6 +27,10 @@ private:
     gameState_t* state;
     NetworkManager& networkManager;
     Match* match;
+public:
+    void setMatch(Match *match);
+
+private:
 
     std::string errString;
     ObjectManager* objectManager;

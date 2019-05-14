@@ -135,12 +135,12 @@ void InterfaceManager::makeInterface() {
         case GAME_STATE_MATCH: {
             auto tanks = objectManager->getTanks(); //вектор танков
 
-            int id = 0;
+            int id = match->getMyPlayerId();
 
             if (ammuncount) {
                 auto s = std::to_string(tanks[id]->getAmmun());
                 try {
-                    ammun_count->setText(s);
+                    ammun_count->setText("Bullets: " + s);
                     if(!tanks[id]->isAlive()) {
                         ammun_count->setVisible(false);
                     }
@@ -154,7 +154,7 @@ void InterfaceManager::makeInterface() {
             else {
                 auto s = std::to_string(tanks[id]->getAmmun());
                 try {
-                    ammun_count = tgui::Label::create(s);
+                    ammun_count = tgui::Label::create("Bullets: " + s);
                     ammun_count->getRenderer()->setTextColor(sf::Color::White);
                     ammun_count->getRenderer()->setTextStyle(sf::Text::Bold);
                     ammun_count->setTextSize(20);
@@ -328,5 +328,9 @@ void InterfaceManager::ShowMatchesDialog(json j) {
     std::vector <std::string> names = tmp["names"].get <std::vector <std::string> >();
     std::vector <std::string> who = tmp["who"].get <std::vector <std::string> >();
     std::vector <int> id = tmp["id"].get < std::vector <int> >();
+}
+
+void InterfaceManager::setMatch(Match *match) {
+    InterfaceManager::match = match;
 }
 
