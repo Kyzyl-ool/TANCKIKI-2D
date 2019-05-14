@@ -23,6 +23,7 @@ public:
     sf::RenderWindow &getWindow() const;
     sf::View &getView() const;
 
+public:
     /*!
      * \brief Инициализирует менеджера по графике.
      * @param theObjectManager – указатель на менеджеа по обектам, откуда будут браться
