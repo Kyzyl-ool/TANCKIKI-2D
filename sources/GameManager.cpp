@@ -24,7 +24,7 @@ void GameManager::runGame() {
     mainWindow.setKeyRepeatEnabled(false);
     while (mainWindow.isOpen()) {
 
-        if (state != GAME_STATE_MATCH_CHOOSE && state != GAME_STATE_MULTIPLAYER_MATCH) interfaceManager->makeInterface();
+        if (state != GAME_STATE_MATCH_CHOOSE && state != GAME_STATE_CREATE_MULTIPLAYER_MATCH) interfaceManager->makeInterface();
         if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
         mainWindow.display();
 
@@ -35,10 +35,11 @@ void GameManager::runGame() {
 
                 auto action = eventManager->getMessageFromGameObjects();
 
-                networkManager.sendMessageToServer(action);
-                networkManager.sendMessageToServer(action);
                 if (!action.empty())
                     match->processMessage(action, -1);
+                networkManager.sendMessageToServer(action);
+                networkManager.sendMessageToServer(action);
+
 //                auto mouseMessage = eventManager->getMouseMessage();
 //                if (!mouseMessage.empty()) match->processMessage(mouseMessage);
                 networkManager.sendMessageToServer(eventManager->getMouseMessage());
@@ -88,6 +89,8 @@ void GameManager::runGame() {
                 match->setDeathLine(0);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
+                interfaceManager->setMatch(match);
+                gui.removeAllWidgets();
                 networkManager.setMatch(match);
                 networkManager.establishConnection();
                 eventManager->setPlayerId(match->getMyPlayerId());

@@ -160,7 +160,7 @@ void InterfaceManager::makeInterface() {
                     ammun_count->setTextSize(20);
                     ammun_count->getRenderer()->setBackgroundColor(sf::Color::Black);
                     ammun_count->setAutoSize(true);
-                    ammun_count->setPosition(50, WINDOW_HEIGHT - 100);
+                    ammun_count->setPosition(50, WINDOW_HEIGHT - 50);
                     gui.add(ammun_count);
                 }
                 catch (const tgui::Exception& e) {
@@ -179,7 +179,7 @@ void InterfaceManager::makeInterface() {
                     auto sy = tanks[i]->getSizeY();
 
                     try {
-                        nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.4);
+                        nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.8);
 //                        nameTanks[i]->setSize(5 * sx, 5 * sy * 0.3); //it's large size
 
                         if(!tanks[i]->isAlive()) {
@@ -230,7 +230,7 @@ void InterfaceManager::makeInterface() {
                     auto name = tanks[i]->getName();
 
                     try {
-                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy*1.6);
+                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy);
                         healthTanks[i]->setSize(sx, sy * 0.3);
                         healthTanks[i]->setValue((unsigned int) (100 * h / mh));
 //                        progressBar->setInheritedOpacity(0.5);
