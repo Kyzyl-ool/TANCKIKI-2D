@@ -463,27 +463,25 @@ void InterfaceManager::renderMatches() {
 
             tgui::Theme theme{"./sources/themes/Black.txt"};
 
-            auto label = tgui::Label::create();
-            label->setRenderer(theme.getRenderer("Label"));
-            label->setText("Matches list:");
-            label->setPosition(10, 90);
-            label->setTextSize(18);
-            gui.add(label);
+            static auto labelList = tgui::Label::create();
+            labelList->setRenderer(theme.getRenderer("Label"));
+            labelList->setText("Matches list:");
+            labelList->setPosition("5%", "10%");
+            labelList->setTextSize(20);
+            gui.add(labelList);
 
+            static auto labelChoose = tgui::Label::create();
+            labelChoose->setRenderer(theme.getRenderer("Label"));
+            labelChoose->setText("Choose a match from the list");
+            labelChoose->setPosition("55%", "45%");
+            labelChoose->setTextSize(20);
+            gui.add(labelChoose);
 
-            label = tgui::Label::create();
-            label->setRenderer(theme.getRenderer("Label"));
-            label->setText("Choose a match from the list");
-            label->setPosition(10, 240);
-            label->setTextSize(18);
-            gui.add(label);
-
-            auto listBox = tgui::ListBox::create();
+            static auto listBox = tgui::ListBox::create();
             listBox->setRenderer(theme.getRenderer("ListBox"));
-            listBox->setSize(250, 120);
+            listBox->setSize("40%", "65%");
             listBox->setItemHeight(24);
-            listBox->setPosition(10, 340);
-
+            listBox->setPosition("5%", "20%");
 
             for (int i = 0; i < matches.size(); ++i) {
 //                std::cout << matches[i] << std::endl;
@@ -495,6 +493,118 @@ void InterfaceManager::renderMatches() {
 //            listBox->addItem("Item 2");
 //            listBox->addItem("Item 3");
             gui.add(listBox);
+
+
+            static auto butBack = tgui::Button::create("Back");
+            butBack->setRenderer(theme.getRenderer("Button"));
+            butBack->setSize({"15%", "7%"});
+            butBack->setPosition({"5%", "90%"});
+            butBack->setTextSize(20);
+            gui.add(butBack);
+
+            static auto butCreate = tgui::Button::create("Create new");
+            butCreate->setRenderer(theme.getRenderer("Button"));
+            butCreate->setSize({"20%", "7%"});
+            butCreate->setPosition({"25%", "90%"});
+            butCreate->setTextSize(20);
+            gui.add(butCreate);
+
+            static auto groupMatch = tgui::Group::create();
+            groupMatch->setVisible(false);
+            groupMatch->setSize("40%", "90%");
+            groupMatch->setPosition("55%", "10%");
+            gui.add(groupMatch);
+
+            static auto labelInfo = tgui::Label::create();
+            labelInfo->setRenderer(theme.getRenderer("Label"));
+            labelInfo->setText("Information about match:");
+            labelInfo->setPosition("5%", "0%");
+            labelInfo->setTextSize(20);
+            groupMatch->add(labelInfo);
+
+            static auto labelName = tgui::Label::create();
+            labelName->setRenderer(theme.getRenderer("Label"));
+            labelName->setText("Name: ");
+            labelName->setPosition("0%", "15%");
+            labelName->setTextSize(20);
+            groupMatch->add(labelName);
+
+            static auto labelHost = tgui::Label::create();
+            labelHost->setRenderer(theme.getRenderer("Label"));
+            labelHost->setText("Host: ");
+            labelHost->setPosition("0%", "25%");
+            labelHost->setTextSize(20);
+            groupMatch->add(labelHost);
+
+            static auto labelPlayers = tgui::Label::create();
+            labelPlayers->setRenderer(theme.getRenderer("Label"));
+            labelPlayers->setText("Players: ");
+            labelPlayers->setPosition("0%", "35%");
+            labelPlayers->setTextSize(20);
+            groupMatch->add(labelPlayers);
+
+            static auto butJoin = tgui::Button::create("Join");
+            butJoin->setVisible(false);
+            butJoin->setRenderer(theme.getRenderer("Button"));
+            butJoin->setSize({"15%", "7%"});
+            butJoin->setPosition({"67.5%", "90%"});
+            butJoin->setTextSize(20);
+            gui.add(butJoin);
+
+
+            static auto createWindow = tgui::MessageBox::create();
+            createWindow->setRenderer(theme.getRenderer("MessageBox"));
+            createWindow->setSize({"40%", "30%"});
+            createWindow->setPosition({"30%", "31%"});
+            createWindow->setTitle("Create Match");
+            createWindow->setVisible(false);
+            createWindow->setPositionLocked(true);
+            createWindow->setFocused(true);
+            gui.add(createWindow);
+
+            static auto editBox = tgui::EditBox::create();
+            editBox->setRenderer(theme.getRenderer("EditBox"));
+            editBox->setSize({"66.67%", "25%"});
+            editBox->setPosition({"16.67%", "16.67%"});
+            editBox->setDefaultText("Insert match name");
+            editBox->setTextSize(16);
+            createWindow->add(editBox);
+
+            static auto buttonOK = tgui::Button::create("OK");
+            buttonOK->setRenderer(theme.getRenderer("Button"));
+            buttonOK->setSize({"20%", "16.67%"});
+            buttonOK->setPosition({"60 %", "70%"});
+            buttonOK->setTextSize(16);
+            createWindow->add(buttonOK);
+
+            static auto buttonCancel = tgui::Button::create("Cancel");
+            buttonCancel->setRenderer(theme.getRenderer("Button"));
+            buttonCancel->setSize({"20%", "16.67%"});
+            buttonCancel->setPosition({"20%", "70%"});
+            buttonCancel->setTextSize(16);
+            createWindow->add(buttonCancel);
+
+            butCreate->connect("pressed", [&](){
+                listBox->setEnabled(false);
+                butBack->setEnabled(false);
+                butCreate->setEnabled(false);
+                butJoin->setEnabled(false);
+                createWindow->setVisible(true);
+            });
+
+            buttonCancel->connect("pressed", [&](){
+                listBox->setEnabled(true);
+                butBack->setEnabled(true);
+                butCreate->setEnabled(true);
+                butJoin->setEnabled(true);
+                createWindow->setVisible(false);
+            });
+
+            listBox->connect("MousePressed", [&](){
+                labelChoose->setVisible(false);
+                butJoin->setVisible(true);
+                groupMatch->setVisible(true);
+            });
 
 
             matchesLoaded = true;
