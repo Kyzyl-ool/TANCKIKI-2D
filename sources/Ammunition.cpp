@@ -33,5 +33,3 @@ void Ammunition::draw(sf::RenderWindow &window) {
         window.draw(sprite);
     }
 }
-
-
