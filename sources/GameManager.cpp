@@ -36,10 +36,12 @@ void GameManager::runGame() {
                 auto action = eventManager->getMessageFromGameObjects();
 
                 networkManager.sendMessageToServer(action);
+                networkManager.sendMessageToServer(action);
                 if (!action.empty())
                     match->processMessage(action, -1);
 //                auto mouseMessage = eventManager->getMouseMessage();
 //                if (!mouseMessage.empty()) match->processMessage(mouseMessage);
+                networkManager.sendMessageToServer(eventManager->getMouseMessage());
                 networkManager.sendMessageToServer(eventManager->getMouseMessage());
 
 
