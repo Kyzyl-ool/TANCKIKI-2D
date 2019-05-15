@@ -110,7 +110,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     ///@todo создать amount_of_players танков
 
     for(int i = 0; i < amount_of_players; ++i) {
-        Tank *tank = new Tank(1000 - (i == 0)*950, players_names[i], "blue1");
+        Tank *tank = new Tank(1000, players_names[i], "blue1");
         tank->setPosition(playersInitialCoord[i].first, playersInitialCoord[i].second);
         tank->setObjectId(i);
         tank->setTypeBullet(MIDDLESHOT);
