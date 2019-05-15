@@ -25,6 +25,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     amount_of_blocks_x = map_j["amount_of_blocks_x"];
     amount_of_blocks_y = map_j["amount_of_blocks_y"];
     myPlayerId = iMyPlayerId;
+    playerView = myPlayerId;
     /*
      * {
      * "mapName": "Ugaagga",
@@ -150,6 +151,10 @@ void Match::setKilled(std::vector <int> killed_) {
 void Match::drawMatch() {
     drawMap(graphicsManager->getWindow());
     graphicsManager->drawGameObjects();
+}
+
+GraphicsManager* Match::getGraphicsManager() const {
+    return graphicsManager;
 }
 
 void Match::updateMatch(float time) {
@@ -372,9 +377,21 @@ int Match::getMyPlayerId() const {
 void Match::setPlayerCoordVorView() {
     float x = getMyPlayerX();
     float y = getMyPlayerY();
-    if(x < (float)(WINDOW_WIDTH)/2) x = (float)WINDOW_WIDTH/2;
-    if(x > MAP_WIDTH-(float)(WINDOW_WIDTH)/2) x = MAP_WIDTH-(float)(WINDOW_WIDTH)/2;
-    if(y < (float)(WINDOW_HEIGHT)/2) y = (float)WINDOW_HEIGHT/2;
-    if(y > MAP_HEIGHT-(float)(WINDOW_HEIGHT)/2) y = MAP_HEIGHT-(float)(WINDOW_HEIGHT)/2;
+    if(!getObjectManager()->getTanks()[getMyPlayerId()]->isAlive()) {
+         x = getObjectManager()->getTanks()[playerView]->getX();
+         y = getObjectManager()->getTanks()[playerView]->getY();
+    }
+    if (x < (float) (WINDOW_WIDTH) / 2) x = (float) WINDOW_WIDTH / 2;
+    if (x > MAP_WIDTH - (float) (WINDOW_WIDTH) / 2) x = MAP_WIDTH - (float) (WINDOW_WIDTH) / 2;
+    if (y < (float) (WINDOW_HEIGHT) / 2) y = (float) WINDOW_HEIGHT / 2;
+    if (y > MAP_HEIGHT - (float) (WINDOW_HEIGHT) / 2) y = MAP_HEIGHT - (float) (WINDOW_HEIGHT) / 2;
     graphicsManager->getView().setCenter(x, y); //следим за игроком, передавая его координаты.
+}
+
+int Match::getPlayerView() {
+    return playerView;
+}
+
+void Match::setPlayerView(int id) {
+    playerView = id;
 }

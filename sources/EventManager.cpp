@@ -56,15 +56,25 @@ std::string EventManager::returnMessageFromMatchActions() {
     
 
     char arrows = getPressedArrows(sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Up, sf::Keyboard::Right);
-
-
         switch (event.type) {
             case sf::Event::KeyReleased: {
                 switch (event.key.code) {
-                    case sf::Keyboard::Left:
+                    case sf::Keyboard::Left: {
+                        if (arrows & 0b0001) {
+                            return goMessage(0b0001);
+                        }
+                        json json_message;
+                        json_message["status"] = "OK";
+                        json_message["from"] = playerId;
+                        json_message["method"] = "noRotation";
+                        json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                        return json_message.dump();
+
+                    }
                     case sf::Keyboard::Right: {
-                        if (arrows & 0b1000 || arrows & 0b0001) {
-                            return goMessage(arrows);
+                        if (arrows & 0b1000) {
+                            return goMessage(0b1000);
                         }
                             json json_message;
                             json_message["status"] = "OK";
@@ -75,9 +85,23 @@ std::string EventManager::returnMessageFromMatchActions() {
                             return json_message.dump();
 
                     }
-                    case sf::Keyboard::Up:
+                    case sf::Keyboard::Up: {
+                        if (arrows & 0b0100) {
+                            return goMessage(0b0100);
+                        }
+                        json json_message;
+                        json_message["status"] = "OK";
+                        json_message["from"] = playerId;
+                        json_message["method"] = "stop";
+                        json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                        return json_message.dump();
+                    }
                     case sf::Keyboard::Down:
                     {
+                        if (arrows & 0b0010) {
+                            return goMessage(0b0010);
+                        }
                         json json_message;
                         json_message["status"] = "OK";
                         json_message["from"] = playerId;
@@ -96,6 +120,11 @@ std::string EventManager::returnMessageFromMatchActions() {
 //                    return goMessage(0b0010);
 
                 switch (event.key.code) {
+                    case sf::Keyboard::O: {
+                        std::cout << playerViewId % 10 << std::endl;
+                        match->setPlayerView(playerViewId++ % 10);
+                        break;
+                    }
                     case sf::Keyboard::Space: {
                         json json_message;
                         json_message["status"] = "OK";
@@ -106,15 +135,51 @@ std::string EventManager::returnMessageFromMatchActions() {
                         return json_message.dump();
                     }
                     case sf::Keyboard::Left: {
+                        if(arrows & 0b0001) {
+                            json json_message;
+                            json_message["status"] = "OK";
+                            json_message["from"] = playerId;
+                            json_message["method"] = "noRotation";
+                            json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                            return json_message.dump();
+                        }
                         return goMessage(0b1000);
                     }
                     case sf::Keyboard::Right: {
+                        if(arrows & 0b1000) {
+                            json json_message;
+                            json_message["status"] = "OK";
+                            json_message["from"] = playerId;
+                            json_message["method"] = "noRotation";
+                            json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                            return json_message.dump();
+                        }
                         return goMessage(0b0001);
                     }
                     case sf::Keyboard::Up: {
+                        if(arrows & 0b0100) {
+                            json json_message;
+                            json_message["status"] = "OK";
+                            json_message["from"] = playerId;
+                            json_message["method"] = "stop";
+                            json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                            return json_message.dump();
+                        }
                         return goMessage(0b0010);
                     }
                     case sf::Keyboard::Down: {
+                        if(arrows & 0b0010) {
+                            json json_message;
+                            json_message["status"] = "OK";
+                            json_message["from"] = playerId;
+                            json_message["method"] = "stop";
+                            json_message["params"] = json::array();
+//                    std::cout << json_message.dump();
+                            return json_message.dump();
+                        }
                         return goMessage(0b0100);
                     }
                     case sf::Keyboard::Escape: {
@@ -275,11 +340,11 @@ std::string EventManager::getMouseMessage() {
 
     Tank* myTank = objectManager->getTankById(playerId);
     auto tmp = sf::Mouse::getPosition(mainWindow);
-    float sinus = myTank->checkOrient(tmp.x, tmp.y);
+    float sinus = myTank->checkOrient(tmp.x, tmp.y, &mainWindow);
 
 //    std::cout << sinus << std::endl;
 
-    if (sinus < 10 && sinus > -10) {
+    if (sinus < 0.03 && sinus > -0.03) {
         if (myTank->getSpeedTower() != 0) {
             json json_message;
             json_message["status"] = "OK";
@@ -317,4 +382,8 @@ std::string EventManager::getMouseMessage() {
             return std::string();
     }
     return std::string();
+}
+
+void EventManager::setMatch(Match *match) {
+    EventManager::match = match;
 }

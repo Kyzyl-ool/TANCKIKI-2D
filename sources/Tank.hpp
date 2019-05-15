@@ -8,6 +8,8 @@
 #include "GameObject.hpp"
 #include "Bullet.hpp"
 
+class Match;
+
 class Tank : public GameObject {
 protected:
     float health;
@@ -68,13 +70,13 @@ public:
     void setSpriteTower(int X, int Y, int sizeX_, int sizeY_);
     void setSpeedTower(float angleSpeed);
     void setHealth(float healthScore);
-    float checkOrient(float X, float Y);
+    float checkOrient(float X, float Y, sf::RenderWindow *window);
     void setTypeBullet(Bullet_t);
     void setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
                           float itowerY, int iammunition, float iRotaton, float iTowerRotation);
     float getTowerRotation();
-    float getViewCoordX();
-    float getViewCoordY();
+    float getViewCoordX(Match *match);
+    float getViewCoordY(Match *match);
 };
 
 

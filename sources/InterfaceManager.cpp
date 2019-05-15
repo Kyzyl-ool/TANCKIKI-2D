@@ -303,9 +303,8 @@ void InterfaceManager::makeInterface() {
 
             if (tanksnameloaded) {
                 for (auto i = 0; i < tanks.size(); i++) {
-
-                    auto x  = tanks[i]->getViewCoordX();
-                    auto y  = tanks[i]->getViewCoordY();
+                    auto x  = tanks[i]->getViewCoordX(match);
+                    auto y  = tanks[i]->getViewCoordY(match);
                     auto sx = tanks[i]->getSizeX();
                     auto sy = tanks[i]->getSizeY();
 
@@ -353,8 +352,8 @@ void InterfaceManager::makeInterface() {
 
                     auto h  = tanks[i]->getHealth();
                     auto mh = tanks[i]->getMaxHealth();
-                    auto x  = tanks[i]->getViewCoordX();
-                    auto y  = tanks[i]->getViewCoordY();
+                    auto x  = tanks[i]->getViewCoordX(match);
+                    auto y  = tanks[i]->getViewCoordY(match);
                     auto sx = tanks[i]->getSizeX();
                     auto sy = tanks[i]->getSizeY();
 

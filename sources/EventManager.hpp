@@ -20,6 +20,11 @@ private:
     int playerId = -1;
     sf::Clock syncClock;
     ObjectManager* objectManager;
+    Match* match;
+    int playerViewId = 0;
+public:
+    void setMatch(Match *match);
+
 public:
     ObjectManager *getObjectManager() const;
 
