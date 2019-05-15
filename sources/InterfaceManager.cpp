@@ -132,17 +132,11 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
         gui.add(settingsWindow);
         WidgetsMenu::add_widget(settingsWindow);
 
-        static auto settingsAccept = tgui::Button::create("Accept");
-        settingsAccept->setSize({"20%", "12%"});
-        settingsAccept->setPosition({"65%", "80%"});
-        settingsAccept->setTextSize(0);
-        settingsWindow->add(settingsAccept);
-
-        static auto settingsCancel = tgui::Button::create("Cancel");
-        settingsCancel->setSize({"20%", "12%"});
-        settingsCancel->setPosition({"15%", "80%"});
-        settingsCancel->setTextSize(0);
-        settingsWindow->add(settingsCancel);
+        static auto settingsBack = tgui::Button::create("Back");
+        settingsBack->setSize({"15%", "7%"});
+        settingsBack->setPosition({"7%", "90%"});
+        settingsBack->setTextSize(0);
+        settingsWindow->add(settingsBack);
 
 
         static auto BUL = tgui::Group::create();
@@ -206,13 +200,13 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 
         static auto skinButton4 = tgui::RadioButton::create();
         skinButton4->setPosition("10%", "45%");
-        skinButton4->setText("3");
+        skinButton4->setText("4");
         skinButton4->setSize(20, 20);
         SKIN->add(skinButton4);
 
         static auto skinButton5 = tgui::RadioButton::create();
         skinButton5->setPosition("10%", "55%");
-        skinButton5->setText("3");
+        skinButton5->setText("5");
         skinButton5->setSize(20, 20);
         SKIN->add(skinButton5);
 
@@ -229,7 +223,7 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
         settingsWindow->add(labelColor);
 
         static auto labelBulDam = tgui::Label::create();
-        labelBulDam->setText("Bullet Damage:");
+        labelBulDam->setText("Bullet damage:");
         labelBulDam->setPosition("55%", "60%");
         labelBulDam->setTextSize(20);
         settingsWindow->add(labelBulDam);
@@ -246,11 +240,7 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
             WidgetsMenu::change_ava(2);
         });
 
-        settingsAccept->connect("pressed", [&](){
-            WidgetsMenu::change_ava(3);
-        });
-
-        settingsCancel->connect("pressed", [&](){
+        settingsBack->connect("pressed", [&](){
             WidgetsMenu::change_ava(3);
         });
     }
@@ -301,7 +291,7 @@ void InterfaceManager::makeInterface() {
                     ammun_count->setTextSize(20);
                     ammun_count->getRenderer()->setBackgroundColor(sf::Color::Black);
                     ammun_count->setAutoSize(true);
-                    ammun_count->setPosition(50, WINDOW_HEIGHT - 100);
+                    ammun_count->setPosition(50, WINDOW_HEIGHT - 50);
                     gui.add(ammun_count);
                 }
                 catch (const tgui::Exception& e) {
@@ -320,7 +310,7 @@ void InterfaceManager::makeInterface() {
                     auto sy = tanks[i]->getSizeY();
 
                     try {
-                        nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.4);
+                        nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.8);
 //                        nameTanks[i]->setSize(5 * sx, 5 * sy * 0.3); //it's large size
 
                         if(!tanks[i]->isAlive()) {
@@ -371,7 +361,7 @@ void InterfaceManager::makeInterface() {
                     auto name = tanks[i]->getName();
 
                     try {
-                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy*1.6);
+                        healthTanks[i]->setPosition(x - 0.5*sx, y - sy);
                         healthTanks[i]->setSize(sx, sy * 0.3);
                         healthTanks[i]->setValue((unsigned int) (100 * h / mh));
 //                        progressBar->setInheritedOpacity(0.5);
