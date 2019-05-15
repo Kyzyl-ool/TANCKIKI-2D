@@ -28,7 +28,7 @@ private:
     unsigned int amount_of_blocks_x, amount_of_blocks_y;
     block_t* blocks;
     float deathTime;
-    int deathLine;
+    int deathLine = -1;
     sf::Texture textureMap;
     sf::Sprite spriteMap;
     sf::Image imagesForMap;

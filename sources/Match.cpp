@@ -18,6 +18,7 @@ using json = nlohmann::json;
 
 Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
              int iMyPlayerId) {
+
     deathTime = 0;
     deathLine = 0;
     json map_j = json::parse(map_json);

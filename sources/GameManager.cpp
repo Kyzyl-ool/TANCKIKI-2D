@@ -75,14 +75,16 @@ void GameManager::runGame() {
                     }
                     mapfile.close();
                 }
-                if (playerInfofile.is_open())  {
-                    while (getline(playerInfofile,line))  {
+                if (playerInfofile.is_open()) {
+                    while (getline(playerInfofile, line)) {
                         players_info_json += line + '\n';
                     }
                     playerInfofile.close();
                 }
 
+                clock.restart();
                 match = new Match(mainWindow, players_info_json, map_json, view, 0);
+                std::cout << "Match created" << std::endl;
                 match->setDeathLine(0);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
@@ -179,6 +181,7 @@ void GameManager::runGame() {
                     playerInfofile.close();
                 }
 
+                clock.restart();
                 match = new Match(mainWindow, players_info_json, map_json, view, 0);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
