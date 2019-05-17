@@ -40,6 +40,7 @@ private:
     bool tanksnameloaded = false;
     bool matchesLoaded = false;
     bool ammuncount = false;
+    bool mainmenuloaded = false;
 
     std::vector <tgui::ProgressBar::Ptr> healthTanks;
     std::vector <tgui::Label::Ptr> nameTanks;
@@ -87,6 +88,8 @@ public:
 
     ///@todo срабатывает, если нажать на создание матча
     void onCreateMatchClick();
+
+    void loadMainMenuWidgets();
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP

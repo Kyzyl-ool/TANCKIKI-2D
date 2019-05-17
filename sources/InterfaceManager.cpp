@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "InterfaceManager.hpp"
 #include "WidgetsMenu.hpp"
 #include "Tank.hpp"
@@ -21,9 +22,13 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
         match(iMatch),
         matches(iMatches)
 {
+
+}
+
+void InterfaceManager::loadMainMenuWidgets() {
     try {
-        static auto picture = tgui::Picture::create({"images/forest.svg", {0, 0, 1000, 700}}); //Failed to create texture, invalid size (0x0)
-        picture->setSize({"100%", "100%"});
+        static auto picture = tgui::Picture::create({"images/forest.svg", sf::IntRect(0, 0, 1000, 700)}); //Failed to create texture, invalid size (0x0)
+        picture->setSize({WINDOW_WIDTH, WINDOW_HEIGHT});
         gui.add(picture);
 
         static auto singleButton = tgui::Button::create("Singleplayer"); //кнопка Singleplayer
@@ -243,6 +248,10 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
         settingsBack->connect("pressed", [&](){
             WidgetsMenu::change_ava(3);
         });
+
+        std::ifstream fi("./sources/json/armament.json");
+        json bullets;
+        fi >> bullets;
     }
     catch (const tgui::Exception& e) {
         std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
@@ -252,13 +261,27 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 
 void InterfaceManager::makeInterface() {
     switch (*state) {
+        case GAME_STATE_MATCH_PAUSE: {
+
+            break;
+        }
+        case GAME_STATE_MAIN_MENU: {
+            if (!mainmenuloaded) {
+                loadMainMenuWidgets();
+                mainmenuloaded = true;
+            }
+            break;
+        }
         case GAME_STATE_CREATE_MATCH:
         case GAME_STATE_CREATE_MULTIPLAYER_MATCH:
         {
+            mainmenuloaded = true;
+            matchesLoaded = true;
             gui.removeAllWidgets();
             break;
         }
         case GAME_STATE_MATCH_CHOOSE: {
+            mainmenuloaded = false;
             renderMatches();
             break;
         }
@@ -603,6 +626,11 @@ void InterfaceManager::renderMatches() {
                 labelChoose->setVisible(false);
                 butJoin->setVisible(true);
                 groupMatch->setVisible(true);
+            });
+
+            butBack->connect("pressed", [&](){
+                *state = GAME_STATE_MAIN_MENU;
+                std::cout << "BACK PRESSED" << std::endl;
             });
 
 
