@@ -248,10 +248,6 @@ void InterfaceManager::loadMainMenuWidgets() {
         settingsBack->connect("pressed", [&](){
             WidgetsMenu::change_ava(3);
         });
-
-        std::ifstream fi("./sources/json/armament.json");
-        json bullets;
-        fi >> bullets;
     }
     catch (const tgui::Exception& e) {
         std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
