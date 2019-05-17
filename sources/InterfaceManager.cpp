@@ -155,6 +155,12 @@ void InterfaceManager::loadMainMenuWidgets() {
         labelBullets->setTextSize(20);
         BUL->add(labelBullets);
 
+        std::ifstream fi("./sources/json/armament.json");
+        json armament;
+        fi >> armament;
+        int bullet = armament["bullet"];
+        int skin = armament["skin"];
+
         static auto radioButton1 = tgui::RadioButton::create();
         radioButton1->setPosition("10%", "15%");
         radioButton1->setText("1");
@@ -173,6 +179,19 @@ void InterfaceManager::loadMainMenuWidgets() {
         radioButton3->setSize(20, 20);
         BUL->add(radioButton3);
 
+        switch (bullet) {
+            case 1:
+                radioButton1->setChecked(true);
+                break;
+            case 2:
+                radioButton2->setChecked(true);
+                break;
+            case 3:
+                radioButton3->setChecked(true);
+                break;
+            default:
+                assert(!"Invalid radiobutton");
+        }
 
         static auto SKIN = tgui::Group::create();
         SKIN->setSize("25%", "90%");
@@ -215,6 +234,28 @@ void InterfaceManager::loadMainMenuWidgets() {
         skinButton5->setSize(20, 20);
         SKIN->add(skinButton5);
 
+        switch (skin) {
+            case 1:
+                skinButton1->setChecked(true);
+                break;
+            case 2:
+                skinButton2->setChecked(true);
+                break;
+            case 3:
+                skinButton3->setChecked(true);
+                break;
+            case 4:
+                skinButton4->setChecked(true);
+                break;
+            case 5:
+                skinButton5->setChecked(true);
+                break;
+            default:
+                assert(!"Invalid skin");
+        }
+
+        fi.close();
+
         static auto tankView = tgui::Panel::create();
         tankView->setSize("40%", "40%");
         tankView->setPosition("55%", "5%");
@@ -247,6 +288,32 @@ void InterfaceManager::loadMainMenuWidgets() {
 
         settingsBack->connect("pressed", [&](){
             WidgetsMenu::change_ava(3);
+            int bullet = -1, skin = -1;
+            if (radioButton1->isChecked())
+                bullet = 1;
+            if (radioButton2->isChecked())
+                bullet = 2;
+            if (radioButton3->isChecked())
+                bullet = 3;
+            if (skinButton1->isChecked())
+                skin = 1;
+            if (skinButton2->isChecked())
+                skin = 2;
+            if (skinButton3->isChecked())
+                skin = 3;
+            if (skinButton4->isChecked())
+                skin = 4;
+            if (skinButton5->isChecked())
+                skin = 5;
+
+
+            assert(!(bullet == -1 || skin == -1));
+            std::ofstream fo("./sources/json/armament.json");
+            json j;
+            j["bullet"] = bullet;
+            j["skin"] = skin;
+            fo << j << std::endl;
+            fo.close();
         });
     }
     catch (const tgui::Exception& e) {
