@@ -232,20 +232,15 @@ void EventManager::handleMatchPauseActions() {
 
 }
 
-char EventManager::getPressedArrows(sf::Keyboard::Key left = sf::Keyboard::A, sf::Keyboard::Key down = sf::Keyboard::S, sf::Keyboard::Key up = sf::Keyboard::W,
-                                    sf::Keyboard::Key right = sf::Keyboard::D) {
-    assert(left);
-    assert(down);
-    assert(up);
-    assert(right);
+char EventManager::getPressedArrows() {
     char result = 0;
-    if (sf::Keyboard::isKeyPressed(left))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
         result |= 0b1000;
-    if (sf::Keyboard::isKeyPressed(down))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
         result |= 0b0100;
-    if (sf::Keyboard::isKeyPressed(up))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
         result |= 0b0010;
-    if (sf::Keyboard::isKeyPressed(right))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
         result |= 0b0001;
 
     return result;
