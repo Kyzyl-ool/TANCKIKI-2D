@@ -207,6 +207,7 @@ std::string EventManager::returnMessageFromMatchActions() {
 }
 
 void EventManager::handleMatchPauseActions() {
+    gui.handleEvent(event);
     switch (event.type)
     {
         case sf::Event::Closed: {

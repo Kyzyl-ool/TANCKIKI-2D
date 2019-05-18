@@ -41,6 +41,7 @@ private:
     bool matchesLoaded = false;
     bool ammuncount = false;
     bool mainmenuloaded = false;
+    bool pauseloaded = false;
 
     std::vector <tgui::ProgressBar::Ptr> healthTanks;
     std::vector <tgui::Label::Ptr> nameTanks;

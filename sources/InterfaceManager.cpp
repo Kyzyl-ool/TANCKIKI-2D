@@ -326,6 +326,59 @@ void InterfaceManager::makeInterface() {
     switch (*state) {
         case GAME_STATE_MATCH_PAUSE: {
 
+            if (pauseloaded) {
+                gui.get("LaL")->setVisible(true);
+            } else {
+
+                try {
+                    static auto pauseWindow = tgui::MessageBox::create();
+                    pauseWindow->setSize({"40%", "30%"});
+                    pauseWindow->setPosition({"30%", "31%"});
+                    pauseWindow->setTitle("Pause");
+//                    pauseWindow->setText("Do you really wanna exit?");
+                    pauseWindow->setTitleTextSize(12);
+                    pauseWindow->setPositionLocked(true);
+                    gui.add(pauseWindow);
+                    gui.setWidgetName(pauseWindow, "LaL");
+
+                    static auto buttonExit = tgui::Button::create("Exit");
+                    buttonExit->setSize({"20%", "16.67%"});
+                    buttonExit->setPosition({"60 %", "70%"});
+                    buttonExit->setTextSize(0);
+                    pauseWindow->add(buttonExit);
+
+                    static auto buttonCancel = tgui::Button::create("Cancel");
+                    buttonCancel->setSize({"20%", "16.67%"});
+                    buttonCancel->setPosition({"20%", "70%"});
+                    buttonCancel->setTextSize(0);
+                    pauseWindow->add(buttonCancel);
+
+                    static auto label = tgui::Label::create();
+                    label->setText("Do you really want to exit?");
+                    label->setTextSize(20);
+                    label->setPosition("21%", "30%"); // NOT COOL!!!!!!!!!
+                    ///@todo сделать нормально выравнивание текста
+                    pauseWindow->add(label);
+//                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
+//                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
+
+
+
+                    buttonCancel->connect("pressed", [&](){
+//                        pauseloaded = false;
+//                        gui.remove(pauseWindow);
+//                        pauseWindow->setVisible(false);
+                        *state = GAME_STATE_MATCH;
+                    });
+
+                }
+                catch (const tgui::Exception &e) {
+                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                    assert(0);
+                }
+
+                pauseloaded = true;
+            }
             break;
         }
         case GAME_STATE_MAIN_MENU: {
@@ -338,6 +391,7 @@ void InterfaceManager::makeInterface() {
         case GAME_STATE_CREATE_MATCH:
         case GAME_STATE_CREATE_MULTIPLAYER_MATCH:
         {
+
             mainmenuloaded = true;
             matchesLoaded = true;
             gui.removeAllWidgets();
@@ -350,6 +404,8 @@ void InterfaceManager::makeInterface() {
         }
         case GAME_STATE_MULTIPLAYER_MATCH:
         case GAME_STATE_MATCH: {
+            if (pauseloaded)
+               gui.get("LaL")->setVisible(false);
             auto tanks = objectManager->getTanks(); //вектор танков
 
             int id = match->getMyPlayerId();
