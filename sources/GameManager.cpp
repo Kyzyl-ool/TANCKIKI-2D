@@ -36,11 +36,14 @@ void GameManager::runGame() {
 
                 auto action = eventManager->getMessageFromGameObjects();
 
-                networkManager.sendMessageToServer(action);
                 if (!action.empty())
                     match->processMessage(action, -1);
+                networkManager.sendMessageToServer(action);
+                networkManager.sendMessageToServer(action);
+
 //                auto mouseMessage = eventManager->getMouseMessage();
 //                if (!mouseMessage.empty()) match->processMessage(mouseMessage);
+                networkManager.sendMessageToServer(eventManager->getMouseMessage());
                 networkManager.sendMessageToServer(eventManager->getMouseMessage());
 
 
@@ -74,17 +77,21 @@ void GameManager::runGame() {
                     }
                     mapfile.close();
                 }
-                if (playerInfofile.is_open())  {
-                    while (getline(playerInfofile,line))  {
+                if (playerInfofile.is_open()) {
+                    while (getline(playerInfofile, line)) {
                         players_info_json += line + '\n';
                     }
                     playerInfofile.close();
                 }
 
+                clock.restart();
                 match = new Match(mainWindow, players_info_json, map_json, view, 0);
+                std::cout << "Match created" << std::endl;
                 match->setDeathLine(0);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
+                interfaceManager->setMatch(match);
+                gui.removeAllWidgets();
                 networkManager.setMatch(match);
                 networkManager.establishConnection();
                 eventManager->setPlayerId(match->getMyPlayerId());
@@ -178,6 +185,7 @@ void GameManager::runGame() {
                     playerInfofile.close();
                 }
 
+                clock.restart();
                 match = new Match(mainWindow, players_info_json, map_json, view, 0);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());

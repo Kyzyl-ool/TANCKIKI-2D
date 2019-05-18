@@ -44,8 +44,8 @@ public:
 
     std::string returnMessageFromMatchActions();
     void handleMatchPauseActions();
-    char getPressedArrows(sf::Keyboard::Key left, sf::Keyboard::Key down, sf::Keyboard::Key up,
-                              sf::Keyboard::Key right);
+    char getPressedArrows(sf::Keyboard::Key left = sf::Keyboard::A, sf::Keyboard::Key down = sf::Keyboard::S, sf::Keyboard::Key up = sf::Keyboard::W,
+                                        sf::Keyboard::Key right = sf::Keyboard::D);
     std::string goMessage(char direction);
     std::string getSyncMessage();
     std::string getMouseMessage();

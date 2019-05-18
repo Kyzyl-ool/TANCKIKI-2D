@@ -55,11 +55,11 @@ std::string EventManager::returnMessageFromMatchActions() {
     }
     
 
-    char arrows = getPressedArrows(sf::Keyboard::Left, sf::Keyboard::Down, sf::Keyboard::Up, sf::Keyboard::Right);
+    char arrows = getPressedArrows();
         switch (event.type) {
             case sf::Event::KeyReleased: {
                 switch (event.key.code) {
-                    case sf::Keyboard::Left: {
+                    case sf::Keyboard::A: {
                         if (arrows & 0b0001) {
                             return goMessage(0b0001);
                         }
@@ -72,7 +72,7 @@ std::string EventManager::returnMessageFromMatchActions() {
                         return json_message.dump();
 
                     }
-                    case sf::Keyboard::Right: {
+                    case sf::Keyboard::D: {
                         if (arrows & 0b1000) {
                             return goMessage(0b1000);
                         }
@@ -85,7 +85,7 @@ std::string EventManager::returnMessageFromMatchActions() {
                             return json_message.dump();
 
                     }
-                    case sf::Keyboard::Up: {
+                    case sf::Keyboard::W: {
                         if (arrows & 0b0100) {
                             return goMessage(0b0100);
                         }
@@ -97,7 +97,7 @@ std::string EventManager::returnMessageFromMatchActions() {
 //                    std::cout << json_message.dump();
                         return json_message.dump();
                     }
-                    case sf::Keyboard::Down:
+                    case sf::Keyboard::S:
                     {
                         if (arrows & 0b0010) {
                             return goMessage(0b0010);
@@ -134,7 +134,7 @@ std::string EventManager::returnMessageFromMatchActions() {
 //                        std::cout << json_message.dump() << std::endl;
                         return json_message.dump();
                     }
-                    case sf::Keyboard::Left: {
+                    case sf::Keyboard::A: {
                         if(arrows & 0b0001) {
                             json json_message;
                             json_message["status"] = "OK";
@@ -146,7 +146,7 @@ std::string EventManager::returnMessageFromMatchActions() {
                         }
                         return goMessage(0b1000);
                     }
-                    case sf::Keyboard::Right: {
+                    case sf::Keyboard::D: {
                         if(arrows & 0b1000) {
                             json json_message;
                             json_message["status"] = "OK";
@@ -158,7 +158,7 @@ std::string EventManager::returnMessageFromMatchActions() {
                         }
                         return goMessage(0b0001);
                     }
-                    case sf::Keyboard::Up: {
+                    case sf::Keyboard::W: {
                         if(arrows & 0b0100) {
                             json json_message;
                             json_message["status"] = "OK";
@@ -170,7 +170,7 @@ std::string EventManager::returnMessageFromMatchActions() {
                         }
                         return goMessage(0b0010);
                     }
-                    case sf::Keyboard::Down: {
+                    case sf::Keyboard::S: {
                         if(arrows & 0b0010) {
                             json json_message;
                             json_message["status"] = "OK";
@@ -232,8 +232,8 @@ void EventManager::handleMatchPauseActions() {
 
 }
 
-char EventManager::getPressedArrows(sf::Keyboard::Key left, sf::Keyboard::Key down, sf::Keyboard::Key up,
-                                    sf::Keyboard::Key right) {
+char EventManager::getPressedArrows(sf::Keyboard::Key left = sf::Keyboard::A, sf::Keyboard::Key down = sf::Keyboard::S, sf::Keyboard::Key up = sf::Keyboard::W,
+                                    sf::Keyboard::Key right = sf::Keyboard::D) {
     assert(left);
     assert(down);
     assert(up);
