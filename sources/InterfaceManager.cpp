@@ -530,6 +530,36 @@ void InterfaceManager::makeInterface() {
                 }
                 heathbarloaded = true;
             }
+
+            if (messageloaded) {
+
+            } else {
+                try {
+                    static auto windowWin = tgui::MessageBox::create();
+                    windowWin->setPosition("40%", "40%");
+                    windowWin->setSize("20%","20%");
+                    gui.add(windowWin);
+
+                    static auto label = tgui::Label::create("<Player> won!");
+//                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
+//                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
+                    label->setPosition("15%","25%");
+                    label->setTextSize(20);
+                    windowWin->add(label);
+
+                    static auto buttonExit = tgui::Button::create("Exit");
+                    buttonExit->setSize("20%","20%");
+                    buttonExit->setPosition("40%","65%");
+                    windowWin->add(buttonExit);
+
+                }
+                catch (const tgui::Exception &e) {
+                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                    assert(0);
+                }
+                messageloaded = true;
+            }
+
             break;
         }
     }
