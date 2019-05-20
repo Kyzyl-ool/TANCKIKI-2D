@@ -28,21 +28,18 @@ interfaceManager(interfaceManager)
 }
 
 std::string EventManager::getMessageFromGameObjects() {
-    if (pollEvent())
-    {
         switch (*state) {
             case GAME_STATE_MULTIPLAYER_MATCH:
             case GAME_STATE_MATCH: {
                 return returnMessageFromMatchActions();
             }
-            case GAME_STATE_MATCH_PAUSE: {
-                handleMatchPauseActions();
-                break;
-            }
+//            case GAME_STATE_MATCH_PAUSE: {
+//                handleMatchPauseActions();
+//                break;
+//            }
             default:
                 break;
         }
-    }
     return std::string();
 }
 

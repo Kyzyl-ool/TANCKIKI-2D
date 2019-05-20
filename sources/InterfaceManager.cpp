@@ -27,6 +27,8 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 
 void InterfaceManager::loadMainMenuWidgets() {
     try {
+        gui.removeAllWidgets();
+
         static auto picture = tgui::Picture::create({"images/forest.svg", sf::IntRect(0, 0, 1000, 700)}); //Failed to create texture, invalid size (0x0)
         picture->setSize({WINDOW_WIDTH, WINDOW_HEIGHT});
         gui.add(picture);
@@ -58,6 +60,7 @@ void InterfaceManager::loadMainMenuWidgets() {
         quitButton->setTextSize(0);
         gui.add(quitButton);
         WidgetsMenu::add_widget(quitButton);
+
 
         static auto loginWindow = tgui::MessageBox::create();
         loginWindow->setSize({"40%", "30%"});
@@ -114,7 +117,9 @@ void InterfaceManager::loadMainMenuWidgets() {
         });
 
         quitButton->connect("pressed", &InterfaceManager::signalHandler3, this);
-        quitButton->connect("pressed", [&](){ mainWindow.close(); });
+        quitButton->connect("pressed", [&](){
+            mainWindow.close();
+        });
 
         buttonLogin->connect("pressed", [&](){
             std::pair <std::string, std::string> tmp = WidgetsMenu::login();
@@ -325,11 +330,9 @@ void InterfaceManager::loadMainMenuWidgets() {
 void InterfaceManager::makeInterface() {
     switch (*state) {
         case GAME_STATE_MATCH_PAUSE: {
-
             if (pauseloaded) {
                 gui.get("LaL")->setVisible(true);
             } else {
-
                 try {
                     static auto pauseWindow = tgui::MessageBox::create();
                     pauseWindow->setSize({"40%", "30%"});
@@ -363,6 +366,11 @@ void InterfaceManager::makeInterface() {
 //                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
 
 
+                    buttonExit->connect("pressed", [&](){
+                        std::cout << "eit" << std::endl;
+                        *state = GAME_STATE_MAIN_MENU;
+                        delete match;
+                    });
 
                     buttonCancel->connect("pressed", [&](){
 //                        pauseloaded = false;
@@ -382,6 +390,7 @@ void InterfaceManager::makeInterface() {
             break;
         }
         case GAME_STATE_MAIN_MENU: {
+
             if (!mainmenuloaded) {
                 loadMainMenuWidgets();
                 mainmenuloaded = true;
@@ -391,9 +400,8 @@ void InterfaceManager::makeInterface() {
         case GAME_STATE_CREATE_MATCH:
         case GAME_STATE_CREATE_MULTIPLAYER_MATCH:
         {
-
-            mainmenuloaded = true;
-            matchesLoaded = true;
+            mainmenuloaded = false;
+            matchesLoaded = false;
             gui.removeAllWidgets();
             break;
         }
@@ -404,6 +412,8 @@ void InterfaceManager::makeInterface() {
         }
         case GAME_STATE_MULTIPLAYER_MATCH:
         case GAME_STATE_MATCH: {
+            mainmenuloaded = false;
+            matchesLoaded = false;
             if (pauseloaded)
                gui.get("LaL")->setVisible(false);
             auto tanks = objectManager->getTanks(); //вектор танков
