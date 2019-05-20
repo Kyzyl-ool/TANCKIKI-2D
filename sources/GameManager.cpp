@@ -23,7 +23,6 @@ view(the_view)
 void GameManager::runGame() {
     mainWindow.setKeyRepeatEnabled(false);
     while (mainWindow.isOpen()) {
-
         if (state != GAME_STATE_MATCH_CHOOSE && state != GAME_STATE_CREATE_MULTIPLAYER_MATCH) interfaceManager->makeInterface();
         if (state != GAME_STATE_MATCH && state != GAME_STATE_MATCH_PAUSE) handleEvent();
         mainWindow.display();
@@ -166,6 +165,10 @@ void GameManager::runGame() {
                 break;
             }
             case GAME_STATE_CREATE_MATCH: {
+                if (isGameReady) {
+                    state = GAME_STATE_MATCH;
+                    break;
+                }
                 mainWindow.clear();
                 ///@todo прочитать players_info_json, map_json;
                 std::string line, players_info_json, map_json;
@@ -192,7 +195,7 @@ void GameManager::runGame() {
                 eventManager->setObjectManager(match->getObjectManager());
                 eventManager->setPlayerId(match->getMyPlayerId());
                 eventManager->setMatch(match);
-                state = GAME_STATE_MATCH;
+                isGameReady = true;
                 break;
             }
             case GAME_STATE_MATCH_PAUSE:
@@ -220,6 +223,13 @@ void GameManager::runGame() {
                 match->drawMatch();
 //                gui.handleEvent();
                 break;
+            }
+            case GAME_STATE_MAIN_MENU: {
+                if (isGameReady) {
+                    isGameReady = false;
+                    delete match;
+                    match = nullptr;
+                }
             }
             default: {
                 mainWindow.clear();

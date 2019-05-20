@@ -38,6 +38,8 @@ private:
     sf::Clock clock;
     std::vector <json> matches;
 
+    bool isGameReady = false;
+
 public:
     GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event,
                 NetworkManager &the_networkmanager, sf::View &view);

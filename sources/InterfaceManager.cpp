@@ -325,11 +325,9 @@ void InterfaceManager::loadMainMenuWidgets() {
 void InterfaceManager::makeInterface() {
     switch (*state) {
         case GAME_STATE_MATCH_PAUSE: {
-
             if (pauseloaded) {
                 gui.get("LaL")->setVisible(true);
             } else {
-
                 try {
                     static auto pauseWindow = tgui::MessageBox::create();
                     pauseWindow->setSize({"40%", "30%"});
@@ -361,7 +359,9 @@ void InterfaceManager::makeInterface() {
                     pauseWindow->add(label);
 //                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
 //                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
-
+                    buttonExit->connect("pressed", [&]() {
+                        *state = GAME_STATE_MAIN_MENU;
+                    });
 
 
                     buttonCancel->connect("pressed", [&](){
@@ -383,6 +383,7 @@ void InterfaceManager::makeInterface() {
         }
         case GAME_STATE_MAIN_MENU: {
             if (!mainmenuloaded) {
+                gui.removeAllWidgets();
                 loadMainMenuWidgets();
                 mainmenuloaded = true;
             }
@@ -391,9 +392,14 @@ void InterfaceManager::makeInterface() {
         case GAME_STATE_CREATE_MATCH:
         case GAME_STATE_CREATE_MULTIPLAYER_MATCH:
         {
-
-            mainmenuloaded = true;
-            matchesLoaded = true;
+            matchesLoaded = false;
+            tanksnameloaded = false;
+            heathbarloaded = false;
+            heathbarloaded = false;
+            pauseloaded = false;
+            mainmenuloaded = false;
+            healthTanks.clear();
+            nameTanks.clear();
             gui.removeAllWidgets();
             break;
         }
