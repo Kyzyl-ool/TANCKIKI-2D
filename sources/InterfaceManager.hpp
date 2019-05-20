@@ -92,6 +92,8 @@ public:
     void onCreateMatchClick();
 
     void loadMainMenuWidgets();
+
+    void onRefresh();
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP

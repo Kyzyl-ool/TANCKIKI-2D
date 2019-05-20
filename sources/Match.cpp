@@ -311,7 +311,6 @@ void Match::processMessage(const std::string &message, int iMyPlayerId = -1) {
             break;
         }
         case GAMEOBJECT_MESSAGE_SHOOT: {
-            std::cout << "Shoot" << std::endl;
             GameObject* bullet = objectManager->getGameObjectById(tankId)->shot();
             if(bullet) objectManager->addGameObject(bullet);
             break;
