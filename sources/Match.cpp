@@ -4,6 +4,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 #include "Match.hpp"
 #include "blocks.hpp"
 #include "Tank.hpp"
@@ -111,12 +112,68 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     ///@todo создать amount_of_players танков
 
     for(int i = 0; i < amount_of_players; ++i) {
-        Tank *tank = new Tank(1000, players_names[i], "blue1");
-        tank->setPosition(playersInitialCoord[i].first, playersInitialCoord[i].second);
-        tank->setObjectId(i);
-        tank->setTypeBullet(MIDDLESHOT);
-        tank->setOwnerId(i);
-        objectManager->addGameObject(tank);
+        if (i == myPlayerId) {
+            std::ifstream fi("./sources/json/armament.json");
+            json armament;
+            fi >> armament;
+            int bullet = armament["bullet"];
+            int skin = armament["skin"];
+            fi.close();
+
+            std::string skinName;
+            switch (skin) {
+                case 1:
+                    skinName = "yellow1";
+                    break;
+                case 2:
+                    skinName = "green1";
+                    break;
+                case 3:
+                    skinName = "purple1";
+                    break;
+                case 4:
+                    skinName = "blue1";
+                    break;
+                case 5:
+                    skinName = "violet1";
+                    break;
+                default:
+                    assert(!"Unknown skin number");
+                    break;
+            }
+
+            Bullet_t bulletType = ABYSSSHOT;
+
+            switch (bullet) {
+                case 1:
+                    bulletType = LOWSHOT;
+                    break;
+                case 2:
+                    bulletType = MIDDLESHOT;
+                    break;
+                case 3:
+                    bulletType = POWERFULLSHOT;
+                    break;
+                default:
+                    assert(!"Unknown bullet id");
+                    break;
+            }
+
+            Tank *tank = new Tank(1000, players_names[i], skinName);
+            tank->setPosition(playersInitialCoord[i].first, playersInitialCoord[i].second);
+            tank->setObjectId(i);
+            tank->setTypeBullet(bulletType);
+            tank->setOwnerId(i);
+            objectManager->addGameObject(tank);
+        }
+        else {
+            Tank *tank = new Tank(1000, players_names[i], "blue1");
+            tank->setPosition(playersInitialCoord[i].first, playersInitialCoord[i].second);
+            tank->setObjectId(i);
+            tank->setTypeBullet(MIDDLESHOT);
+            tank->setOwnerId(i);
+            objectManager->addGameObject(tank);
+        }
     }
 
     for(int l =0; l < 10; ++l) {

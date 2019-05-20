@@ -163,35 +163,21 @@ void InterfaceManager::loadMainMenuWidgets() {
 
         static auto radioButton1 = tgui::RadioButton::create();
         radioButton1->setPosition("10%", "15%");
-        radioButton1->setText("1");
+        radioButton1->setText("Light");
         radioButton1->setSize(20, 20);
         BUL->add(radioButton1);
 
         static auto radioButton2 = tgui::RadioButton::create();
         radioButton2->setPosition("10%", "25%");
-        radioButton2->setText("2");
+        radioButton2->setText("Medium");
         radioButton2->setSize(20, 20);
         BUL->add(radioButton2);
 
         static auto radioButton3 = tgui::RadioButton::create();
         radioButton3->setPosition("10%", "35%");
-        radioButton3->setText("3");
+        radioButton3->setText("Powerful");
         radioButton3->setSize(20, 20);
         BUL->add(radioButton3);
-
-        switch (bullet) {
-            case 1:
-                radioButton1->setChecked(true);
-                break;
-            case 2:
-                radioButton2->setChecked(true);
-                break;
-            case 3:
-                radioButton3->setChecked(true);
-                break;
-            default:
-                assert(!"Invalid radiobutton");
-        }
 
         static auto SKIN = tgui::Group::create();
         SKIN->setSize("25%", "90%");
@@ -206,64 +192,51 @@ void InterfaceManager::loadMainMenuWidgets() {
 
         static auto skinButton1 = tgui::RadioButton::create();
         skinButton1->setPosition("10%", "15%");
-        skinButton1->setText("1");
+        skinButton1->setText("Yellow");
         skinButton1->setSize(20, 20);
         SKIN->add(skinButton1);
 
         static auto skinButton2 = tgui::RadioButton::create();
         skinButton2->setPosition("10%", "25%");
-        skinButton2->setText("2");
+        skinButton2->setText("Green");
         skinButton2->setSize(20, 20);
         SKIN->add(skinButton2);
 
         static auto skinButton3 = tgui::RadioButton::create();
         skinButton3->setPosition("10%", "35%");
-        skinButton3->setText("3");
+        skinButton3->setText("Purple");
         skinButton3->setSize(20, 20);
         SKIN->add(skinButton3);
 
         static auto skinButton4 = tgui::RadioButton::create();
         skinButton4->setPosition("10%", "45%");
-        skinButton4->setText("4");
+        skinButton4->setText("Blue");
         skinButton4->setSize(20, 20);
         SKIN->add(skinButton4);
 
         static auto skinButton5 = tgui::RadioButton::create();
         skinButton5->setPosition("10%", "55%");
-        skinButton5->setText("5");
+        skinButton5->setText("Violet");
         skinButton5->setSize(20, 20);
         SKIN->add(skinButton5);
 
-        switch (skin) {
-            case 1:
-                skinButton1->setChecked(true);
-                break;
-            case 2:
-                skinButton2->setChecked(true);
-                break;
-            case 3:
-                skinButton3->setChecked(true);
-                break;
-            case 4:
-                skinButton4->setChecked(true);
-                break;
-            case 5:
-                skinButton5->setChecked(true);
-                break;
-            default:
-                assert(!"Invalid skin");
-        }
+
 
         fi.close();
 
         static auto tankView = tgui::Panel::create();
-        tankView->setSize("40%", "40%");
+        tankView->setSize("50%", "40%");
         tankView->setPosition("55%", "5%");
         settingsWindow->add(tankView);
 
+        static auto bulletView = tgui::Panel::create();
+        bulletView->setSize("5%", "40%");
+        bulletView->setPosition("90%", "5%");
+        settingsWindow->add(bulletView);
+
 
         static auto labelColor = tgui::Label::create();
-        labelColor->setText("Color:");
+        labelColor->setText("HP: 1000");
         labelColor->setPosition("55%", "50%");
         labelColor->setTextSize(20);
         settingsWindow->add(labelColor);
@@ -279,6 +252,179 @@ void InterfaceManager::loadMainMenuWidgets() {
         labelRelTime->setPosition("55%", "70%");
         labelRelTime->setTextSize(20);
         settingsWindow->add(labelRelTime);
+
+        auto tankTexture1 = tgui::Texture("images/Htanks.png", {295,214,95,53});
+        static auto tankPicture1 = tgui::Picture::create(tankTexture1);
+        auto towerTexture1 = tgui::Texture("images/Htanks.png", {298,174,86,40});
+        static auto towerPicture1 = tgui::Picture::create(towerTexture1);
+
+        auto tankTexture2 = tgui::Texture("images/Htanks.png", {297,108,95,53});
+        static auto tankPicture2 = tgui::Picture::create(tankTexture2);
+        auto towerTexture2 = tgui::Texture("images/Htanks.png", {300,68,86,40});
+        static auto towerPicture2 = tgui::Picture::create(towerTexture2);
+
+        auto tankTexture3 = tgui::Texture("images/Htanks.png", {289,525,95,53});
+        static auto tankPicture3 = tgui::Picture::create(tankTexture3);
+        auto towerTexture3 = tgui::Texture("images/Htanks.png", {292,485,86,40});
+        static auto towerPicture3 = tgui::Picture::create(towerTexture3);
+
+        auto tankTexture4 = tgui::Texture("images/Htanks.png", {398,109,95,53});
+        static auto tankPicture4 = tgui::Picture::create(tankTexture4);
+        auto towerTexture4 = tgui::Texture("images/Htanks.png", {401,68,86,40});
+        static auto towerPicture4 = tgui::Picture::create(towerTexture4);
+
+        auto tankTexture5 = tgui::Texture("images/Htanks.png", {196,108,95,53});
+        static auto tankPicture5 = tgui::Picture::create(tankTexture5);
+        auto towerTexture5 = tgui::Texture("images/Htanks.png", {199,68,86,40});
+        static auto towerPicture5 = tgui::Picture::create(towerTexture5);
+
+        towerPicture1->setPosition(40, 5);
+        towerPicture2->setPosition(40, 5);
+        towerPicture3->setPosition(40, 5);
+        towerPicture4->setPosition(40, 5);
+        towerPicture5->setPosition(40, 5);
+
+        auto bulletTexture1 = tgui::Texture("images/bullet_1.png", {20,13,10,8});
+        static auto bulletPicture1 = tgui::Picture::create(bulletTexture1);
+
+        auto bulletTexture2 = tgui::Texture("images/bullet_1.png", {39,222,20,11});
+        static auto bulletPicture2 = tgui::Picture::create(bulletTexture2);
+
+        auto bulletTexture3 = tgui::Texture("images/bullet_1.png", {279,214,15,12});
+        static auto bulletPicture3 = tgui::Picture::create(bulletTexture3);
+
+
+
+        bulletPicture1->setSize({bulletPicture1->getSize().x*1.5, bulletPicture1->getSize().y*1.5});
+        bulletPicture2->setSize({bulletPicture2->getSize().x*1.5, bulletPicture2->getSize().y*1.5});
+        bulletPicture3->setSize({bulletPicture3->getSize().x*1.5, bulletPicture3->getSize().y*1.5});
+        bulletPicture1->setPosition("2%", "23%");
+        bulletPicture2->setPosition("2%", "22%");
+        bulletPicture3->setPosition("2%", "22%");
+
+
+        tankPicture1->setSize({"50%", "50%"});
+        towerPicture1->setSize({"50%", "50%"});
+        tankPicture2->setSize({"50%", "50%"});
+        towerPicture2->setSize({"50%", "50%"});
+        tankPicture3->setSize({"50%", "50%"});
+        towerPicture3->setSize({"50%", "50%"});
+        tankPicture4->setSize({"50%", "50%"});
+        towerPicture4->setSize({"50%", "50%"});
+        tankPicture5->setSize({"50%", "50%"});
+        towerPicture5->setSize({"50%", "50%"});
+
+
+
+
+        switch (skin) {
+            case 1:
+                skinButton1->setChecked(true);
+                tankView->add(tankPicture1);
+                tankView->add(towerPicture1);
+                break;
+            case 2:
+                skinButton2->setChecked(true);
+                tankView->add(tankPicture2);
+                tankView->add(towerPicture2);
+                break;
+            case 3:
+                skinButton3->setChecked(true);
+                tankView->add(tankPicture3);
+                tankView->add(towerPicture3);
+                break;
+            case 4:
+                skinButton4->setChecked(true);
+                tankView->add(tankPicture4);
+                tankView->add(towerPicture4);
+                break;
+            case 5:
+                skinButton5->setChecked(true);
+                tankView->add(tankPicture5);
+                tankView->add(towerPicture5);
+                break;
+            default:
+                assert(!"Invalid skin");
+        }
+
+        switch (bullet) {
+            case 1:
+                radioButton1->setChecked(true);
+                bulletView->add(bulletPicture1);
+                labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
+                labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
+                break;
+            case 2:
+                radioButton2->setChecked(true);
+                bulletView->add(bulletPicture2);
+                labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
+                labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
+                break;
+            case 3:
+                radioButton3->setChecked(true);
+                bulletView->add(bulletPicture3);
+                labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
+                labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
+                break;
+            default:
+                assert(!"Invalid radiobutton");
+        }
+
+        radioButton1->connect("checked", [&](){
+            bulletView->removeAllWidgets();
+            bulletView->add(bulletPicture1);
+            labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
+            labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
+        });
+
+        radioButton2->connect("checked", [&](){
+            bulletView->removeAllWidgets();
+            bulletView->add(bulletPicture2);
+            labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
+            labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
+        });
+
+        radioButton3->connect("checked", [&](){
+            bulletView->removeAllWidgets();
+            bulletView->add(bulletPicture3);
+            labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
+            labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
+        });
+
+        skinButton1->connect("checked", [&](){
+            tankView->removeAllWidgets();
+            tankView->add(tankPicture1);
+            tankView->add(towerPicture1);
+        });
+        skinButton2->connect("checked", [&](){
+            tankView->removeAllWidgets();
+            tankView->add(tankPicture2);
+            tankView->add(towerPicture2);
+        });
+        skinButton3->connect("checked", [&](){
+            tankView->removeAllWidgets();
+            tankView->add(tankPicture3);
+            tankView->add(towerPicture3);
+        });
+        skinButton4->connect("checked", [&](){
+            tankView->removeAllWidgets();
+            tankView->add(tankPicture4);
+            tankView->add(towerPicture4);
+        });
+        skinButton5->connect("checked", [&](){
+            tankView->removeAllWidgets();
+            tankView->add(tankPicture5);
+            tankView->add(towerPicture5);
+        });
+
+
+
+//        gui.add(towerPicture);
+
+
+//        sf:: setTexture("images/Htanks.png");
+//        setSprite(297,108,95,53);
+//        setSpriteTower(300,68,86,40);
 
 
         settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
