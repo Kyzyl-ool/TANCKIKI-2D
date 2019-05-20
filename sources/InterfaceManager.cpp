@@ -369,7 +369,6 @@ void InterfaceManager::makeInterface() {
                     buttonExit->connect("pressed", [&](){
                         std::cout << "eit" << std::endl;
                         *state = GAME_STATE_MAIN_MENU;
-                        delete match;
                     });
 
                     buttonCancel->connect("pressed", [&](){
@@ -390,8 +389,8 @@ void InterfaceManager::makeInterface() {
             break;
         }
         case GAME_STATE_MAIN_MENU: {
-
             if (!mainmenuloaded) {
+                gui.removeAllWidgets();
                 loadMainMenuWidgets();
                 mainmenuloaded = true;
             }
@@ -402,6 +401,12 @@ void InterfaceManager::makeInterface() {
         {
             mainmenuloaded = false;
             matchesLoaded = false;
+            pauseloaded = false;
+            messageloaded = false;
+            heathbarloaded = false;
+            tanksnameloaded = false;
+            healthTanks.clear();
+            nameTanks.clear();
             gui.removeAllWidgets();
             break;
         }
@@ -412,8 +417,6 @@ void InterfaceManager::makeInterface() {
         }
         case GAME_STATE_MULTIPLAYER_MATCH:
         case GAME_STATE_MATCH: {
-            mainmenuloaded = false;
-            matchesLoaded = false;
             if (pauseloaded)
                gui.get("LaL")->setVisible(false);
             auto tanks = objectManager->getTanks(); //вектор танков
@@ -478,7 +481,6 @@ void InterfaceManager::makeInterface() {
 
             else {
                 for (auto i = 0; i < tanks.size(); i++) {
-
                     try {
                         nameTanks.push_back(tgui::Label::create(tanks[i]->getName()));
                         nameTanks[i]->getRenderer()->setTextColor(sf::Color::White);
@@ -528,7 +530,6 @@ void InterfaceManager::makeInterface() {
             }
             else {
                 for (auto i = 0; i < tanks.size(); i++) {
-
                     try {
                         healthTanks.push_back(tgui::ProgressBar::create());
                         gui.add(healthTanks[i]);

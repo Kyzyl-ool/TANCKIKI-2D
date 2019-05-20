@@ -23,11 +23,12 @@ view(the_view)
 void GameManager::runGame() {
     mainWindow.setKeyRepeatEnabled(false);
     while (mainWindow.isOpen()) {
+        mainWindow.clear();
         handleEvent();
         doAction();
         interfaceManager->makeInterface();
-//        mainWindow.clear();
         mainWindow.display();
+
     }
 }
 
@@ -57,15 +58,8 @@ void GameManager::handleEvent() {
                         }
                         break;
                     }
-                    case sf::Keyboard::Escape: {
-                        mainWindow.close();
-                        std::cout << "Window closed by Escape\n";
-                        break;
-                    }
                     default:
-                    {
                         break;
-                    }
                 }
             }
             default: {
@@ -86,7 +80,6 @@ GameManager::~GameManager() {
 void GameManager::doAction() {
     switch (state) {
         case GAME_STATE_MULTIPLAYER_MATCH: {
-            mainWindow.clear();
             networkManager.processPakcetsFromServer();
             auto action = eventManager->getMessageFromGameObjects();
             if (!action.empty())
@@ -186,7 +179,6 @@ void GameManager::doAction() {
             break;
         }
         case GAME_STATE_MATCH_CHOOSE: {
-            mainWindow.clear();
             json j = networkManager.getGamesList();
             if (j.empty()) {
                 std::cout << "There are no games in server. Do you want to create your own game? [y/n]: ";
@@ -220,40 +212,41 @@ void GameManager::doAction() {
             break;
         }
         case GAME_STATE_CREATE_MATCH: {
-            mainWindow.clear();
-            ///@todo прочитать players_info_json, map_json;
-            std::string line, players_info_json, map_json;
-            std::ifstream mapfile (MAP_FILE);
-            std::ifstream playerInfofile ("./sources/json/players_info.txt");
-            if (mapfile.is_open())  {
-                while (getline(mapfile,line))  {
-                    map_json += line + '\n';
+            if (isMatchReady)
+                state = GAME_STATE_MATCH;
+            else {
+                ///@todo прочитать players_info_json, map_json;
+                std::string line, players_info_json, map_json;
+                std::ifstream mapfile (MAP_FILE);
+                std::ifstream playerInfofile ("./sources/json/players_info.txt");
+                if (mapfile.is_open())  {
+                    while (getline(mapfile,line))  {
+                        map_json += line + '\n';
+                    }
+                    mapfile.close();
                 }
-                mapfile.close();
-            }
-            if (playerInfofile.is_open())  {
-                while (getline(playerInfofile,line))  {
-                    players_info_json += line + '\n';
+                if (playerInfofile.is_open())  {
+                    while (getline(playerInfofile,line))  {
+                        players_info_json += line + '\n';
+                    }
+                    playerInfofile.close();
                 }
-                playerInfofile.close();
-            }
 
-            clock.restart();
-            match = new Match(mainWindow, players_info_json, map_json, view, 0);
-            interfaceManager->setMapName(match->getMapName());
-            interfaceManager->setObjectManager(match->getObjectManager());
-            interfaceManager->setMatch(match);
-            eventManager->setObjectManager(match->getObjectManager());
-            eventManager->setPlayerId(match->getMyPlayerId());
-            eventManager->setMatch(match);
-            state = GAME_STATE_MATCH;
+                clock.restart();
+                match = new Match(mainWindow, players_info_json, map_json, view, 0);
+                interfaceManager->setMapName(match->getMapName());
+                interfaceManager->setObjectManager(match->getObjectManager());
+                interfaceManager->setMatch(match);
+                eventManager->setObjectManager(match->getObjectManager());
+                eventManager->setPlayerId(match->getMyPlayerId());
+                eventManager->setMatch(match);
+
+                isMatchReady = true;
+            }
             break;
         }
         case GAME_STATE_MATCH_PAUSE:
         case GAME_STATE_MATCH: {
-            mainWindow.clear();
-
-
             Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
             auto tmp1 = sf::Mouse::getPosition(mainWindow);
             float sinus = tmp->checkOrient(tmp1.x, tmp1.y, &mainWindow);
@@ -277,8 +270,16 @@ void GameManager::doAction() {
 //                gui.handleEvent();
             break;
         }
+        case GAME_STATE_MAIN_MENU: {
+            if (isMatchReady) {
+                isMatchReady = false;
+                delete match;
+                match = nullptr;
+            }
+
+            break;
+        }
         default: {
-            mainWindow.clear();
             break;
         }
     }
