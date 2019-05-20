@@ -913,6 +913,10 @@ void InterfaceManager::renderMatches() {
             buttonCancel->setTextSize(16);
             createWindow->add(buttonCancel);
 
+//            butBack->connect("pressed", [&](){
+//                *state = GAME_STATE_MAIN_MENU;
+//            });
+
             butCreate->connect("pressed", [&](){
                 listBox->setEnabled(false);
                 butBack->setEnabled(false);
@@ -936,6 +940,9 @@ void InterfaceManager::renderMatches() {
             });
 
             butBack->connect("pressed", [&](){
+                gui.removeAllWidgets();
+                matchesLoaded = false;
+                mainmenuloaded = false;
                 *state = GAME_STATE_MAIN_MENU;
                 std::cout << "BACK PRESSED" << std::endl;
             });
