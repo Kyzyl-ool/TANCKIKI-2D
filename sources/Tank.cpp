@@ -67,7 +67,7 @@ Tank::Tank(float health, const std::string &the_player_name, const std::string &
 
     if(color == "blue1") {
         setSprite(398,109,95,53);
-        setSpriteTower(401,68,86,40);
+        setSpriteTower(401,69,86,40);
     }
     if(color == "blue2") {
         setSprite(397,214,95,53);

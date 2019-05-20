@@ -270,7 +270,7 @@ void InterfaceManager::loadMainMenuWidgets() {
 
         auto tankTexture4 = tgui::Texture("images/Htanks.png", {398,109,95,53});
         static auto tankPicture4 = tgui::Picture::create(tankTexture4);
-        auto towerTexture4 = tgui::Texture("images/Htanks.png", {401,68,86,40});
+        auto towerTexture4 = tgui::Texture("images/Htanks.png", {401,69,86,40});
         static auto towerPicture4 = tgui::Picture::create(towerTexture4);
 
         auto tankTexture5 = tgui::Texture("images/Htanks.png", {196,108,95,53});
@@ -684,58 +684,41 @@ void InterfaceManager::makeInterface() {
                 }
                 heathbarloaded = true;
             }
-
-            if (messageloaded) {
-
-            } else {
-                try {
-                    static auto windowWin = tgui::MessageBox::create();
-                    windowWin->setPosition("40%", "40%");
-                    windowWin->setSize("20%","20%");
-                    gui.add(windowWin);
-                    gui.setWidgetName(windowWin, "windowWin");
-                    windowWin->setVisible(false);
-
-
-
-
-                    static auto label = tgui::Label::create("<Player> won!");
-//                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
-//                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
-                    label->setPosition("15%","25%");
-                    label->setTextSize(20);
-                    windowWin->add(label);
-                    windowWin->setWidgetName(label, "PlayerWinLabel");
-
-
-
-
-
-                    static auto buttonExit = tgui::Button::create("Exit");
-                    buttonExit->setSize("20%","20%");
-                    buttonExit->setPosition("40%","65%");
-                    windowWin->add(buttonExit);
-
-                    buttonExit->connect("pressed", [&](){
-                        *state = GAME_STATE_MAIN_MENU;
-                    });
-
-                }
-                catch (const tgui::Exception &e) {
-                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
-                    assert(0);
-                }
-                messageloaded = true;
-            }
-
             break;
         }
         case GAME_STATE_MATCH_ENDED: {
-            auto widget = gui.get <tgui::MessageBox> ("windowWin");
-            widget->setVisible(true);
-            
-            auto w2 = widget->get <tgui::Label> ("PlayerWinLabel");
-            w2->setText( objectManager->getWinner()->getName()+" is winner!" );
+            if (!messageloaded)
+            try {
+                gui.removeAllWidgets();
+                static auto windowWin = tgui::MessageBox::create();
+                windowWin->setPosition("40%", "40%");
+                windowWin->setSize("20%","20%");
+                gui.add(windowWin);
+
+                static auto label = tgui::Label::create(objectManager->getWinner()->getName()+" won!");
+//                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
+//                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
+                label->setPosition("15%","25%");
+                label->setTextSize(20);
+                windowWin->add(label);
+
+                static auto buttonExit = tgui::Button::create("Exit");
+                buttonExit->setSize("20%","20%");
+                buttonExit->setPosition("40%","65%");
+                windowWin->add(buttonExit);
+
+                buttonExit->connect("pressed", [&](){
+                    *state = GAME_STATE_MAIN_MENU;
+                });
+
+                messageloaded = true;
+
+            }
+            catch (const tgui::Exception &e) {
+                std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                assert(0);
+            }
+
             break;
         }
     }
