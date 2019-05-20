@@ -83,7 +83,7 @@ void GameManager::runGame() {
                 }
 
                 clock.restart();
-                match = new Match(mainWindow, players_info_json, map_json, view, 0);
+                match = new Match(mainWindow, players_info_json, map_json, view, 0, &state);
                 std::cout << "Match created" << std::endl;
                 match->setDeathLine(0);
                 interfaceManager->setMapName(match->getMapName());
@@ -188,7 +188,7 @@ void GameManager::runGame() {
                 }
 
                 clock.restart();
-                match = new Match(mainWindow, players_info_json, map_json, view, 0);
+                match = new Match(mainWindow, players_info_json, map_json, view, 0, &state);
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
                 interfaceManager->setMatch(match);

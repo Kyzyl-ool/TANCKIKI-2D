@@ -49,3 +49,18 @@ Tank *ObjectManager::getTankById(int tankId) {
 
     return tanks[tankId];
 }
+
+Tank *ObjectManager::getWinner() {
+    int alive_tanks = 0;
+    Tank* winner = nullptr;
+    for (const auto &tank : tanks) {
+        if (tank->isAlive()) {
+            alive_tanks++;
+            winner = tank;
+        }
+    }
+    if (alive_tanks == 1) {
+        return winner;
+    }
+    return nullptr;
+}

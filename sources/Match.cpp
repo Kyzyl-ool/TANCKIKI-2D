@@ -17,8 +17,8 @@ using json = nlohmann::json;
 
 
 Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
-             int iMyPlayerId) {
-
+             int iMyPlayerId, gameState_t *iState) {
+    state = iState;
     deathTime = 0;
     deathLine = 0;
     json map_j = json::parse(map_json);
@@ -206,6 +206,10 @@ void Match::updateMatch(float time) {
         }
     }
     physicsManager->updateGameObjects(this, time);
+
+    if (objectManager->getWinner()) {
+        *state = GAME_STATE_MATCH_ENDED;
+    }
 }
 
 const std::string &Match::getMapName() const {

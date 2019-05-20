@@ -9,12 +9,14 @@
 #include "GraphicsManager.hpp"
 #include "PhysicsManager.hpp"
 #include "ObjectManager.hpp"
+#include "constants/gameStates.hpp"
 
 class Match {
 private:
     ObjectManager* objectManager;
     GraphicsManager* graphicsManager;
     PhysicsManager* physicsManager;
+    gameState_t* state;
     std::string mapName;
     int myPlayerId;
 public:
@@ -49,7 +51,7 @@ public:
     GraphicsManager *getGraphicsManager() const;
 
     Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::string map_json, sf::View &view,
-          int iMyPlayerId);
+          int iMyPlayerId, gameState_t *iState);
     ~Match();
 
     void drawMatch();

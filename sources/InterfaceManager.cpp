@@ -398,6 +398,8 @@ void InterfaceManager::makeInterface() {
             heathbarloaded = false;
             pauseloaded = false;
             mainmenuloaded = false;
+            messageloaded = false;
+            ammuncount = false;
             healthTanks.clear();
             nameTanks.clear();
             gui.removeAllWidgets();
@@ -545,6 +547,11 @@ void InterfaceManager::makeInterface() {
                     windowWin->setPosition("40%", "40%");
                     windowWin->setSize("20%","20%");
                     gui.add(windowWin);
+                    gui.setWidgetName(windowWin, "windowWin");
+                    windowWin->setVisible(false);
+
+
+
 
                     static auto label = tgui::Label::create("<Player> won!");
 //                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
@@ -552,11 +559,20 @@ void InterfaceManager::makeInterface() {
                     label->setPosition("15%","25%");
                     label->setTextSize(20);
                     windowWin->add(label);
+                    windowWin->setWidgetName(label, "PlayerWinLabel");
+
+
+
+
 
                     static auto buttonExit = tgui::Button::create("Exit");
                     buttonExit->setSize("20%","20%");
                     buttonExit->setPosition("40%","65%");
                     windowWin->add(buttonExit);
+
+                    buttonExit->connect("pressed", [&](){
+                        *state = GAME_STATE_MAIN_MENU;
+                    });
 
                 }
                 catch (const tgui::Exception &e) {
@@ -566,6 +582,14 @@ void InterfaceManager::makeInterface() {
                 messageloaded = true;
             }
 
+            break;
+        }
+        case GAME_STATE_MATCH_ENDED: {
+            auto widget = gui.get <tgui::MessageBox> ("windowWin");
+            widget->setVisible(true);
+            
+            auto w2 = widget->get <tgui::Label> ("PlayerWinLabel");
+            w2->setText( objectManager->getWinner()->getName()+" is winner!" );
             break;
         }
     }

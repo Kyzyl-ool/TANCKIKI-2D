@@ -34,6 +34,8 @@ public:
 
     const sf::RenderWindow &getMainWindow() const;
     ~ObjectManager();
+
+    Tank* getWinner();
 };
 
 #endif //TANCHIKI_OBJECTMANAGER_HPP
