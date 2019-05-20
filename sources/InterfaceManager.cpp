@@ -800,6 +800,13 @@ void InterfaceManager::renderMatches() {
             labelList->setTextSize(20);
             gui.add(labelList);
 
+            static auto butRefresh = tgui::Button::create("Refresh");
+            butRefresh->setRenderer(theme.getRenderer("Button"));
+            butRefresh->setSize({"15%", "7%"});
+            butRefresh->setPosition({"25%", "10%"});
+            butRefresh->setTextSize(20);
+            gui.add(butRefresh);
+
             static auto labelChoose = tgui::Label::create();
             labelChoose->setRenderer(theme.getRenderer("Label"));
             labelChoose->setText("Choose a match from the list");
@@ -920,6 +927,7 @@ void InterfaceManager::renderMatches() {
                 butCreate->setEnabled(false);
                 butJoin->setEnabled(false);
                 createWindow->setVisible(true);
+                butRefresh->setEnabled(false);
             });
 
             buttonCancel->connect("pressed", [&](){
@@ -928,6 +936,7 @@ void InterfaceManager::renderMatches() {
                 butCreate->setEnabled(true);
                 butJoin->setEnabled(true);
                 createWindow->setVisible(false);
+                butRefresh->setEnabled(true);
             });
 
             listBox->connect("MousePressed", [&](){
