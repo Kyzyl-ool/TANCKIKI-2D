@@ -552,7 +552,6 @@ void InterfaceManager::makeInterface() {
             break;
         }
         case GAME_STATE_MATCH_CHOOSE: {
-            mainmenuloaded = false;
             renderMatches();
             break;
         }
@@ -950,7 +949,7 @@ void InterfaceManager::renderMatches() {
                 std::cout << "BACK PRESSED" << std::endl;
             });
 
-
+//            onRefresh();
             matchesLoaded = true;
         }
         catch (const tgui::Exception &e) {
@@ -974,5 +973,22 @@ void InterfaceManager::ShowMatchesDialog(json j) {
 
 void InterfaceManager::setMatch(Match *match) {
     InterfaceManager::match = match;
+}
+
+void InterfaceManager::onRefresh() {
+    json j = networkManager.getGamesList();
+
+    matches.clear();
+
+    if (j.empty()) {
+        std::cout << "There are no games in server\n";
+    } else {
+        int k = 0;
+        json game = json(j[std::to_string(k)]);
+        while (!game.is_null()) {
+            matches.push_back(game);
+            k++;
+        }
+    }
 }
 
