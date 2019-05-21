@@ -50,6 +50,8 @@ private:
 
     std::vector <json>& matches;
     json& currentMatch;
+
+    std::vector < std::pair <tgui::Widget::Ptr, int > > beingDisconnected;
 public:
     void setMatches(const std::vector<json> &matches);
 
@@ -97,6 +99,8 @@ public:
     void onGlobalRefresh();
 
     void onMatchRefresh();
+
+    void appendSignal(tgui::Widget::Ptr w, int id);
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP

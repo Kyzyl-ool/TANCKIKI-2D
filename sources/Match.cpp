@@ -265,7 +265,10 @@ void Match::updateMatch(float time) {
     physicsManager->updateGameObjects(this, time);
 
     if (objectManager->getWinner()) {
-        *state = GAME_STATE_MATCH_ENDED;
+        if (GAME_STATE_MULTIPLAYER_MATCH)
+            *state = GAME_STATE_MULTIPLAYER_ENDED;
+        else
+            *state = GAME_STATE_MATCH_ENDED;
     }
 }
 
@@ -458,4 +461,12 @@ int Match::getPlayerView() {
 
 void Match::setPlayerView(int id) {
     playerView = id;
+}
+
+bool Match::isEnded() const {
+    return ended;
+}
+
+void Match::setEnded(bool ended) {
+    Match::ended = ended;
 }

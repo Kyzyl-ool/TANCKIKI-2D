@@ -11,8 +11,12 @@
 #include "json/json.hpp"
 #include "Match.hpp"
 
-#define SERVER_IP "95.163.180.31"
+//#define SERVER_IP "95.163.180.31"
+//#define SERVER_PORT 54000
+
+#define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 54000
+
 
 using json = nlohmann::json;
 
@@ -39,7 +43,6 @@ public:
 
 
 public:
-    bool isAuthorized1() const;
     explicit NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort);
     ~NetworkManager();
 
@@ -62,6 +65,8 @@ public:
     void sendXYs(std::vector<Tank *>& tanks);
     void waitForOthers();
     std::string getNick(std::string vk_id);
+
+    int createNewGame(std::string name, int map_id);
 };
 
 

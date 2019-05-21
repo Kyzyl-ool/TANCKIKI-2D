@@ -40,6 +40,11 @@ private:
     std::vector <std::string> players_names;
     std::vector <int> killed;
     int playerView;
+    bool ended = false;
+public:
+    bool isEnded() const;
+
+    void setEnded(bool ended);
 
 public:
 

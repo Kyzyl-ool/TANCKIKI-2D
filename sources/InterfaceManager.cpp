@@ -99,36 +99,37 @@ void InterfaceManager::loadMainMenuWidgets() {
         buttonCancel->setTextSize(0);
         loginWindow->add(buttonCancel);
 
-        singleButton->connect("pressed", &InterfaceManager::signalHandler1, this);
-        singleButton->connect("pressed", [&](){
+
+        appendSignal(singleButton, singleButton->connect("pressed", &InterfaceManager::signalHandler1, this));
+        appendSignal(singleButton, singleButton->connect("pressed", [&](){
             gui.remove(picture);
             gui.remove(singleButton);
             gui.remove(multiButton);
             gui.remove(quitButton);
             gui.remove(settingsButton);
             WidgetsMenu::widget_remove();
-        });
+        }));
 
-        multiButton->connect("pressed", &InterfaceManager::signalHandler2, this);
-        multiButton->connect("pressed", [&](){
+        appendSignal(multiButton, multiButton->connect("pressed", &InterfaceManager::signalHandler2, this));
+        appendSignal(multiButton, multiButton->connect("pressed", [&](){
             WidgetsMenu::change_ava(1);
             editBoxUsername->setText("kyzyloolk");
             editBoxPassword->setText("akTPLWGd");
-        });
+        }));
 
-        quitButton->connect("pressed", &InterfaceManager::signalHandler3, this);
-        quitButton->connect("pressed", [&](){ mainWindow.close(); });
+        appendSignal(quitButton, quitButton->connect("pressed", &InterfaceManager::signalHandler3, this));
+        appendSignal(quitButton, quitButton->connect("pressed", [&](){ mainWindow.close(); }));
 
-        buttonLogin->connect("pressed", [&](){
+        appendSignal(buttonLogin, buttonLogin->connect("pressed", [&](){
             std::pair <std::string, std::string> tmp = WidgetsMenu::login();
             if (!tmp.first.empty()) {
                 networkManager.authorize(tmp);
             }
-        });
+        }));
 
-        buttonCancel->connect("pressed", [&](){
+        appendSignal(buttonCancel, buttonCancel->connect("pressed", [&](){
             WidgetsMenu::change_ava(0);
-        });
+        }));
 
 
         static auto settingsWindow = tgui::MessageBox::create();
@@ -373,26 +374,26 @@ void InterfaceManager::loadMainMenuWidgets() {
                 assert(!"Invalid radiobutton");
         }
 
-        radioButton1->connect("checked", [&](){
+        appendSignal(radioButton1, radioButton1->connect("checked", [&](){
             bulletView->removeAllWidgets();
             bulletView->add(bulletPicture1);
             labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
             labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
-        });
+        }));
 
-        radioButton2->connect("checked", [&](){
+        appendSignal(radioButton2, radioButton2->connect("checked", [&](){
             bulletView->removeAllWidgets();
             bulletView->add(bulletPicture2);
             labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
             labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
-        });
+        }));
 
-        radioButton3->connect("checked", [&](){
+        appendSignal(radioButton3, radioButton3->connect("checked", [&](){
             bulletView->removeAllWidgets();
             bulletView->add(bulletPicture3);
             labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
             labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
-        });
+        }));
 
         skinButton1->connect("checked", [&](){
             tankView->removeAllWidgets();
@@ -430,10 +431,10 @@ void InterfaceManager::loadMainMenuWidgets() {
 //        setSpriteTower(300,68,86,40);
 
 
-        settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this);
-        settingsButton->connect("pressed", [&](){
+        appendSignal(settingsButton, settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this));
+        appendSignal(settingsButton, settingsButton->connect("pressed", [&](){
             WidgetsMenu::change_ava(2);
-        });
+        }));
 
         settingsBack->connect("pressed", [&](){
             WidgetsMenu::change_ava(3);
@@ -508,17 +509,17 @@ void InterfaceManager::makeInterface() {
                     pauseWindow->add(label);
 //                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
 //                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
-                    buttonExit->connect("pressed", [&]() {
+                    appendSignal(buttonExit, buttonExit->connect("pressed", [&]() {
                         *state = GAME_STATE_MAIN_MENU;
-                    });
+                    }));
 
 
-                    buttonCancel->connect("pressed", [&](){
+                    appendSignal(buttonCancel, buttonCancel->connect("pressed", [&](){
 //                        pauseloaded = false;
 //                        gui.remove(pauseWindow);
 //                        pauseWindow->setVisible(false);
                         *state = GAME_STATE_MATCH;
-                    });
+                    }));
 
                 }
                 catch (const tgui::Exception &e) {
@@ -532,6 +533,9 @@ void InterfaceManager::makeInterface() {
         }
         case GAME_STATE_MAIN_MENU: {
             if (!mainmenuloaded) {
+                for (const auto &item : beingDisconnected) {
+                    item.first->disconnect(item.second);
+                }
                 gui.removeAllWidgets();
                 loadMainMenuWidgets();
                 mainmenuloaded = true;
@@ -551,6 +555,9 @@ void InterfaceManager::makeInterface() {
             ammuncount = false;
             healthTanks.clear();
             nameTanks.clear();
+            for (const auto &item : beingDisconnected) {
+                item.first->disconnect(item.second);
+            }
             gui.removeAllWidgets();
             break;
         }
@@ -688,9 +695,13 @@ void InterfaceManager::makeInterface() {
             }
             break;
         }
+        case GAME_STATE_MULTIPLAYER_ENDED:
         case GAME_STATE_MATCH_ENDED: {
             if (!messageloaded)
             try {
+                for (const auto &item : beingDisconnected) {
+                    item.first->disconnect(item.second);
+                }
                 gui.removeAllWidgets();
                 static auto windowWin = tgui::MessageBox::create();
                 windowWin->setPosition("40%", "40%");
@@ -709,9 +720,9 @@ void InterfaceManager::makeInterface() {
                 buttonExit->setPosition("40%","65%");
                 windowWin->add(buttonExit);
 
-                buttonExit->connect("pressed", [&](){
+                appendSignal(buttonExit, buttonExit->connect("pressed", [&](){
                     *state = GAME_STATE_MAIN_MENU;
-                });
+                }));
 
                 messageloaded = true;
 
@@ -787,6 +798,9 @@ void InterfaceManager::renderMatches() {
     if (matchesLoaded) {
 
     } else {
+        for (const auto &item : beingDisconnected) {
+            item.first->disconnect(item.second);
+        }
         gui.removeAllWidgets();
         try {
 //            static auto picture = tgui::Picture::create({"images/forest.svg", {0, 0, 1000, 700}}); //Failed to create texture, invalid size (0x0)
@@ -816,7 +830,7 @@ void InterfaceManager::renderMatches() {
             labelChoose->setTextSize(20);
             gui.add(labelChoose);
 
-            static auto listBox = tgui::ListBox::create();
+            auto listBox = tgui::ListBox::create();
             listBox->setRenderer(theme.getRenderer("ListBox"));
             listBox->setSize("40%", "65%");
             listBox->setItemHeight(24);
@@ -938,10 +952,6 @@ void InterfaceManager::renderMatches() {
             buttonCancel->setTextSize(16);
             createWindow->add(buttonCancel);
 
-//            butBack->connect("pressed", [&](){
-//                *state = GAME_STATE_MAIN_MENU;
-//            });
-
             butCreate->connect("pressed", [&](){
                 listBox->setEnabled(false);
                 butBack->setEnabled(false);
@@ -960,7 +970,7 @@ void InterfaceManager::renderMatches() {
                 butRefresh->setEnabled(true);
             });
 
-            butReady->connect("pressed", [&](){
+            appendSignal(butReady, butReady->connect("pressed", [&](){
                 if(networkManager.isReady())
                 {
                     networkManager.setReady(false);
@@ -970,7 +980,15 @@ void InterfaceManager::renderMatches() {
                     butReady->setText("Not ready");
                 }
                 onMatchRefresh();
-            });
+            }));
+
+            appendSignal(buttonOK, buttonOK->connect("pressed", [&]() {
+                std::string matchName = editBox->getText();
+                if (!matchName.empty()) {
+                    networkManager.connectToGame(networkManager.createNewGame(matchName, 1));
+                    onGlobalRefresh();
+                }
+            }));
 
 
             listBox->connect("ItemSelected", [&]() {
@@ -988,13 +1006,16 @@ void InterfaceManager::renderMatches() {
 
             });
 
-            butBack->connect("pressed", [&](){
+            appendSignal(butBack, butBack->connect("pressed", [&](){
+                for (const auto &item : beingDisconnected) {
+                    item.first->disconnect(item.second);
+                }
                 gui.removeAllWidgets();
                 matchesLoaded = false;
                 mainmenuloaded = false;
                 *state = GAME_STATE_MAIN_MENU;
                 std::cout << "BACK PRESSED" << std::endl;
-            });
+            }));
 
 
             onGlobalRefresh();
@@ -1082,5 +1103,9 @@ void InterfaceManager::onMatchRefresh() {
         std::string state = (item["ready"].get <bool> ()) ? "ready" : "not ready";
         playersList->addItem(item["nickname"].get <std::string> ()+" ("+state+")");
     }
+}
+
+void InterfaceManager::appendSignal(tgui::Widget::Ptr w, int id) {
+    beingDisconnected.push_back(std::make_pair(w, id));
 }
 

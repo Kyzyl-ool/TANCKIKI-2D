@@ -30,6 +30,7 @@ void GameManager::runGame() {
 
         switch (state) {
             case GAME_STATE_MULTIPLAYER_MATCH: {
+//                std::cout << 'state - multiplyear match' << std::endl;
                 mainWindow.clear();
                 networkManager.processPakcetsFromServer();
 
@@ -42,7 +43,6 @@ void GameManager::runGame() {
 //                auto mouseMessage = eventManager->getMouseMessage();
 //                if (!mouseMessage.empty()) match->processMessage(mouseMessage);
                 networkManager.sendMessageToServer(eventManager->getMouseMessage());
-
 
                 Tank* tmp = match->getObjectManager()->getTankById(match->getMyPlayerId());
                 auto tmp1 = sf::Mouse::getPosition(mainWindow);
@@ -60,10 +60,14 @@ void GameManager::runGame() {
                 match->setPlayerCoordVorView();
                 mainWindow.setView(view);
                 match->drawMatch();
-                networkManager.sendMessageToServer(eventManager->getSyncMessage());
                 break;
             }
             case GAME_STATE_CREATE_MULTIPLAYER_MATCH: {
+                if (isGameReady) {
+                    state = GAME_STATE_MULTIPLAYER_MATCH;
+                    break;
+                }
+//                std::cout << "create multi matchs" << std::endl;
                 ///@todo прочитать players_info_json, map_json;
                 std::string line, players_info_json, map_json;
                 std::ifstream mapfile (MAP_FILE);
@@ -88,6 +92,9 @@ void GameManager::runGame() {
                 interfaceManager->setMapName(match->getMapName());
                 interfaceManager->setObjectManager(match->getObjectManager());
                 interfaceManager->setMatch(match);
+                for (const auto &widget : gui.getWidgets()) {
+                    widget->disconnectAll();
+                }
                 gui.removeAllWidgets();
                 networkManager.setMatch(match);
                 networkManager.establishConnection(current_match["game_id"].get <int> ());
@@ -95,41 +102,11 @@ void GameManager::runGame() {
                 eventManager->setObjectManager(match->getObjectManager());
                 eventManager->setMatch(match);
                 networkManager.setMyPlayerId(match->getMyPlayerId());
-                state = GAME_STATE_MULTIPLAYER_MATCH;
-                break;
-            }
-            case GAME_STATE_WAIT_FOR_OTHER_PLAYERS: {
-                json j = networkManager.getPlayersInGame(gameId)["result"];
-                std::cout << j << std::endl;
-                int k = 0;
-                json playersList = json(j[std::to_string(k)]);
-                std::cout << "Players in this game:" << std::endl;
-                std::cout << "-------------------------------" << std::endl;
-                do {
-                    std::cout << "nick: " << playersList["nickname"] << ", ready: " << playersList["ready"] << std::endl;
-                    k++;
-                    playersList = json(j[std::to_string(k)]);
-                }
-                while (!playersList.is_null());
-                std::cout << "-------------------------------" << std::endl;
-                sleep(1);
-                std::cout << "Are you ready? [y/n]: ";
-                char c;
-                std::cin >> c;
-                if (c == 'y') {
-                    networkManager.setReady(true);
-                }
-                else if (c == 'n') {
-                    networkManager.setReady(false);
-                }
-
-                if (networkManager.areAllReady(gameId))
-                    state = GAME_STATE_CREATE_MULTIPLAYER_MATCH;
-//                    state = GAME_STATE_CREATE_MATCH;
-
+                isGameReady = true;
                 break;
             }
             case GAME_STATE_MATCH_CHOOSE: {
+//                std::cout << "state = match choose" << std::endl;
                 mainWindow.clear();
                 if (trottlingClock.getElapsedTime().asSeconds() > 1) {
                     if (!current_match.is_null())
@@ -142,6 +119,7 @@ void GameManager::runGame() {
                 break;
             }
             case GAME_STATE_CREATE_MATCH: {
+//                std::cout << "state - create match" << std::endl;
                 if (isGameReady) {
                     state = GAME_STATE_MATCH;
                     break;
@@ -177,6 +155,7 @@ void GameManager::runGame() {
             }
             case GAME_STATE_MATCH_PAUSE:
             case GAME_STATE_MATCH: {
+//                std::cout << "state - match" << std::endl;
                 mainWindow.clear();
                 std::string message = eventManager->getMessageFromGameObjects();
 
@@ -202,11 +181,14 @@ void GameManager::runGame() {
                 break;
             }
             case GAME_STATE_MAIN_MENU: {
+//                std::cout << "state - main menu" << std::endl;
                 if (isGameReady) {
                     isGameReady = false;
                     delete match;
                     match = nullptr;
+                    current_match = json();
                 }
+                break;
             }
             default: {
                 mainWindow.clear();

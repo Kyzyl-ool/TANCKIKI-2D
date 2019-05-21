@@ -6,13 +6,14 @@
 #include <thread>
 #include <iostream>
 #include "json/json.hpp"
+#include "utils/dateTime.cpp"
 
 using json = nlohmann::json;
 
 NetworkManager::NetworkManager(sf::IpAddress serverIp, unsigned short defaultPort)
         : serverIpAddress(serverIp), serverPort(defaultPort), isAuthorized(false), match(match) {
 //    std::cout << login_password.first << login_password.second << std::endl;
-    assert(udpSocket.bind(defaultPort) == sf::Socket::Done);
+    assert(udpSocket.bind(54001) == sf::Socket::Done);
 }
 
 //sf::Packet NetworkManager::receivePacketsFromServer() {
@@ -96,18 +97,32 @@ void NetworkManager::sendMessageToServer(const std::string& message) {
 
 unsigned short NetworkManager::establishConnection(int game_id) {
     sf::Packet packet;
+    std::string response;
+
+    udpSocket.setBlocking(false);
+    packet >> response;
+    while (!response.empty()) {
+        packet.clear();
+        udpSocket.receive(packet, serverIpAddress, serverPort);
+        packet >> response;
+    }
+
+
+
+
+    packet.clear();
+    std::cout << "Connecting to server...\n";
+    udpSocket.setBlocking(true);
     packet << "CONN";
     packet << game_id;
     udpSocket.send(packet, serverIpAddress, serverPort);
     udpSocket.send(packet, serverIpAddress, serverPort);
     udpSocket.send(packet, serverIpAddress, serverPort);
-    packet.clear();
-    std::cout << "Connecting to server...\n";
     udpSocket.receive(packet, serverIpAddress, serverPort);
-    std::string response;
     packet >> response;
     json j;
     j = json::parse(response);
+    std::cout << j << std::endl;
     if (j["status"] == "OK") {
         std::cout << "OK.\n";
         udpSocket.setBlocking(false);
@@ -207,6 +222,12 @@ std::string NetworkManager::getNick(std::string vk_id) {
 
 bool NetworkManager::isReady() const {
     return ready;
+}
+
+int NetworkManager::createNewGame(std::string name, int map_id) {
+    json j = jsonRPC("create_game", {token, name, playerId, currentDateTime(), map_id});
+    std::cout << j << std::endl;
+    return j["result"]["game_id"].get <int> ();
 }
 
 NetworkManager::~NetworkManager() = default;
