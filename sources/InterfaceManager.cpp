@@ -986,6 +986,14 @@ void InterfaceManager::renderMatches() {
                 std::string matchName = editBox->getText();
                 if (!matchName.empty()) {
                     networkManager.connectToGame(networkManager.createNewGame(matchName, 1));
+
+                    listBox->setEnabled(true);
+                    butBack->setEnabled(true);
+                    butCreate->setEnabled(true);
+                    butReady->setEnabled(true);
+                    createWindow->setVisible(false);
+                    butRefresh->setEnabled(true);
+
                     onGlobalRefresh();
                 }
             }));
