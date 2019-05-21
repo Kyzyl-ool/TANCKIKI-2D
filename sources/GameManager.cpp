@@ -225,11 +225,6 @@ void GameManager::handleEvent() {
                         }
                         break;
                     }
-                    case sf::Keyboard::Escape: {
-                        mainWindow.close();
-                        std::cout << "Window closed by Escape\n";
-                        break;
-                    }
                     default:
                     {
                         break;

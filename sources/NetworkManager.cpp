@@ -98,26 +98,15 @@ void NetworkManager::sendMessageToServer(const std::string& message) {
 unsigned short NetworkManager::establishConnection(int game_id) {
     sf::Packet packet;
     std::string response;
-
-    udpSocket.setBlocking(false);
-    packet >> response;
-    while (!response.empty()) {
-        packet.clear();
-        udpSocket.receive(packet, serverIpAddress, serverPort);
-        packet >> response;
-    }
-
-
-
-
-    packet.clear();
     std::cout << "Connecting to server...\n";
+    udpSocket.unbind();
+    assert(udpSocket.bind(54001) == sf::Socket::Done);
     udpSocket.setBlocking(true);
     packet << "CONN";
     packet << game_id;
-    udpSocket.send(packet, serverIpAddress, serverPort);
-    udpSocket.send(packet, serverIpAddress, serverPort);
-    udpSocket.send(packet, serverIpAddress, serverPort);
+    udpSocket.send(packet, SERVER_IP, SERVER_PORT);
+    udpSocket.send(packet, SERVER_IP, SERVER_PORT);
+    udpSocket.send(packet, SERVER_IP, SERVER_PORT);
     udpSocket.receive(packet, serverIpAddress, serverPort);
     packet >> response;
     json j;
