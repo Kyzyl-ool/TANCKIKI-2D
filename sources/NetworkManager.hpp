@@ -55,7 +55,7 @@ public:
     bool connectToGame (int gameId);
     bool setReady(bool value);
     bool areAllReady(int gameId);
-    unsigned short establishConnection();
+    unsigned short establishConnection(int game_id);
     void processPakcetsFromServer();
     void sendMessageToServer(const std::string& message);
 

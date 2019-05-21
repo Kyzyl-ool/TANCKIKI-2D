@@ -978,7 +978,6 @@ void InterfaceManager::renderMatches() {
                     labelChoose->setVisible(false);
                     butReady->setVisible(true);
                     groupMatch->setVisible(true);
-
                     onMatchRefresh();
                 }
                 else {

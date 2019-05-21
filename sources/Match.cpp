@@ -280,6 +280,8 @@ void Match::processMessage(const std::string &message, int iMyPlayerId = -1) {
 //    std::cout << j["status"] << std::endl;s
 //    std::cout << j["from"] << std::endl;
 //    std::cout << j["params"] << std::endl;
+    if (j["from"].is_null())
+        return;
     unsigned short from = j["from"];
 //    auto tankId = (gameObjectMessageId[j["method"]] != GAMEOBJECT_MESSAGE_APPEAR) ? playerId_tankId[from] : -1;
     int tankId = from;

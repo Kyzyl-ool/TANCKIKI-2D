@@ -94,9 +94,12 @@ void NetworkManager::sendMessageToServer(const std::string& message) {
     udpSocket.send(packet, SERVER_IP, SERVER_PORT);
 }
 
-unsigned short NetworkManager::establishConnection() {
+unsigned short NetworkManager::establishConnection(int game_id) {
     sf::Packet packet;
     packet << "CONN";
+    packet << game_id;
+    udpSocket.send(packet, serverIpAddress, serverPort);
+    udpSocket.send(packet, serverIpAddress, serverPort);
     udpSocket.send(packet, serverIpAddress, serverPort);
     packet.clear();
     std::cout << "Connecting to server...\n";

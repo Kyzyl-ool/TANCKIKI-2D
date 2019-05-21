@@ -38,11 +38,9 @@ void GameManager::runGame() {
                 if (!action.empty())
                     match->processMessage(action, -1);
                 networkManager.sendMessageToServer(action);
-                networkManager.sendMessageToServer(action);
 
 //                auto mouseMessage = eventManager->getMouseMessage();
 //                if (!mouseMessage.empty()) match->processMessage(mouseMessage);
-                networkManager.sendMessageToServer(eventManager->getMouseMessage());
                 networkManager.sendMessageToServer(eventManager->getMouseMessage());
 
 
@@ -92,7 +90,7 @@ void GameManager::runGame() {
                 interfaceManager->setMatch(match);
                 gui.removeAllWidgets();
                 networkManager.setMatch(match);
-                networkManager.establishConnection();
+                networkManager.establishConnection(current_match["game_id"].get <int> ());
                 eventManager->setPlayerId(match->getMyPlayerId());
                 eventManager->setObjectManager(match->getObjectManager());
                 eventManager->setMatch(match);
