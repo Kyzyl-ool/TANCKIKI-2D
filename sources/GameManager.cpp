@@ -112,6 +112,9 @@ void GameManager::runGame() {
                     if (!current_match.is_null())
                         if (networkManager.areAllReady(current_match["game_id"]))
                             state = GAME_STATE_CREATE_MULTIPLAYER_MATCH;
+                        else {
+
+                        }
                     trottlingClock.restart();
                 }
 
