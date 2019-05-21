@@ -830,7 +830,7 @@ void InterfaceManager::renderMatches() {
             labelChoose->setTextSize(20);
             gui.add(labelChoose);
 
-            auto listBox = tgui::ListBox::create();
+            static auto listBox = tgui::ListBox::create();
             listBox->setRenderer(theme.getRenderer("ListBox"));
             listBox->setSize("40%", "65%");
             listBox->setItemHeight(24);
