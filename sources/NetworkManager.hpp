@@ -23,6 +23,10 @@ private:
     unsigned short serverPort;
     std::string playerId;
     int myPlayerId = -1;
+    bool ready = false;
+public:
+    bool isReady() const;
+
 public:
     void setMyPlayerId(int myPlayerId);
 
@@ -49,9 +53,6 @@ public:
     json getPlayersInGame(int gameId);
 
     bool connectToGame (int gameId);
-    bool disconnectFromGame(int gameId);
-    bool createGame(std::string name, int creator);
-    bool deleteGame(int gameId);
     bool setReady(bool value);
     bool areAllReady(int gameId);
     unsigned short establishConnection();
@@ -60,6 +61,7 @@ public:
 
     void sendXYs(std::vector<Tank *>& tanks);
     void waitForOthers();
+    std::string getNick(std::string vk_id);
 };
 
 

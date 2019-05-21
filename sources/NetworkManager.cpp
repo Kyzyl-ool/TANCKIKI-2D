@@ -174,6 +174,7 @@ json NetworkManager::getPlayersInGame(int gameId) {
 }
 
 bool NetworkManager::setReady(bool value) {
+    ready = value;
     json j = jsonRPC("set_ready", {token, playerId, value});
 //    std::cout << j << std::endl;
     return true;
@@ -193,6 +194,16 @@ void NetworkManager::waitForOthers() {
 
 void NetworkManager::setMyPlayerId(int myPlayerId) {
     NetworkManager::myPlayerId = myPlayerId;
+}
+
+std::string NetworkManager::getNick(std::string vk_id) {
+    json j = jsonRPC("get_nick", {vk_id});
+    return j["result"]["nickname"].get <std::string> ();
+
+}
+
+bool NetworkManager::isReady() const {
+    return ready;
 }
 
 NetworkManager::~NetworkManager() = default;

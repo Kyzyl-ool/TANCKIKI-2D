@@ -49,6 +49,7 @@ private:
     tgui::Label::Ptr ammun_count;
 
     std::vector <json>& matches;
+    json& currentMatch;
 public:
     void setMatches(const std::vector<json> &matches);
 
@@ -58,9 +59,9 @@ public:
 
     void setMapName(const std::string &the_mapName);
 
-    InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
-                     gameState_t *the_state, tgui::Gui &the_gui, NetworkManager &the_networkmanager,
-                     Match *iMatch, std::vector<json> &iMatches);
+    InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager, gameState_t *the_state,
+                     tgui::Gui &the_gui, NetworkManager &the_networkmanager, Match *iMatch, std::vector<json> &iMatches,
+                     json &iCurrentMatch);
 
     void makeInterface();
 
@@ -93,7 +94,9 @@ public:
 
     void loadMainMenuWidgets();
 
-    void onRefresh();
+    void onGlobalRefresh();
+
+    void onMatchRefresh();
 };
 
 #endif //TANCHIKI_INTERFACEMANAGER_HPP

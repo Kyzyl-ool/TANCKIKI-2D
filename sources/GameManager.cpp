@@ -16,7 +16,8 @@ view(the_view)
 {
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_MAIN_MENU;
-    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager, match, matches);
+    interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager, match, matches,
+                                            current_match);
     eventManager = new EventManager(mainWindow, event, 0, &state, gui, *interfaceManager);
 }
 
@@ -132,18 +133,14 @@ void GameManager::runGame() {
             }
             case GAME_STATE_MATCH_CHOOSE: {
                 mainWindow.clear();
-//                json j = networkManager.getGamesList();
+                if (trottlingClock.getElapsedTime().asSeconds() > 1) {
+                    if (!current_match.is_null())
+                        if (networkManager.areAllReady(current_match["game_id"]))
+                            state = GAME_STATE_CREATE_MULTIPLAYER_MATCH;
+                    trottlingClock.restart();
+                }
 
-
-
-
-
-//
-////                    std::cout << j << std::endl;
-//                    std::cout << "Enter game id: ";
-//                    std::cin >> gameId;
-//                    networkManager.connectToGame(gameId);
-//                    state = GAME_STATE_WAIT_FOR_OTHER_PLAYERS;
+//                networkManager.areAllReady();
                 break;
             }
             case GAME_STATE_CREATE_MATCH: {

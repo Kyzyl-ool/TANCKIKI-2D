@@ -11,8 +11,10 @@
 
 
 InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManager *the_objectManager,
-                                   gameState_t *the_state, tgui::Gui &the_gui, NetworkManager &the_networkmanager,
-                                   Match *iMatch, std::vector<json> &iMatches) :
+                                   gameState_t *the_state,
+                                   tgui::Gui &the_gui, NetworkManager &the_networkmanager, Match *iMatch,
+                                   std::vector<json> &iMatches,
+                                   json &iCurrentMatch) :
 
         mainWindow(the_mainWindow),
         objectManager(the_objectManager),
@@ -20,7 +22,8 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
         gui(the_gui),
         networkManager(the_networkmanager),
         match(iMatch),
-        matches(iMatches)
+        matches(iMatches),
+        currentMatch(iCurrentMatch)
 {
 
 }
@@ -829,6 +832,7 @@ void InterfaceManager::renderMatches() {
 //            listBox->addItem("Item 2");
 //            listBox->addItem("Item 3");
             gui.add(listBox);
+            gui.setWidgetName(listBox, "ListBox");
 
 
             static auto butBack = tgui::Button::create("Back");
@@ -850,6 +854,7 @@ void InterfaceManager::renderMatches() {
             groupMatch->setSize("40%", "90%");
             groupMatch->setPosition("55%", "10%");
             gui.add(groupMatch);
+            gui.setWidgetName(groupMatch, "groupMatch");
 
             static auto labelInfo = tgui::Label::create();
             labelInfo->setRenderer(theme.getRenderer("Label"));
@@ -864,6 +869,7 @@ void InterfaceManager::renderMatches() {
             labelName->setPosition("0%", "15%");
             labelName->setTextSize(20);
             groupMatch->add(labelName);
+            groupMatch->setWidgetName(labelName, "Name");
 
             static auto labelHost = tgui::Label::create();
             labelHost->setRenderer(theme.getRenderer("Label"));
@@ -871,21 +877,33 @@ void InterfaceManager::renderMatches() {
             labelHost->setPosition("0%", "25%");
             labelHost->setTextSize(20);
             groupMatch->add(labelHost);
+            groupMatch->setWidgetName(labelHost, "Host");
 
-            static auto labelPlayers = tgui::Label::create();
-            labelPlayers->setRenderer(theme.getRenderer("Label"));
-            labelPlayers->setText("Players: ");
-            labelPlayers->setPosition("0%", "35%");
-            labelPlayers->setTextSize(20);
-            groupMatch->add(labelPlayers);
+            static auto labelCreated = tgui::Label::create();
+            labelCreated->setRenderer(theme.getRenderer("Label"));
+            labelCreated->setText("Players: ");
+            labelCreated->setPosition("0%", "35%");
+            labelCreated->setTextSize(20);
+            groupMatch->add(labelCreated);
+            groupMatch->setWidgetName(labelCreated, "Created");
 
-            static auto butJoin = tgui::Button::create("Join");
-            butJoin->setVisible(false);
-            butJoin->setRenderer(theme.getRenderer("Button"));
-            butJoin->setSize({"15%", "7%"});
-            butJoin->setPosition({"67.5%", "90%"});
-            butJoin->setTextSize(20);
-            gui.add(butJoin);
+
+            static auto playersLabel = tgui::Label::create("Players in game:");
+            playersLabel->setPosition("0%", "45%");
+            groupMatch->add(playersLabel);
+            static auto playersList = tgui::ListView::create();
+            playersList->setRenderer(theme.getRenderer("ListView"));
+            playersList->setPosition("0%", "50%");
+            groupMatch->add(playersList);
+            groupMatch->setWidgetName(playersList, "PlayersList");
+
+            static auto butReady = tgui::Button::create("Ready");
+            butReady->setVisible(false);
+            butReady->setRenderer(theme.getRenderer("Button"));
+            butReady->setSize({"15%", "7%"});
+            butReady->setPosition({"67.5%", "90%"});
+            butReady->setTextSize(20);
+            gui.add(butReady);
 
 
             static auto createWindow = tgui::MessageBox::create();
@@ -928,7 +946,7 @@ void InterfaceManager::renderMatches() {
                 listBox->setEnabled(false);
                 butBack->setEnabled(false);
                 butCreate->setEnabled(false);
-                butJoin->setEnabled(false);
+                butReady->setEnabled(false);
                 createWindow->setVisible(true);
                 butRefresh->setEnabled(false);
             });
@@ -937,15 +955,38 @@ void InterfaceManager::renderMatches() {
                 listBox->setEnabled(true);
                 butBack->setEnabled(true);
                 butCreate->setEnabled(true);
-                butJoin->setEnabled(true);
+                butReady->setEnabled(true);
                 createWindow->setVisible(false);
                 butRefresh->setEnabled(true);
             });
 
-            listBox->connect("MousePressed", [&](){
-                labelChoose->setVisible(false);
-                butJoin->setVisible(true);
-                groupMatch->setVisible(true);
+            butReady->connect("pressed", [&](){
+                if(networkManager.isReady())
+                {
+                    networkManager.setReady(false);
+                    butReady->setText("Ready");
+                } else {
+                    networkManager.setReady(true);
+                    butReady->setText("Not ready");
+                }
+                onMatchRefresh();
+            });
+
+
+            listBox->connect("ItemSelected", [&]() {
+                if (listBox->getSelectedItemIndex() != -1) {
+                    labelChoose->setVisible(false);
+                    butReady->setVisible(true);
+                    groupMatch->setVisible(true);
+
+                    onMatchRefresh();
+                }
+                else {
+                    labelChoose->setVisible(true);
+                    butReady->setVisible(false);
+                    groupMatch->setVisible(false);
+                }
+
             });
 
             butBack->connect("pressed", [&](){
@@ -956,7 +997,8 @@ void InterfaceManager::renderMatches() {
                 std::cout << "BACK PRESSED" << std::endl;
             });
 
-//            onRefresh();
+
+            onGlobalRefresh();
             matchesLoaded = true;
         }
         catch (const tgui::Exception &e) {
@@ -982,11 +1024,9 @@ void InterfaceManager::setMatch(Match *match) {
     InterfaceManager::match = match;
 }
 
-void InterfaceManager::onRefresh() {
+void InterfaceManager::onGlobalRefresh() {
     json j = networkManager.getGamesList();
-
     matches.clear();
-
     if (j.empty()) {
         std::cout << "There are no games in server\n";
     } else {
@@ -995,7 +1035,53 @@ void InterfaceManager::onRefresh() {
         while (!game.is_null()) {
             matches.push_back(game);
             k++;
+            game = json(j[std::to_string(k)]);
         }
+    }
+
+    auto ListBox = gui.get <tgui::ListBox> ("ListBox");
+    ListBox->removeAllItems();
+    for (const auto &item : matches) {
+        ListBox->addItem(item["name"].get <std::string>());
+    }
+
+
+}
+
+void InterfaceManager::onMatchRefresh() {
+    auto listBox = gui.get <tgui::ListBox> ("ListBox");
+    currentMatch = matches[listBox->getSelectedItemIndex()];
+    std::cout << currentMatch << std::endl;
+
+    auto groupMatch = gui.get<tgui::Group>("groupMatch");
+    auto labelHost = groupMatch->get<tgui::Label>("Host");
+    auto labelPlayers = groupMatch->get<tgui::Label>("Created");
+    auto labelName = groupMatch->get<tgui::Label>("Name");
+
+//                    networkManager.get
+
+    labelHost->setText("Host: " + networkManager.getNick(currentMatch["creator"].get<std::string>()));
+    labelPlayers->setText("Created: " + currentMatch["time_of_creation"].get<std::string>());
+    labelName->setText("Name: " + currentMatch["name"].get<std::string>());
+
+    json j = networkManager.getPlayersInGame(currentMatch["game_id"])["result"];
+
+
+    std::vector <json> players(0);
+    int k = 0;
+    json player = json(j[std::to_string(k)]);
+//                    std::cout << player << std::endl;
+    while (!player.is_null()) {
+        players.push_back(player);
+        k++;
+        player = json(j[std::to_string(k)]);
+    }
+
+    auto playersList = groupMatch->get <tgui::ListView> ("PlayersList");
+    playersList->removeAllItems();
+    for (const auto &item : players) {
+        std::string state = (item["ready"].get <bool> ()) ? "ready" : "not ready";
+        playersList->addItem(item["nickname"].get <std::string> ()+" ("+state+")");
     }
 }
 

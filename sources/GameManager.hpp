@@ -36,7 +36,9 @@ private:
     sf::Event& event;
     std::string playerName;
     sf::Clock clock;
+    sf::Clock trottlingClock;
     std::vector <json> matches;
+    json current_match;
 
     bool isGameReady = false;
 
