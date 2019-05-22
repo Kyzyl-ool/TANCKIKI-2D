@@ -60,6 +60,7 @@ void GameManager::runGame() {
                 match->setPlayerCoordVorView();
                 mainWindow.setView(view);
                 match->drawMatch();
+                networkManager.sendMessageToServer(eventManager->getSyncMessage());
                 break;
             }
             case GAME_STATE_CREATE_MULTIPLAYER_MATCH: {
