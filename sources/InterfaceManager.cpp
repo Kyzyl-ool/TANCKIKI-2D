@@ -231,14 +231,14 @@ void InterfaceManager::loadMainMenuWidgets() {
         static auto tankView = tgui::Panel::create();
         tankView->setSize("50%", "40%");
         tankView->setPosition("45%", "5%");
+        tankView->getRenderer()->setBackgroundColor(sf::Color::Yellow);
         settingsWindow->add(tankView);
 
         ///@todo: сделать фон панельки - песок, как и во время матча
 
-        static auto bulletView = tgui::Panel::create();
+        static auto bulletView = tgui::Group::create();
         bulletView->setSize("5%", "40%");
         bulletView->setPosition("87%", "5%");
-        bulletView->getRenderer()->setTransparentTexture(false);
         settingsWindow->add(bulletView);
 
         static auto label1 = tgui::Label::create();
