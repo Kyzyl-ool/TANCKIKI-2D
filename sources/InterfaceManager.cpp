@@ -238,22 +238,45 @@ void InterfaceManager::loadMainMenuWidgets() {
         bulletView->setPosition("90%", "5%");
         settingsWindow->add(bulletView);
 
+        static auto label1 = tgui::Label::create();
+        label1->setText("HP:");
+        label1->setSize("22.5%","10%");
+        label1->setPosition("55%", "50%");
+        label1->setTextSize(20);
+        label1->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
+        settingsWindow->add(label1);
 
-        static auto labelColor = tgui::Label::create();
-        labelColor->setText("HP: 1000");
-        labelColor->setPosition("55%", "50%");
+        static auto label2 = tgui::Label::create();
+        label2->setText("Bullet damage: ");
+        label2->setSize("22.5%","10%");
+        label2->setPosition("55%", "60%");
+        label2->setTextSize(20);
+        label2->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
+        settingsWindow->add(label2);
+
+        static auto label3 = tgui::Label::create();
+        label3->setText("Reload time: ");
+        label3->setSize("22.5%","10%");
+        label3->setPosition("55%", "70%");
+        label3->setTextSize(20);
+        label3->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
+        settingsWindow->add(label3);
+
+        static auto labelColor = tgui::Label::create("1000");
+        labelColor->setSize("22.5%","10%");
+        labelColor->setPosition("77.5%", "50%");
         labelColor->setTextSize(20);
         settingsWindow->add(labelColor);
 
         static auto labelBulDam = tgui::Label::create();
-        labelBulDam->setText("Bullet damage:");
-        labelBulDam->setPosition("55%", "60%");
+        labelBulDam->setSize("22.5%","10%");
+        labelBulDam->setPosition("77.5%", "60%");
         labelBulDam->setTextSize(20);
         settingsWindow->add(labelBulDam);
 
         static auto labelRelTime = tgui::Label::create();
-        labelRelTime->setText("Reload time:");
-        labelRelTime->setPosition("55%", "70%");
+        labelRelTime->setSize("22.5%","10%");
+        labelRelTime->setPosition("77.5%", "70%");
         labelRelTime->setTextSize(20);
         settingsWindow->add(labelRelTime);
 
@@ -355,20 +378,20 @@ void InterfaceManager::loadMainMenuWidgets() {
             case 1:
                 radioButton1->setChecked(true);
                 bulletView->add(bulletPicture1);
-                labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
-                labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
+                labelRelTime->setText(std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
+                labelBulDam->setText(std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
                 break;
             case 2:
                 radioButton2->setChecked(true);
                 bulletView->add(bulletPicture2);
-                labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
-                labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
+                labelRelTime->setText(std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
+                labelBulDam->setText(std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
                 break;
             case 3:
                 radioButton3->setChecked(true);
                 bulletView->add(bulletPicture3);
-                labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
-                labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
+                labelRelTime->setText(std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
+                labelBulDam->setText(std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
                 break;
             default:
                 assert(!"Invalid radiobutton");
@@ -377,22 +400,22 @@ void InterfaceManager::loadMainMenuWidgets() {
         appendSignal(radioButton1, radioButton1->connect("checked", [&](){
             bulletView->removeAllWidgets();
             bulletView->add(bulletPicture1);
-            labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
-            labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
+            labelRelTime->setText(std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
+            labelBulDam->setText(std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
         }));
 
         appendSignal(radioButton2, radioButton2->connect("checked", [&](){
             bulletView->removeAllWidgets();
             bulletView->add(bulletPicture2);
-            labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
-            labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
+            labelRelTime->setText(std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
+            labelBulDam->setText(std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
         }));
 
         appendSignal(radioButton3, radioButton3->connect("checked", [&](){
             bulletView->removeAllWidgets();
             bulletView->add(bulletPicture3);
-            labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
-            labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
+            labelRelTime->setText(std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
+            labelBulDam->setText(std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
         }));
 
         skinButton1->connect("checked", [&](){
@@ -691,6 +714,28 @@ void InterfaceManager::makeInterface() {
                 }
                 heathbarloaded = true;
             }
+
+            ///@todo: добавить уведомление об убийствах
+
+            if(noticeadded) {
+
+            } else {
+                try {
+                    static auto label = tgui::Label::create("player1 killed player2");
+                    label->setSize(mainWindow.getSize().x, "10%");
+                    label->setTextSize(20);
+                    label->setPosition("0%", "10%");
+                    label->getRenderer()->setTextColor(sf::Color::Green);
+                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
+                    gui.add(label);
+                }
+                catch (const tgui::Exception& e) {
+                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                    assert(0);
+                }
+                noticeadded = true;
+            }
+
             break;
         }
         case GAME_STATE_MULTIPLAYER_ENDED:
