@@ -230,53 +230,56 @@ void InterfaceManager::loadMainMenuWidgets() {
 
         static auto tankView = tgui::Panel::create();
         tankView->setSize("50%", "40%");
-        tankView->setPosition("55%", "5%");
+        tankView->setPosition("45%", "5%");
         settingsWindow->add(tankView);
+
+        ///@todo: сделать фон панельки - песок, как и во время матча
 
         static auto bulletView = tgui::Panel::create();
         bulletView->setSize("5%", "40%");
-        bulletView->setPosition("90%", "5%");
+        bulletView->setPosition("87%", "5%");
+        bulletView->getRenderer()->setTransparentTexture(false);
         settingsWindow->add(bulletView);
 
         static auto label1 = tgui::Label::create();
         label1->setText("HP:");
-        label1->setSize("22.5%","10%");
-        label1->setPosition("55%", "50%");
+        label1->setSize("25%","10%");
+        label1->setPosition("45%", "50%");
         label1->setTextSize(20);
         label1->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
         settingsWindow->add(label1);
 
         static auto label2 = tgui::Label::create();
         label2->setText("Bullet damage: ");
-        label2->setSize("22.5%","10%");
-        label2->setPosition("55%", "60%");
+        label2->setSize("25%","10%");
+        label2->setPosition("45%", "60%");
         label2->setTextSize(20);
         label2->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
         settingsWindow->add(label2);
 
         static auto label3 = tgui::Label::create();
         label3->setText("Reload time: ");
-        label3->setSize("22.5%","10%");
-        label3->setPosition("55%", "70%");
+        label3->setSize("25%","10%");
+        label3->setPosition("45%", "70%");
         label3->setTextSize(20);
         label3->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
         settingsWindow->add(label3);
 
         static auto labelColor = tgui::Label::create("1000");
-        labelColor->setSize("22.5%","10%");
-        labelColor->setPosition("77.5%", "50%");
+        labelColor->setSize("25%","10%");
+        labelColor->setPosition("70%", "50%");
         labelColor->setTextSize(20);
         settingsWindow->add(labelColor);
 
         static auto labelBulDam = tgui::Label::create();
-        labelBulDam->setSize("22.5%","10%");
-        labelBulDam->setPosition("77.5%", "60%");
+        labelBulDam->setSize("25%","10%");
+        labelBulDam->setPosition("70%", "60%");
         labelBulDam->setTextSize(20);
         settingsWindow->add(labelBulDam);
 
         static auto labelRelTime = tgui::Label::create();
-        labelRelTime->setSize("22.5%","10%");
-        labelRelTime->setPosition("77.5%", "70%");
+        labelRelTime->setSize("25%","10%");
+        labelRelTime->setPosition("70%", "70%");
         labelRelTime->setTextSize(20);
         settingsWindow->add(labelRelTime);
 
@@ -305,11 +308,17 @@ void InterfaceManager::loadMainMenuWidgets() {
         auto towerTexture5 = tgui::Texture("images/Htanks.png", {199,68,86,40});
         static auto towerPicture5 = tgui::Picture::create(towerTexture5);
 
-        towerPicture1->setPosition(40, 5);
-        towerPicture2->setPosition(40, 5);
-        towerPicture3->setPosition(40, 5);
-        towerPicture4->setPosition(40, 5);
-        towerPicture5->setPosition(40, 5);
+        tankPicture1->setPosition(40, "26%");
+        tankPicture2->setPosition(40, "26%");
+        tankPicture3->setPosition(40, "26%");
+        tankPicture4->setPosition(40, "26%");
+        tankPicture5->setPosition(40, "26%");
+
+        towerPicture1->setPosition(105, 5 + tankView->getSize().y * 0.26);
+        towerPicture2->setPosition(105, 5 + tankView->getSize().y * 0.26);
+        towerPicture3->setPosition(105, 5 + tankView->getSize().y * 0.26);
+        towerPicture4->setPosition(105, 5 + tankView->getSize().y * 0.26);
+        towerPicture5->setPosition(105, 5 + tankView->getSize().y * 0.26);
 
         auto bulletTexture1 = tgui::Texture("images/bullet_1.png", {20,13,10,8});
         static auto bulletPicture1 = tgui::Picture::create(bulletTexture1);
@@ -321,13 +330,17 @@ void InterfaceManager::loadMainMenuWidgets() {
         static auto bulletPicture3 = tgui::Picture::create(bulletTexture3);
 
 
+        if (changesizebool) {
 
-        bulletPicture1->setSize({bulletPicture1->getSize().x*1.5, bulletPicture1->getSize().y*1.5});
-        bulletPicture2->setSize({bulletPicture2->getSize().x*1.5, bulletPicture2->getSize().y*1.5});
-        bulletPicture3->setSize({bulletPicture3->getSize().x*1.5, bulletPicture3->getSize().y*1.5});
-        bulletPicture1->setPosition("2%", "23%");
-        bulletPicture2->setPosition("2%", "22%");
-        bulletPicture3->setPosition("2%", "22%");
+        } else {
+            bulletPicture1->setSize({bulletPicture1->getSize().x * 1.5, bulletPicture1->getSize().y * 1.5});
+            bulletPicture2->setSize({bulletPicture2->getSize().x * 1.5, bulletPicture2->getSize().y * 1.5});
+            bulletPicture3->setSize({bulletPicture3->getSize().x * 1.5, bulletPicture3->getSize().y * 1.5});
+            changesizebool = true;
+        }
+        bulletPicture1->setPosition("2%", "49%");
+        bulletPicture2->setPosition("2%", "48%"); //+26
+        bulletPicture3->setPosition("2%", "48%");
 
 
         tankPicture1->setSize({"50%", "50%"});
@@ -340,9 +353,6 @@ void InterfaceManager::loadMainMenuWidgets() {
         towerPicture4->setSize({"50%", "50%"});
         tankPicture5->setSize({"50%", "50%"});
         towerPicture5->setSize({"50%", "50%"});
-
-
-
 
         switch (skin) {
             case 1:
@@ -860,10 +870,12 @@ void InterfaceManager::renderMatches() {
             labelList->setTextSize(20);
             gui.add(labelList);
 
-            static auto butRefresh = tgui::Button::create("Refresh");
+            static auto butRefresh = tgui::BitmapButton::create();
             butRefresh->setRenderer(theme.getRenderer("Button"));
-            butRefresh->setSize({"15%", "7%"});
-            butRefresh->setPosition({"25%", "10%"});
+            butRefresh->setImage("images/refresh.png");
+            butRefresh->setImageScaling(0.8);
+            butRefresh->setSize({"5%", mainWindow.getSize().x * 0.05});
+            butRefresh->setPosition({"40%", "8%"});
             butRefresh->setTextSize(20);
             gui.add(butRefresh);
 
