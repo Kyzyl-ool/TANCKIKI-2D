@@ -502,17 +502,15 @@ void InterfaceManager::makeInterface() {
                     pauseWindow->add(buttonCancel);
 
                     static auto label = tgui::Label::create();
+                    label->setSize(pauseWindow->getSize().x, "65%");
                     label->setText("Do you really want to exit?");
                     label->setTextSize(20);
-                    label->setPosition("21%", "30%"); // NOT COOL!!!!!!!!!
-                    ///@todo сделать нормально выравнивание текста
+                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
+                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
                     pauseWindow->add(label);
-//                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
-//                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
                     appendSignal(buttonExit, buttonExit->connect("pressed", [&]() {
                         *state = GAME_STATE_MAIN_MENU;
                     }));
-
 
                     appendSignal(buttonCancel, buttonCancel->connect("pressed", [&](){
 //                        pauseloaded = false;
@@ -709,10 +707,11 @@ void InterfaceManager::makeInterface() {
                 gui.add(windowWin);
 
                 static auto label = tgui::Label::create(objectManager->getWinner()->getName()+" won!");
-//                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
-//                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
-                label->setPosition("15%","25%");
+                label->setSize(windowWin->getSize().x, "65%");
+                label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
+                label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
                 label->setTextSize(20);
+                ///@todo: проверить, что длина имени не слишком большая
                 windowWin->add(label);
 
                 static auto buttonExit = tgui::Button::create("Exit");
