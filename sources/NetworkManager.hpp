@@ -11,11 +11,11 @@
 #include "json/json.hpp"
 #include "Match.hpp"
 
-#define SERVER_IP "95.163.180.31"
-#define SERVER_PORT 54000
-
-//#define SERVER_IP "127.0.0.1"
+//#define SERVER_IP "95.163.180.31"
 //#define SERVER_PORT 54000
+
+#define SERVER_IP "127.0.0.1"
+#define SERVER_PORT 54000
 
 
 using json = nlohmann::json;

@@ -970,6 +970,10 @@ void InterfaceManager::renderMatches() {
                 butRefresh->setEnabled(true);
             });
 
+            appendSignal(butRefresh, butRefresh->connect("pressed", [&](){
+                onGlobalRefresh();
+            }));
+
             appendSignal(butReady, butReady->connect("pressed", [&](){
                 if(networkManager.isReady())
                 {
@@ -999,7 +1003,7 @@ void InterfaceManager::renderMatches() {
             }));
 
 
-            listBox->connect("ItemSelected", [&]() {
+            appendSignal(listBox, listBox->connect("ItemSelected", [&]() {
                 if (listBox->getSelectedItemIndex() != -1) {
                     labelChoose->setVisible(false);
                     butReady->setVisible(true);
@@ -1012,7 +1016,7 @@ void InterfaceManager::renderMatches() {
                     groupMatch->setVisible(false);
                 }
 
-            });
+            }));
 
             appendSignal(butBack, butBack->connect("pressed", [&](){
                 for (const auto &item : beingDisconnected) {
