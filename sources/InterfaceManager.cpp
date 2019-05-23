@@ -226,13 +226,30 @@ void InterfaceManager::loadMainMenuWidgets() {
 
         fi.close();
 
+        sf::Image gugugu;
+
+        gugugu.loadFromFile(IMAGE_FOR_MAP);
+
+        sf::Texture texture1;
+        texture1.loadFromImage(gugugu,sf::IntRect(0,0,64,64));
+
+        sf::Texture back;
+        back.create(64*9,64*4);
+
+        for(int i =0;i< 4; ++i) {
+            for(int j=0;j<9; ++j) {
+                back.update(texture1, 64*j, 64*i);
+            }
+        }
+
+        static auto background = tgui::Picture::create(back);
+
+
         static auto tankView = tgui::Panel::create();
         tankView->setSize("50%", "40%");
         tankView->setPosition("45%", "5%");
         tankView->getRenderer()->setBackgroundColor(sf::Color::Yellow);
         settingsWindow->add(tankView);
-
-        ///@todo: сделать фон панельки - песок, как и во время матча
 
         static auto bulletView = tgui::Group::create();
         bulletView->setSize("5%", "40%");
@@ -355,26 +372,31 @@ void InterfaceManager::loadMainMenuWidgets() {
         switch (skin) {
             case 1:
                 skinButton1->setChecked(true);
+                tankView->add(background);
                 tankView->add(tankPicture1);
                 tankView->add(towerPicture1);
                 break;
             case 2:
                 skinButton2->setChecked(true);
+                tankView->add(background);
                 tankView->add(tankPicture2);
                 tankView->add(towerPicture2);
                 break;
             case 3:
                 skinButton3->setChecked(true);
+                tankView->add(background);
                 tankView->add(tankPicture3);
                 tankView->add(towerPicture3);
                 break;
             case 4:
                 skinButton4->setChecked(true);
+                tankView->add(background);
                 tankView->add(tankPicture4);
                 tankView->add(towerPicture4);
                 break;
             case 5:
                 skinButton5->setChecked(true);
+                tankView->add(background);
                 tankView->add(tankPicture5);
                 tankView->add(towerPicture5);
                 break;
@@ -428,26 +450,31 @@ void InterfaceManager::loadMainMenuWidgets() {
 
         skinButton1->connect("checked", [&](){
             tankView->removeAllWidgets();
+            tankView->add(background);
             tankView->add(tankPicture1);
             tankView->add(towerPicture1);
         });
         skinButton2->connect("checked", [&](){
             tankView->removeAllWidgets();
+            tankView->add(background);
             tankView->add(tankPicture2);
             tankView->add(towerPicture2);
         });
         skinButton3->connect("checked", [&](){
             tankView->removeAllWidgets();
+            tankView->add(background);
             tankView->add(tankPicture3);
             tankView->add(towerPicture3);
         });
         skinButton4->connect("checked", [&](){
             tankView->removeAllWidgets();
+            tankView->add(background);
             tankView->add(tankPicture4);
             tankView->add(towerPicture4);
         });
         skinButton5->connect("checked", [&](){
             tankView->removeAllWidgets();
+            tankView->add(background);
             tankView->add(tankPicture5);
             tankView->add(towerPicture5);
         });
