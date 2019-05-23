@@ -43,10 +43,14 @@ private:
     bool mainmenuloaded = false;
     bool pauseloaded = false;
     bool messageloaded = false;
+    bool noticeadded = false;
+    bool changesizebool = false;
 
     std::vector <tgui::ProgressBar::Ptr> healthTanks;
     std::vector <tgui::Label::Ptr> nameTanks;
     tgui::Label::Ptr ammun_count;
+    std::vector <bool> noticeTanks;
+    std::vector <tgui::Label::Ptr> noticeKilled;
 
     std::vector <json>& matches;
     json& currentMatch;

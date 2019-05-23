@@ -228,30 +228,56 @@ void InterfaceManager::loadMainMenuWidgets() {
 
         static auto tankView = tgui::Panel::create();
         tankView->setSize("50%", "40%");
-        tankView->setPosition("55%", "5%");
+        tankView->setPosition("45%", "5%");
+        tankView->getRenderer()->setBackgroundColor(sf::Color::Yellow);
         settingsWindow->add(tankView);
 
-        static auto bulletView = tgui::Panel::create();
+        ///@todo: сделать фон панельки - песок, как и во время матча
+
+        static auto bulletView = tgui::Group::create();
         bulletView->setSize("5%", "40%");
-        bulletView->setPosition("90%", "5%");
+        bulletView->setPosition("87%", "5%");
         settingsWindow->add(bulletView);
 
+        static auto label1 = tgui::Label::create();
+        label1->setText("HP:");
+        label1->setSize("25%","10%");
+        label1->setPosition("45%", "50%");
+        label1->setTextSize(20);
+        label1->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
+        settingsWindow->add(label1);
 
-        static auto labelColor = tgui::Label::create();
-        labelColor->setText("HP: 1000");
-        labelColor->setPosition("55%", "50%");
+        static auto label2 = tgui::Label::create();
+        label2->setText("Bullet damage: ");
+        label2->setSize("25%","10%");
+        label2->setPosition("45%", "60%");
+        label2->setTextSize(20);
+        label2->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
+        settingsWindow->add(label2);
+
+        static auto label3 = tgui::Label::create();
+        label3->setText("Reload time: ");
+        label3->setSize("25%","10%");
+        label3->setPosition("45%", "70%");
+        label3->setTextSize(20);
+        label3->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
+        settingsWindow->add(label3);
+
+        static auto labelColor = tgui::Label::create("1000");
+        labelColor->setSize("25%","10%");
+        labelColor->setPosition("70%", "50%");
         labelColor->setTextSize(20);
         settingsWindow->add(labelColor);
 
         static auto labelBulDam = tgui::Label::create();
-        labelBulDam->setText("Bullet damage:");
-        labelBulDam->setPosition("55%", "60%");
+        labelBulDam->setSize("25%","10%");
+        labelBulDam->setPosition("70%", "60%");
         labelBulDam->setTextSize(20);
         settingsWindow->add(labelBulDam);
 
         static auto labelRelTime = tgui::Label::create();
-        labelRelTime->setText("Reload time:");
-        labelRelTime->setPosition("55%", "70%");
+        labelRelTime->setSize("25%","10%");
+        labelRelTime->setPosition("70%", "70%");
         labelRelTime->setTextSize(20);
         settingsWindow->add(labelRelTime);
 
@@ -280,11 +306,17 @@ void InterfaceManager::loadMainMenuWidgets() {
         auto towerTexture5 = tgui::Texture("images/Htanks.png", {199,68,86,40});
         static auto towerPicture5 = tgui::Picture::create(towerTexture5);
 
-        towerPicture1->setPosition(40, 5);
-        towerPicture2->setPosition(40, 5);
-        towerPicture3->setPosition(40, 5);
-        towerPicture4->setPosition(40, 5);
-        towerPicture5->setPosition(40, 5);
+        tankPicture1->setPosition(40, "26%");
+        tankPicture2->setPosition(40, "26%");
+        tankPicture3->setPosition(40, "26%");
+        tankPicture4->setPosition(40, "26%");
+        tankPicture5->setPosition(40, "26%");
+
+        towerPicture1->setPosition(105, 5 + tankView->getSize().y * 0.26);
+        towerPicture2->setPosition(105, 5 + tankView->getSize().y * 0.26);
+        towerPicture3->setPosition(105, 5 + tankView->getSize().y * 0.26);
+        towerPicture4->setPosition(105, 5 + tankView->getSize().y * 0.26);
+        towerPicture5->setPosition(105, 5 + tankView->getSize().y * 0.26);
 
         auto bulletTexture1 = tgui::Texture("images/bullet_1.png", {20,13,10,8});
         static auto bulletPicture1 = tgui::Picture::create(bulletTexture1);
@@ -296,13 +328,17 @@ void InterfaceManager::loadMainMenuWidgets() {
         static auto bulletPicture3 = tgui::Picture::create(bulletTexture3);
 
 
+        if (changesizebool) {
 
-        bulletPicture1->setSize({bulletPicture1->getSize().x*1.5, bulletPicture1->getSize().y*1.5});
-        bulletPicture2->setSize({bulletPicture2->getSize().x*1.5, bulletPicture2->getSize().y*1.5});
-        bulletPicture3->setSize({bulletPicture3->getSize().x*1.5, bulletPicture3->getSize().y*1.5});
-        bulletPicture1->setPosition("2%", "23%");
-        bulletPicture2->setPosition("2%", "22%");
-        bulletPicture3->setPosition("2%", "22%");
+        } else {
+            bulletPicture1->setSize({bulletPicture1->getSize().x * 1.5, bulletPicture1->getSize().y * 1.5});
+            bulletPicture2->setSize({bulletPicture2->getSize().x * 1.5, bulletPicture2->getSize().y * 1.5});
+            bulletPicture3->setSize({bulletPicture3->getSize().x * 1.5, bulletPicture3->getSize().y * 1.5});
+            changesizebool = true;
+        }
+        bulletPicture1->setPosition("2%", "49%");
+        bulletPicture2->setPosition("2%", "48%"); //+26
+        bulletPicture3->setPosition("2%", "48%");
 
 
         tankPicture1->setSize({"50%", "50%"});
@@ -315,9 +351,6 @@ void InterfaceManager::loadMainMenuWidgets() {
         towerPicture4->setSize({"50%", "50%"});
         tankPicture5->setSize({"50%", "50%"});
         towerPicture5->setSize({"50%", "50%"});
-
-
-
 
         switch (skin) {
             case 1:
@@ -353,20 +386,20 @@ void InterfaceManager::loadMainMenuWidgets() {
             case 1:
                 radioButton1->setChecked(true);
                 bulletView->add(bulletPicture1);
-                labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
-                labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
+                labelRelTime->setText(std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
+                labelBulDam->setText(std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
                 break;
             case 2:
                 radioButton2->setChecked(true);
                 bulletView->add(bulletPicture2);
-                labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
-                labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
+                labelRelTime->setText(std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
+                labelBulDam->setText(std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
                 break;
             case 3:
                 radioButton3->setChecked(true);
                 bulletView->add(bulletPicture3);
-                labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
-                labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
+                labelRelTime->setText(std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
+                labelBulDam->setText(std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
                 break;
             default:
                 assert(!"Invalid radiobutton");
@@ -375,22 +408,22 @@ void InterfaceManager::loadMainMenuWidgets() {
         appendSignal(radioButton1, radioButton1->connect("checked", [&](){
             bulletView->removeAllWidgets();
             bulletView->add(bulletPicture1);
-            labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
-            labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
+            labelRelTime->setText(std::to_string(int(RECHARGE_OF_LOWSHOT))+" ms");
+            labelBulDam->setText(std::to_string(DAMAGE_OF_LOWSHOT)+" hp");
         }));
 
         appendSignal(radioButton2, radioButton2->connect("checked", [&](){
             bulletView->removeAllWidgets();
             bulletView->add(bulletPicture2);
-            labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
-            labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
+            labelRelTime->setText(std::to_string(int(RECHARGE_OF_MIDDLESHOT))+" ms");
+            labelBulDam->setText(std::to_string(DAMAGE_OF_MIDDLESHOT)+" hp");
         }));
 
         appendSignal(radioButton3, radioButton3->connect("checked", [&](){
             bulletView->removeAllWidgets();
             bulletView->add(bulletPicture3);
-            labelRelTime->setText("Reload time: "+std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
-            labelBulDam->setText("Bullet damage: "+std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
+            labelRelTime->setText(std::to_string(int(RECHARGE_OF_POWERFULLSHOT))+" ms");
+            labelBulDam->setText(std::to_string(DAMAGE_OF_POWERFULLSHOT)+" hp");
         }));
 
         skinButton1->connect("checked", [&](){
@@ -500,17 +533,15 @@ void InterfaceManager::makeInterface() {
                     pauseWindow->add(buttonCancel);
 
                     static auto label = tgui::Label::create();
+                    label->setSize(pauseWindow->getSize().x, "65%");
                     label->setText("Do you really want to exit?");
                     label->setTextSize(20);
-                    label->setPosition("21%", "30%"); // NOT COOL!!!!!!!!!
-                    ///@todo сделать нормально выравнивание текста
+                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
+                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
                     pauseWindow->add(label);
-//                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
-//                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
                     appendSignal(buttonExit, buttonExit->connect("pressed", [&]() {
                         *state = GAME_STATE_MAIN_MENU;
                     }));
-
 
                     appendSignal(buttonCancel, buttonCancel->connect("pressed", [&](){
 //                        pauseloaded = false;
@@ -595,6 +626,7 @@ void InterfaceManager::makeInterface() {
                     ammun_count->getRenderer()->setBackgroundColor(sf::Color::Black);
                     ammun_count->setAutoSize(true);
                     ammun_count->setPosition(50, WINDOW_HEIGHT - 50);
+                    ammun_count->setInheritedOpacity(0.9);
                     gui.add(ammun_count);
                 }
                 catch (const tgui::Exception& e) {
@@ -691,6 +723,56 @@ void InterfaceManager::makeInterface() {
                 }
                 heathbarloaded = true;
             }
+
+            ///@todo: добавить уведомление об убийствах
+
+            if(noticeadded) {
+                for (auto i = 0; i < tanks.size(); i++) {
+
+                    if (!tanks[i]->isAlive() && !noticeTanks[i]) {
+
+                        try {
+                            if (tanks[i]->getLastEnemy() == -1)
+                                noticeKilled[i]->setText("LAVA killed " + tanks[i]->getName());
+                            else
+                                noticeKilled[i]->setText(tanks[tanks[i]->getLastEnemy()]->getName() + " killed " + tanks[i]->getName());
+                            noticeKilled[i]->setPosition(mainWindow.getSize().x - noticeKilled[i]->getSize().x, "5%");
+                            noticeKilled[i]->setVisible(true);
+
+                            for (auto j = 0; j < tanks.size(); j++) {
+                                if ((j != i) && noticeTanks[j])
+                                    noticeKilled[j]->setPosition(noticeKilled[j]->getPosition().x, noticeKilled[j]->getPosition().y + 27);
+                            }
+
+                        }
+                        catch (const tgui::Exception &e) {
+                            std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                            assert(0);
+                        }
+                        noticeTanks[i] = true;
+                    }
+                }
+            } else {
+                for (auto i = 0; i < tanks.size(); i++) {
+
+                    noticeTanks.push_back(false);
+
+                    try {
+                        noticeKilled.push_back(tgui::Label::create());
+                        noticeKilled[i]->setTextSize(20);
+                        noticeKilled[i]->getRenderer()->setBackgroundColor(sf::Color::Black);
+                        noticeKilled[i]->getRenderer()->setTextColor(sf::Color::White);
+                        noticeKilled[i]->setInheritedOpacity(0.7);
+                        noticeKilled[i]->setVisible(false);
+                        gui.add(noticeKilled[i]);
+                    }
+                    catch (const tgui::Exception &e) {
+                        std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                        assert(0);
+                    }
+                }
+                noticeadded = true;
+            }
             break;
         }
         case GAME_STATE_MULTIPLAYER_ENDED:
@@ -702,14 +784,14 @@ void InterfaceManager::makeInterface() {
                 }
                 gui.removeAllWidgets();
                 static auto windowWin = tgui::MessageBox::create();
-                windowWin->setPosition("40%", "40%");
-                windowWin->setSize("20%","20%");
+                windowWin->setPosition("35%", "40%");
+                windowWin->setSize("30%","20%");
                 gui.add(windowWin);
 
                 static auto label = tgui::Label::create(objectManager->getWinner()->getName()+" won!");
-//                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
-//                    label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
-                label->setPosition("15%","25%");
+                label->setSize(windowWin->getSize().x, "65%");
+                label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
+                label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
                 label->setTextSize(20);
                 windowWin->add(label);
 
@@ -814,10 +896,12 @@ void InterfaceManager::renderMatches() {
             labelList->setTextSize(20);
             gui.add(labelList);
 
-            static auto butRefresh = tgui::Button::create("Refresh");
+            static auto butRefresh = tgui::BitmapButton::create();
             butRefresh->setRenderer(theme.getRenderer("Button"));
-            butRefresh->setSize({"15%", "7%"});
-            butRefresh->setPosition({"25%", "10%"});
+            butRefresh->setImage("images/refresh.png");
+            butRefresh->setImageScaling(0.8);
+            butRefresh->setSize({"5%", mainWindow.getSize().x * 0.05});
+            butRefresh->setPosition({"40%", "8%"});
             butRefresh->setTextSize(20);
             gui.add(butRefresh);
 
@@ -913,10 +997,17 @@ void InterfaceManager::renderMatches() {
             butReady->setVisible(false);
             butReady->setRenderer(theme.getRenderer("Button"));
             butReady->setSize({"15%", "7%"});
-            butReady->setPosition({"67.5%", "90%"});
+            butReady->setPosition({"80%", "90%"});
             butReady->setTextSize(20);
             gui.add(butReady);
 
+            static auto butJoin = tgui::Button::create("Join");
+//            butJoin->setVisible(false);
+            butJoin->setRenderer(theme.getRenderer("Button"));
+            butJoin->setSize({"15%", "7%"});
+            butJoin->setPosition({"55%", "90%"});
+            butJoin->setTextSize(20);
+            gui.add(butJoin);
 
             static auto createWindow = tgui::MessageBox::create();
             createWindow->setRenderer(theme.getRenderer("MessageBox"));
@@ -957,6 +1048,7 @@ void InterfaceManager::renderMatches() {
                 butReady->setEnabled(false);
                 createWindow->setVisible(true);
                 butRefresh->setEnabled(false);
+                butJoin->setEnabled(false);
             });
 
             buttonCancel->connect("pressed", [&](){
@@ -966,6 +1058,7 @@ void InterfaceManager::renderMatches() {
                 butReady->setEnabled(true);
                 createWindow->setVisible(false);
                 butRefresh->setEnabled(true);
+                butJoin->setEnabled(true);
             });
 
             appendSignal(butRefresh, butRefresh->connect("pressed", [&](){
