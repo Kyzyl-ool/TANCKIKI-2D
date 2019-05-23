@@ -2,6 +2,6 @@
     "amount_of_players": 2,
     "players_names": ["Player1", "Player2", "Player3", "Player4","Player5", "Player6","Player7", "Player8","Player9", "Player10"],
     "playersInitialCoord": [9,4, 28,20, 23,28, 5,35, 5,42, 20,58, 50,57, 65,27, 92,57,94,15],
-    "skins": "yellow1", "green1", "purple1", "blue1", "violet1", "yellow1", "green1", "purple1", "blue1", "violet1"},
-    "bullets": "1", "2", "3", "1", "2", "3", "1", "2", "3", "1"}
+    "skins": ["yellow1", "green1", "purple1", "blue1", "violet1", "yellow1", "green1", "purple1", "blue1", "violet1"],
+    "bullets": [1, 2, 3, 1, 2, 3, 1, 2, 3, 1]
 }
