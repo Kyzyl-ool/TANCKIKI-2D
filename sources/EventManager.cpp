@@ -384,3 +384,7 @@ std::string EventManager::getMouseMessage() {
 void EventManager::setMatch(Match *match) {
     EventManager::match = match;
 }
+
+void EventManager::setMyName(std::string &myName) {
+    EventManager::myName = myName;
+}

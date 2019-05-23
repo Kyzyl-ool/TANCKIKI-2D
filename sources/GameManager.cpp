@@ -103,6 +103,7 @@ void GameManager::runGame() {
                 eventManager->setPlayerId(match->getMyPlayerId());
                 eventManager->setObjectManager(match->getObjectManager());
                 eventManager->setMatch(match);
+                eventManager->setMyName(const_cast<std::string &>(networkManager.getMyName()));
                 networkManager.setMyPlayerId(match->getMyPlayerId());
                 isGameReady = true;
                 break;
@@ -249,4 +250,8 @@ GameManager::~GameManager() {
     delete(interfaceManager);
     delete(eventManager);
     delete(match);
+}
+
+const std::string &GameManager::getPlayerName() const {
+    return playerName;
 }

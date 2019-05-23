@@ -80,9 +80,8 @@ bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_
 
         json r2 = jsonRPC("get_user_data_by_vk_id", {playerId});
         std::cout << "Welcome, " << r2["result"]["first_name"].get<std::string>() << " " << r2["result"]["last_name"].get<std::string>() << std::endl;
-        setReady(false);
-
         myName = login_password.first;
+        setReady(false);
     } else {
         std::cout << "Incorrect login or password.\n";
     }

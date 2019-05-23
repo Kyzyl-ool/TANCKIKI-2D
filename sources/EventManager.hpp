@@ -24,6 +24,9 @@ private:
     int playerViewId = 0;
     std::string& myName;
 public:
+    void setMyName(std::string &myName);
+
+public:
     void setMatch(Match *match);
 
 public:
