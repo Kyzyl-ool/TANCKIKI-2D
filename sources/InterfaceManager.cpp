@@ -775,27 +775,6 @@ void InterfaceManager::makeInterface() {
                 }
                 noticeadded = true;
             }
-
-//            if(noticeadded) {
-//
-//            } else {
-//                try {
-//                    static auto label = tgui::Label::create("qwertyuiopasdfghjklm killed qwertyuiopasdfghjklm");
-//                    label->setTextSize(20);
-//                    label->setPosition(mainWindow.getSize().x - label->getSize().x, "5%");
-//                    label->getRenderer()->setBackgroundColor(sf::Color::Black);
-//                    label->getRenderer()->setTextColor(sf::Color::White);
-//                    label->setInheritedOpacity(0.7);
-//                    std::cout << "y-size of label 'killed' is " << label->getSize().y << std::endl;
-//                    gui.add(label);
-//                }
-//                catch (const tgui::Exception& e) {
-//                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
-//                    assert(0);
-//                }
-//                noticeadded = true;
-//            }
-
             break;
         }
         case GAME_STATE_MULTIPLAYER_ENDED:
@@ -807,8 +786,8 @@ void InterfaceManager::makeInterface() {
                 }
                 gui.removeAllWidgets();
                 static auto windowWin = tgui::MessageBox::create();
-                windowWin->setPosition("40%", "40%");
-                windowWin->setSize("20%","20%");
+                windowWin->setPosition("35%", "40%");
+                windowWin->setSize("30%","20%");
                 gui.add(windowWin);
 
                 static auto label = tgui::Label::create(objectManager->getWinner()->getName()+" won!");
@@ -816,7 +795,6 @@ void InterfaceManager::makeInterface() {
                 label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Center);
                 label->setVerticalAlignment(tgui::Label::VerticalAlignment::Center);
                 label->setTextSize(20);
-                ///@todo: проверить, что длина имени не слишком большая
                 windowWin->add(label);
 
                 static auto buttonExit = tgui::Button::create("Exit");
@@ -1021,10 +999,17 @@ void InterfaceManager::renderMatches() {
             butReady->setVisible(false);
             butReady->setRenderer(theme.getRenderer("Button"));
             butReady->setSize({"15%", "7%"});
-            butReady->setPosition({"67.5%", "90%"});
+            butReady->setPosition({"80%", "90%"});
             butReady->setTextSize(20);
             gui.add(butReady);
 
+            static auto butJoin = tgui::Button::create("Join");
+//            butJoin->setVisible(false);
+            butJoin->setRenderer(theme.getRenderer("Button"));
+            butJoin->setSize({"15%", "7%"});
+            butJoin->setPosition({"55%", "90%"});
+            butJoin->setTextSize(20);
+            gui.add(butJoin);
 
             static auto createWindow = tgui::MessageBox::create();
             createWindow->setRenderer(theme.getRenderer("MessageBox"));
@@ -1065,6 +1050,7 @@ void InterfaceManager::renderMatches() {
                 butReady->setEnabled(false);
                 createWindow->setVisible(true);
                 butRefresh->setEnabled(false);
+                butJoin->setEnabled(false);
             });
 
             buttonCancel->connect("pressed", [&](){
@@ -1074,6 +1060,7 @@ void InterfaceManager::renderMatches() {
                 butReady->setEnabled(true);
                 createWindow->setVisible(false);
                 butRefresh->setEnabled(true);
+                butJoin->setEnabled(true);
             });
 
             appendSignal(butRefresh, butRefresh->connect("pressed", [&](){
