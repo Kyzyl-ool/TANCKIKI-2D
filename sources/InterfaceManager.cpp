@@ -646,7 +646,7 @@ void InterfaceManager::makeInterface() {
                     try {
                         nameTanks[i]->setPosition(x - 0.5*sx, y+sy*0.8);
 //                        nameTanks[i]->setSize(5 * sx, 5 * sy * 0.3); //it's large size
-
+                        nameTanks[i]->setText(tanks[i]->getName());
                         if(!tanks[i]->isAlive()) {
                             nameTanks[i]->setVisible(false);
                         }
