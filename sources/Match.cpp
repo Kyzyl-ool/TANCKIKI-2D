@@ -109,42 +109,20 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
     }
     ///@todo заполнить playersInitialCoordinates
 
-    ///@todo создать amount_of_players танков
+    std::vector<std::string> skins = players_info_j["skins"].get< std::vector <std::string> >();
+    std::vector<int> bullets = players_info_j["bullets"].get< std::vector <int> >();
 
     for(int i = 0; i < amount_of_players; ++i) {
         if (i == myPlayerId) {
             std::ifstream fi("./sources/json/armament.json");
             json armament;
             fi >> armament;
-            int bullet = armament["bullet"];
-            int skin = armament["skin"];
+            std::string skinName = skins.at(i);
             fi.close();
-
-            std::string skinName;
-            switch (skin) {
-                case 1:
-                    skinName = "yellow1";
-                    break;
-                case 2:
-                    skinName = "green1";
-                    break;
-                case 3:
-                    skinName = "purple1";
-                    break;
-                case 4:
-                    skinName = "blue1";
-                    break;
-                case 5:
-                    skinName = "violet1";
-                    break;
-                default:
-                    assert(!"Unknown skin number");
-                    break;
-            }
 
             Bullet_t bulletType = ABYSSSHOT;
 
-            switch (bullet) {
+            switch (bullets.at(i)) {
                 case 1:
                     bulletType = LOWSHOT;
                     break;
@@ -159,7 +137,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
                     break;
             }
 
-            Tank *tank = new Tank(1000, players_names[i], "blue1");
+            Tank *tank = new Tank(TANK_HEALTH, players_names[i], skinName);
             tank->setPosition(playersInitialCoord[i].first, playersInitialCoord[i].second);
             tank->setObjectId(i);
             tank->setTypeBullet(LOWSHOT);
