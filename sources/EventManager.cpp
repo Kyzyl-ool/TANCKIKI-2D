@@ -53,7 +53,6 @@ std::string EventManager::returnMessageFromMatchActions() {
     } else {
         interfaceManager.cancelShow();
     }
-    
 
     char arrows = getPressedArrows();
         switch (event.type) {
