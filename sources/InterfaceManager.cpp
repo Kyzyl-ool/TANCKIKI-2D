@@ -113,8 +113,6 @@ void InterfaceManager::loadMainMenuWidgets() {
         appendSignal(multiButton, multiButton->connect("pressed", &InterfaceManager::signalHandler2, this));
         appendSignal(multiButton, multiButton->connect("pressed", [&](){
             WidgetsMenu::change_ava(1);
-            editBoxUsername->setText("kyzyloolk");
-            editBoxPassword->setText("akTPLWGd");
         }));
 
         appendSignal(quitButton, quitButton->connect("pressed", &InterfaceManager::signalHandler3, this));
