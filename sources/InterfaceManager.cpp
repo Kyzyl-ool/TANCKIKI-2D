@@ -658,7 +658,6 @@ void InterfaceManager::makeInterface() {
                 }
 
             }
-
             else {
                 for (auto i = 0; i < tanks.size(); i++) {
 
