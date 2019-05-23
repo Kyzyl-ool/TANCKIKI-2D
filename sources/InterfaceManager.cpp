@@ -628,6 +628,7 @@ void InterfaceManager::makeInterface() {
                     ammun_count->getRenderer()->setBackgroundColor(sf::Color::Black);
                     ammun_count->setAutoSize(true);
                     ammun_count->setPosition(50, WINDOW_HEIGHT - 50);
+                    ammun_count->setInheritedOpacity(0.9);
                     gui.add(ammun_count);
                 }
                 catch (const tgui::Exception& e) {
@@ -728,23 +729,72 @@ void InterfaceManager::makeInterface() {
             ///@todo: добавить уведомление об убийствах
 
             if(noticeadded) {
+                for (auto i = 0; i < tanks.size(); i++) {
 
-            } else {
-                try {
-                    static auto label = tgui::Label::create("player1 killed player2");
-                    label->setSize(mainWindow.getSize().x, "10%");
-                    label->setTextSize(20);
-                    label->setPosition("0%", "10%");
-                    label->getRenderer()->setTextColor(sf::Color::Green);
-                    label->setHorizontalAlignment(tgui::Label::HorizontalAlignment::Right);
-                    gui.add(label);
+                    if (!tanks[i]->isAlive() && !noticeTanks[i]) {
+
+                        try {
+                            if (tanks[i]->getLastEnemy() == -1)
+                                noticeKilled[i]->setText("LAVA killed " + tanks[i]->getName());
+                            else
+                                noticeKilled[i]->setText(tanks[tanks[i]->getLastEnemy()]->getName() + " killed " + tanks[i]->getName());
+                            noticeKilled[i]->setPosition(mainWindow.getSize().x - noticeKilled[i]->getSize().x, "5%");
+                            noticeKilled[i]->setVisible(true);
+
+                            for (auto j = 0; j < tanks.size(); j++) {
+                                if ((j != i) && noticeTanks[j])
+                                    noticeKilled[j]->setPosition(noticeKilled[j]->getPosition().x, noticeKilled[j]->getPosition().y + 27);
+                            }
+
+                        }
+                        catch (const tgui::Exception &e) {
+                            std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                            assert(0);
+                        }
+                        noticeTanks[i] = true;
+                    }
                 }
-                catch (const tgui::Exception& e) {
-                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
-                    assert(0);
+            } else {
+                for (auto i = 0; i < tanks.size(); i++) {
+
+                    noticeTanks.push_back(false);
+
+                    try {
+                        noticeKilled.push_back(tgui::Label::create());
+                        noticeKilled[i]->setTextSize(20);
+                        noticeKilled[i]->getRenderer()->setBackgroundColor(sf::Color::Black);
+                        noticeKilled[i]->getRenderer()->setTextColor(sf::Color::White);
+                        noticeKilled[i]->setInheritedOpacity(0.7);
+                        noticeKilled[i]->setVisible(false);
+                        gui.add(noticeKilled[i]);
+                    }
+                    catch (const tgui::Exception &e) {
+                        std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+                        assert(0);
+                    }
                 }
                 noticeadded = true;
             }
+
+//            if(noticeadded) {
+//
+//            } else {
+//                try {
+//                    static auto label = tgui::Label::create("qwertyuiopasdfghjklm killed qwertyuiopasdfghjklm");
+//                    label->setTextSize(20);
+//                    label->setPosition(mainWindow.getSize().x - label->getSize().x, "5%");
+//                    label->getRenderer()->setBackgroundColor(sf::Color::Black);
+//                    label->getRenderer()->setTextColor(sf::Color::White);
+//                    label->setInheritedOpacity(0.7);
+//                    std::cout << "y-size of label 'killed' is " << label->getSize().y << std::endl;
+//                    gui.add(label);
+//                }
+//                catch (const tgui::Exception& e) {
+//                    std::cerr << "Failed to load TGUI widgets: " << e.what() << std::endl;
+//                    assert(0);
+//                }
+//                noticeadded = true;
+//            }
 
             break;
         }
