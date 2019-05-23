@@ -312,7 +312,7 @@ void Tank::setTowerY(float towerY) {
 
 void
 Tank::setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
-                       float itowerY, int iammunition, float iRotaton, float iTowerRotation) {
+                       float itowerY, int iammunition, float iRotaton, float iTowerRotation, std::string name) {
     x = iX;
     y = iY;
     health = ihealth;
@@ -323,10 +323,15 @@ Tank::setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, flo
     ammunition = iammunition;
     setRotation(iRotaton);
     spriteTower.setRotation(iTowerRotation);
+    playerName = name;
 }
 
 float Tank::getTowerRotation() {
     return spriteTower.getRotation();
+}
+
+void Tank::setPlayerName(const std::string &playerName) {
+    Tank::playerName = playerName;
 }
 
 

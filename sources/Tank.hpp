@@ -40,6 +40,10 @@ public:
 protected:
     Bullet_t bulType;
     std::string playerName = "Unnamed";
+public:
+    void setPlayerName(const std::string &playerName);
+
+protected:
     int ammunition;
     int count_ammun;
     int lastEnemy;
@@ -73,7 +77,7 @@ public:
     float checkOrient(float X, float Y, sf::RenderWindow *window);
     void setTypeBullet(Bullet_t);
     void setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, float irecharge, float itowerX,
-                          float itowerY, int iammunition, float iRotaton, float iTowerRotation);
+                          float itowerY, int iammunition, float iRotaton, float iTowerRotation, std::string name);
     float getTowerRotation();
     float getViewCoordX(Match *match);
     float getViewCoordY(Match *match);
