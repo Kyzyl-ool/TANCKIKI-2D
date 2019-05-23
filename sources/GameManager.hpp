@@ -35,6 +35,10 @@ private:
     gameState_t state;
     sf::Event& event;
     std::string playerName;
+public:
+    const std::string &getPlayerName() const;
+
+private:
     sf::Clock clock;
     sf::Clock trottlingClock;
     std::vector <json> matches;
