@@ -26,6 +26,11 @@ private:
     sf::UdpSocket udpSocket;
     unsigned short serverPort;
     std::string playerId;
+    std::string myName = "Unnamed";
+public:
+    const std::string &getMyName() const;
+
+private:
     int myPlayerId = -1;
     bool ready = false;
 public:

@@ -7,18 +7,18 @@
 #include <unistd.h>
 
 GameManager::GameManager(sf::RenderWindow &the_mainWindow, tgui::Gui &the_gui, sf::Event &the_event,
-                         NetworkManager &the_networkmanager, sf::View &the_view) :
+                         NetworkManager &the_networkmanager, sf::View &view, std::string &iMyName) :
 mainWindow(the_mainWindow),
 gui(the_gui),
 event(the_event),
 networkManager(the_networkmanager),
-view(the_view)
+view(view)
 {
     ///@todo проверить наличие файла player_info.json
     state = GAME_STATE_MAIN_MENU;
     interfaceManager = new InterfaceManager(mainWindow, nullptr, &state, the_gui, networkManager, match, matches,
                                             current_match);
-    eventManager = new EventManager(mainWindow, event, 0, &state, gui, *interfaceManager);
+    eventManager = new EventManager(mainWindow, event, 0, &state, gui, *interfaceManager, iMyName);
 }
 
 void GameManager::runGame() {
@@ -98,7 +98,8 @@ void GameManager::runGame() {
                 }
                 gui.removeAllWidgets();
                 networkManager.setMatch(match);
-                networkManager.establishConnection(current_match["game_id"].get <int> ());
+                char id = networkManager.establishConnection(current_match["game_id"].get <int> ());
+                match->getObjectManager()->getTanks()[id]->setPlayerName(networkManager.getMyName());
                 eventManager->setPlayerId(match->getMyPlayerId());
                 eventManager->setObjectManager(match->getObjectManager());
                 eventManager->setMatch(match);

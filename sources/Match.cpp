@@ -322,16 +322,16 @@ void Match::processMessage(const std::string &message, int iMyPlayerId = -1) {
         }
         case GAMEOBJECT_MESSAGE_SYNC: {
                 std::vector<float> params = j["params"].get<std::vector<float> >();
-                objectManager->getTankById(tankId)->setConfiguration(
-                        params[0],
-                        params[1],
-                        params[2],
-                        params[3],
-                        params[4],
-                        params[5],
-                        params[6],
-                        (int) params[7],
-                        params[8], params[9]);
+            objectManager->getTankById(tankId)->setConfiguration(
+                    params[0],
+                    params[1],
+                    params[2],
+                    params[3],
+                    params[4],
+                    params[5],
+                    params[6],
+                    (int) params[7],
+                    params[8], params[9], j["name"].get <std::string> ());
             break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER: {

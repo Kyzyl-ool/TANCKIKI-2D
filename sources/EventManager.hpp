@@ -22,6 +22,7 @@ private:
     ObjectManager* objectManager;
     Match* match;
     int playerViewId = 0;
+    std::string& myName;
 public:
     void setMatch(Match *match);
 
@@ -38,7 +39,7 @@ private:
 
 public:
     EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId, gameState_t *the_state,
-                 tgui::Gui &the_gui, InterfaceManager &interfaceManager);
+                 tgui::Gui &the_gui, InterfaceManager &interfaceManager, std::string &iMyName);
     bool pollEvent();
     std::string getMessageFromGameObjects();
 

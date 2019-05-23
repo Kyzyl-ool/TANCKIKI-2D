@@ -16,13 +16,14 @@ bool EventManager::pollEvent() {
 }
 
 EventManager::EventManager(sf::RenderWindow &theMainWindow, sf::Event &the_event, int playerId, gameState_t *the_state,
-                           tgui::Gui &the_gui, InterfaceManager &interfaceManager)
+                           tgui::Gui &the_gui, InterfaceManager &interfaceManager, std::string &iMyName)
         :
         mainWindow(theMainWindow),
 playerId(playerId),
 gui(the_gui),
 event(the_event),
-interfaceManager(interfaceManager)
+interfaceManager(interfaceManager),
+myName(iMyName)
 {
     state = the_state;
 }
@@ -317,6 +318,7 @@ std::string EventManager::getSyncMessage() {
         json_message["from"] = playerId;
         json_message["method"] = "sync";
         json_message["params"] = { (int)(myTank->getX() * 100)/100., (int)(myTank->getY() * 100)/100., (int)(myTank->getHealth() * 100)/100., (int)(myTank->getSpeedTower() * 100)/100., (int)(myTank->getRecharge() * 100)/100., (int)(myTank->getTowerX() * 100)/100., (int)(myTank->getTowerY() * 100)/100., myTank->getAmmun(), myTank->getRotation(), myTank->getTowerRotation()};
+        json_message["name"] = myName;
         return json_message.dump();
     }
     else

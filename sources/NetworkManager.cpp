@@ -81,6 +81,8 @@ bool NetworkManager::authorize(const std::pair<std::string, std::string> &login_
         json r2 = jsonRPC("get_user_data_by_vk_id", {playerId});
         std::cout << "Welcome, " << r2["result"]["first_name"].get<std::string>() << " " << r2["result"]["last_name"].get<std::string>() << std::endl;
         setReady(false);
+
+        myName = login_password.first;
     } else {
         std::cout << "Incorrect login or password.\n";
     }
@@ -117,6 +119,7 @@ unsigned short NetworkManager::establishConnection(int game_id) {
         udpSocket.setBlocking(false);
         match->setMyPlayerId(j["playerId"].get <unsigned short>());
         std::cout << "Your player Id: " << match->getMyPlayerId() << std::endl;
+        return match->getMyPlayerId();
     } else {
         assert(!"Not OK");
     }
@@ -217,6 +220,10 @@ int NetworkManager::createNewGame(std::string name, int map_id) {
     json j = jsonRPC("create_game", {token, name, playerId, currentDateTime(), map_id});
     std::cout << j << std::endl;
     return j["result"]["game_id"].get <int> ();
+}
+
+const std::string &NetworkManager::getMyName() const {
+    return myName;
 }
 
 NetworkManager::~NetworkManager() = default;
