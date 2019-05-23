@@ -222,8 +222,6 @@ void InterfaceManager::loadMainMenuWidgets() {
         skinButton5->setSize(20, 20);
         SKIN->add(skinButton5);
 
-
-
         fi.close();
 
         sf::Image gugugu;
@@ -244,11 +242,9 @@ void InterfaceManager::loadMainMenuWidgets() {
 
         static auto background = tgui::Picture::create(back);
 
-
         static auto tankView = tgui::Panel::create();
         tankView->setSize("50%", "40%");
         tankView->setPosition("45%", "5%");
-        tankView->getRenderer()->setBackgroundColor(sf::Color::Yellow);
         settingsWindow->add(tankView);
 
         static auto bulletView = tgui::Group::create();
@@ -344,7 +340,6 @@ void InterfaceManager::loadMainMenuWidgets() {
         auto bulletTexture3 = tgui::Texture("images/bullet_1.png", {279,214,15,12});
         static auto bulletPicture3 = tgui::Picture::create(bulletTexture3);
 
-
         if (changesizebool) {
 
         } else {
@@ -356,7 +351,6 @@ void InterfaceManager::loadMainMenuWidgets() {
         bulletPicture1->setPosition("2%", "49%");
         bulletPicture2->setPosition("2%", "48%"); //+26
         bulletPicture3->setPosition("2%", "48%");
-
 
         tankPicture1->setSize({"50%", "50%"});
         towerPicture1->setSize({"50%", "50%"});
@@ -479,15 +473,12 @@ void InterfaceManager::loadMainMenuWidgets() {
             tankView->add(towerPicture5);
         });
 
-
-
 //        gui.add(towerPicture);
 
 
 //        sf:: setTexture("images/Htanks.png");
 //        setSprite(297,108,95,53);
 //        setSpriteTower(300,68,86,40);
-
 
         appendSignal(settingsButton, settingsButton->connect("pressed", &InterfaceManager::signalHandler4, this));
         appendSignal(settingsButton, settingsButton->connect("pressed", [&](){
