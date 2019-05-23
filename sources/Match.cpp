@@ -159,10 +159,10 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
                     break;
             }
 
-            Tank *tank = new Tank(1000, players_names[i], skinName);
+            Tank *tank = new Tank(1000, players_names[i], "blue1");
             tank->setPosition(playersInitialCoord[i].first, playersInitialCoord[i].second);
             tank->setObjectId(i);
-            tank->setTypeBullet(bulletType);
+            tank->setTypeBullet(LOWSHOT);
             tank->setOwnerId(i);
             objectManager->addGameObject(tank);
         }
@@ -170,7 +170,7 @@ Match::Match(sf::RenderWindow &mainWindow, std::string players_info_json, std::s
             Tank *tank = new Tank(1000, players_names[i], "blue1");
             tank->setPosition(playersInitialCoord[i].first, playersInitialCoord[i].second);
             tank->setObjectId(i);
-            tank->setTypeBullet(MIDDLESHOT);
+            tank->setTypeBullet(LOWSHOT);
             tank->setOwnerId(i);
             objectManager->addGameObject(tank);
         }
