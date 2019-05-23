@@ -1,3 +1,5 @@
+#include <utility>
+
 //
 // Created by Apxapa on 30.03.2019.
 //
@@ -323,7 +325,7 @@ Tank::setConfiguration(float iX, float iY, float ihealth, float itowerSpeed, flo
     ammunition = iammunition;
     setRotation(iRotaton);
     spriteTower.setRotation(iTowerRotation);
-    playerName = name;
+    playerName = std::move(name);
 }
 
 float Tank::getTowerRotation() {
