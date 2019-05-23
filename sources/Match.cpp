@@ -310,7 +310,6 @@ void Match::processMessage(const std::string &message, int iMyPlayerId = -1) {
                     params[6],
                     (int) params[7],
                     params[8], params[9], j["name"].get <std::string> ());
-            std::cout << j["name"].get <std::string> () << std::endl;
             break;
         }
         case GAMEOBJECT_MESSAGE_ROTATE_TOWER: {
