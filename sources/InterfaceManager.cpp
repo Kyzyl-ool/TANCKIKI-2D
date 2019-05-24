@@ -31,7 +31,7 @@ InterfaceManager::InterfaceManager(sf::RenderWindow &the_mainWindow, ObjectManag
 void InterfaceManager::loadMainMenuWidgets() {
     try {
         static auto picture = tgui::Picture::create({"images/forest.svg", sf::IntRect(0, 0, 1000, 700)}); //Failed to create texture, invalid size (0x0)
-        picture->setSize({WINDOW_WIDTH, WINDOW_HEIGHT});
+        picture->setSize("100%", "100%");
         gui.add(picture);
 
         static auto singleButton = tgui::Button::create("Singleplayer"); //кнопка Singleplayer
@@ -944,7 +944,7 @@ void InterfaceManager::renderMatches() {
                 listBox->addItem(matches[i]["name"].get<std::string>());
 
             }
-            ///@todo add items
+            ///@todo add items (вроде они уже спокойно добавляются)
 
 //            listBox->addItem("Item 2");
 //            listBox->addItem("Item 3");
