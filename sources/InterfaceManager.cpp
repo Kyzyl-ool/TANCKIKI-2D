@@ -600,7 +600,6 @@ void InterfaceManager::makeInterface() {
             messageloaded = false;
             ammuncount = false;
             noticeadded = false;
-            changesizebool = false;
             healthTanks.clear();
             nameTanks.clear();
             noticeTanks.clear();
