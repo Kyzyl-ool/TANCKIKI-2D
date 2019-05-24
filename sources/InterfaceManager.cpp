@@ -595,13 +595,17 @@ void InterfaceManager::makeInterface() {
             matchesLoaded = false;
             tanksnameloaded = false;
             heathbarloaded = false;
-            heathbarloaded = false;
             pauseloaded = false;
             mainmenuloaded = false;
             messageloaded = false;
             ammuncount = false;
+            noticeadded = false;
+            changesizebool = false;
             healthTanks.clear();
             nameTanks.clear();
+            noticeTanks.clear();
+            noticeKilled.clear();
+
             for (const auto &item : beingDisconnected) {
                 item.first->disconnect(item.second);
             }
