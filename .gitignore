@@ -36,3 +36,4 @@
 cmake_modules/
 cmake-build-debug/
 .idea/vcs.xml
+cmake-build-release/
